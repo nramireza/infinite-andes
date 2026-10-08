@@ -18,6 +18,11 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 | Pasto / duna | — | — | `grass` | Playa, Valle, Costa | Matas pequeñas |
 | Rocas | — | — | `rock` | Andes, Playa, Costa | Pedreros sueltos |
 | Flor del desierto | — | — | `flower` | Valle, Costa, Playa (norte) | Parches de flores del **desierto florido** |
+| Copao / Cactus columnar | *Eulychnia* spp. | No | `cactus` | Norte (precordillera, valle, costa) | Columna con brazos y espinas |
+| Alerce / Lahual | *Fitzroya cupressoides* | Sí (Chile/Arg) | `alerce` | Sur (precordillera, costa) | Conífera alta y estrecha; en peligro |
+| Nalca / Pangue | *Gunnera tinctoria* | Sí (Chile/Arg) | `nalca` | Sur (valle, costa) | Hojas gigantes junto al agua |
+| Colihue / Quila | *Chusquea* spp. | No | `colihue` | Sur (valle, costa) | Cañaverales |
+| Palma chilena | *Jubaea chilensis* | Sí (Chile) | `palma` | Centro (valle, costa) | Tronco esbelto y frondas; en peligro |
 
 > La vegetación no crece dentro del cauce: `placeFlora` omite las columnas con `riverInfluence > 0.25`
 > y usa `bankHeight` para sentarse en el banco.
@@ -25,9 +30,9 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 ## Biomas
 
 El bioma (`src/biomes.js`) **pondera** los `types` de cada capa; el pool efectivo se construye con
-`biomeFloraPool` (ver [D-016](12-decisiones.md)). El **norte árido no tiene araucaria** (matorral y
-roca); el **sur** densifica lenga y araucaria. El tipo `flower` solo aparece con la floración del
-norte (`bloomAt`, [D-017](12-decisiones.md)); se dibuja como parche de tallos con corola de 3 px.
+`biomeFloraPool` (ver [D-016](12-decisiones.md)). El **norte árido no tiene araucaria** (matorral,
+copao y roca); el **sur** suma alerce, nalca y colihue. El tipo `flower` solo aparece con la floración
+del norte (`bloomAt`, [D-017](12-decisiones.md)); se dibuja como parche de tallos con corola de 3 px.
 
 ## Especificación de sprites
 
@@ -41,16 +46,17 @@ Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante)
 | Cultivo | 5–12 | 1 | — |
 | Pasto | 4–9 | 1 | — |
 | Roca | 4–? | 1 | — |
+| Cactus | 6–? | 1 | — |
+| Alerce | 8–? | 1 | — |
+| Nalca | 8–? | 1 | — |
+| Colihue | 4–? | 1 | — |
+| Palma | 8–? | 1 | — |
+| Flor | 4–? | 1 | Bamboleo por seno (sway) |
 
 ## Especies por añadir (propuestas)
 
-- TODO: Nalca / Pangue (*Gunnera tinctoria*, endémica) — hojas gigantes junto a cursos de agua.
 - TODO: Copihue como enredadera en bosque de la Costa (no solo flor suelta).
 - TODO: Coihue (*Nothofagus dombeyi*) y Roble (*N. obliqua*) para el bosque de la Costa.
-- TODO: Copao (*Eulychnia* spp.) y cactus columnares para zonas áridas.
-- TODO: Colihue / Quila (*Chusquea* spp.) — cañaverales.
-- TODO: Palma chilena (*Jubaea chilensis*, endémica y en peligro).
-- TODO: Alerce / Lahual (*Fitzroya cupressoides*).
 - TODO: Michay, Chaura y otros arbustos del sotobosque.
 
 ## Cómo añadir una especie

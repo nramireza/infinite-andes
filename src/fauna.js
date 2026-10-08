@@ -3,7 +3,7 @@
 // Chile, según UICN/clasificación nacional) pondera el sorteo de especies.
 
 import { mulberry32, hashInt, hash1 } from "./rng.js";
-import { bankHeight, riverInfluence } from "./terrain.js";
+import { bankHeight, riverInfluence, riverEvents } from "./terrain.js";
 import { px } from "./pixel.js";
 
 const BAND = {
@@ -378,6 +378,24 @@ export const SPECIES = {
       ],
     ],
   },
+  rana: {
+    movement: "sit", active: "day", speed: 0, range: 0, fps: 1, anchor: "ground", rarity: "muy-rara",
+    palette: { d: "floraD", l: "sandD", e: "trunk" },
+    frames: [
+      [
+        ".dd...",
+        "dddd..",
+        "dlddd.",
+        ".d.d..",
+      ],
+      [
+        ".dd...",
+        "dddd..",
+        "dlddd.",
+        "..d.d.",
+      ],
+    ],
+  },
 };
 
 export function isActive(species, hour) {
@@ -460,7 +478,10 @@ export function faunaSpawns(layer, camera, W, H, seed, hour, poolAt, chanceAt) {
     const rng = mulberry32(hashInt(c, chunkSeed));
     if (rng() > (f.chance ?? 0.5) * chanceMul) continue;
     const pool = poolAt ? poolAt(wx0) : null;
-    const type = pool && pool.length ? pickWeighted(pool, rng) : pickWeighted(f.species, rng);
+    // La rana se coloca aparte, en el borde del cauce (ver más abajo).
+    const generic = (pool && pool.length ? pool : f.species).filter((e) => entryType(e) !== "rana");
+    if (generic.length === 0) continue;
+    const type = pickWeighted(generic, rng);
     const sp = SPECIES[type];
     if (!sp) continue;
 
@@ -482,6 +503,28 @@ export function faunaSpawns(layer, camera, W, H, seed, hour, poolAt, chanceAt) {
 
     if (!isActive(sp, hour)) continue;
     out.push({ wx, sx, gy, flightY, type, phase, dir });
+  }
+
+  // Rana de Darwin: en el borde del cauce, si el bioma la incluye.
+  if (layer.rivers) {
+    const sp = SPECIES.rana;
+    for (const ev of riverEvents(layer, camera, W)) {
+      const rng = mulberry32(hashInt(Math.floor(ev.xc), (chunkSeed + 0x5a1a) >>> 0));
+      if (rng() > 0.3) continue;
+      const side = rng() < 0.5 ? -1 : 1;
+      const wx = ev.xc + side * layer.rivers.width * 2.4;
+      const sx = wx - camera.x * p;
+      if (sx < -60 || sx > W + 60) continue;
+      const pool = poolAt ? poolAt(wx) : null;
+      const list = pool && pool.length ? pool : f.species;
+      if (!list.some((e) => entryType(e) === "rana")) continue;
+      if (!isActive(sp, hour)) continue;
+      const gy = bankHeight(layer, wx);
+      if (gy > H + 4) continue;
+      const phase = rng() * Math.PI * 2;
+      const dir = rng() < 0.5 ? -1 : 1;
+      out.push({ wx, sx, gy, flightY: null, type: "rana", phase, dir });
+    }
   }
   return out;
 }

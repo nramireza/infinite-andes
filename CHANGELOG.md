@@ -6,6 +6,25 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-08
+
+### Added
+- **Geometría por bioma** ([D-018](docs/12-decisiones.md)): cada bioma declara `ampMul` y `snowShift`
+  y `biomeGeometry` los mezcla por pesos; `setBiomeGeometry` los aplica en `bankHeight`, `drawLayer`
+  y `drawChannel`. La geometría es función de `worldX` (no de la cámara), el `snowShift` solo afecta
+  capas con nieve y sin sampler (tests/dorados) el factor es 1. El norte baja el relieve y sube la
+  nieve; el sur lo eleva y la baja.
+- **Flora nueva**: `cactus` (norte), `alerce`, `nalca` y `colihue` (sur) y `palma` chilena (centro).
+  Nuevas funciones de dibujo en `flora.js` y pools de bioma/`LAYERS` actualizados.
+- **Rana de Darwin** (`Rhinoderma darwinii`): nueva especie con movimiento `sit`, colocada en el
+  **borde del cauce** de valle y Costa (no por chunk), activa de día y de rareza `muy-rara`.
+
+### Changed
+- El bioma **centro** deja de ser pixel-idéntico: se le añaden palma (flora) y rana (fauna). Se
+  regeneran los dorados `flora.*`, `fauna.rana` y `biome.*`.
+- `faunaSpawns` filtra la rana del sorteo por chunk y la coloca en una pasada dedicada junto al agua.
+- Docs `02`, `05` y `06` y `test/README.md` actualizados; capturas regeneradas.
+
 ## [0.6.0] - 2026-10-08
 
 ### Added
@@ -132,7 +151,8 @@ Primera versión funcional (Fase 1: paisaje, cielo y clima).
 - Ríos tallados en el valle y la Costa con curso meándrico sinusoidal.
 - Panel de control (semilla, scroll, hora, clima), export PNG y parámetros de URL.
 
-[Unreleased]: https://example.com/infinite-andes/compare/v0.6.0...HEAD
+[Unreleased]: https://example.com/infinite-andes/compare/v0.7.0...HEAD
+[0.7.0]: https://example.com/infinite-andes/compare/v0.6.0...v0.7.0
 [0.6.0]: https://example.com/infinite-andes/compare/v0.5.0...v0.6.0
 [0.5.0]: https://example.com/infinite-andes/compare/v0.4.0...v0.5.0
 [0.4.0]: https://example.com/infinite-andes/compare/v0.3.0...v0.4.0

@@ -79,3 +79,15 @@ test("dorado de la paleta", (t) => {
   }
   golden(t, "palette.clear", digest(vals));
 });
+
+test("dorado de la rana de Darwin", (t) => {
+  seedLayers(SEED);
+  const layer = LAYERS.find((l) => l.name === "costa");
+  const vals = [];
+  for (let x = 0; x < 120000; x += 200) {
+    for (const s of faunaSpawns(layer, { x }, W, H, SEED, 12)) {
+      if (s.type === "rana") vals.push(s.wx, s.gy, s.phase, s.dir);
+    }
+  }
+  golden(t, "fauna.rana", digest(vals));
+});

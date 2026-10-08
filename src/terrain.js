@@ -26,15 +26,15 @@ export const LAYERS = [
     name: "valle", parallax: 0.32, baseY: 200, amp: 20, freq: 0.012, seed: 307,
     rugged: 0.12, snowFrac: 1.4, lightKey: "valleyL", darkKey: "valleyD", alpha: 0.97, fields: true,
     rivers: { spacing: 1100, chance: 0.45, width: 3.2, depth: 7, wfreq: 4.2 },
-    flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria"] },
+    flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria", "palma"] },
     fauna: { chunkW: 150, chance: 0.5, species: ["pudu", "huemul", "guina", "culpeo", "chingue"] },
   },
   {
     name: "costa", parallax: 0.52, baseY: 226, amp: 12, freq: 0.010, seed: 419,
     rugged: 0.05, snowFrac: 1.4, lightKey: "costaL", darkKey: "costaD", alpha: 1,
     rivers: { spacing: 1500, chance: 0.4, width: 2.1, depth: 5, wfreq: 4.5 },
-    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria"] },
-    fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana"] },
+    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma"] },
+    fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana", "rana"] },
   },
   {
     name: "playa", parallax: 0.78, baseY: 232, amp: 7, freq: 0.020, seed: 523,
@@ -51,6 +51,22 @@ export const LAYERS = [
 
 function LSeed(layer) {
   return layer._seed !== undefined ? layer._seed : layer.seed;
+}
+
+// Geometría por bioma: sampler opcional `(wx) -> { ampMul, snowShift }`. Sin sampler
+// (tests y dorados) el factor es 1 y la nieve no se desplaza.
+let biomeGeo = null;
+
+export function setBiomeGeometry(fn) {
+  biomeGeo = fn || null;
+}
+
+function ampMulAt(wx) {
+  return biomeGeo ? biomeGeo(wx).ampMul : 1;
+}
+
+function snowShiftAt(wx) {
+  return biomeGeo ? biomeGeo(wx).snowShift : 0;
 }
 
 // Mezcla la semilla del usuario en cada capa para que el paisaje cambie.
@@ -89,7 +105,7 @@ function volcanoAdd(layer, wx) {
 // Altura del terreno SIN el tallado del río (nivel de los bancos).
 export function bankHeight(layer, wx) {
   const n = baseNoise(layer, wx);
-  return layer.baseY - (n * layer.amp + volcanoAdd(layer, wx));
+  return layer.baseY - (n * layer.amp * ampMulAt(wx) + volcanoAdd(layer, wx));
 }
 
 // Influencia 0..1 del cauce en una columna (muesca de entrada del río).
@@ -151,16 +167,16 @@ export function riverEvents(layer, camera, W) {
 function drawChannel(ctx, layer, pal, camera, W, H) {
   const R = layer.rivers;
   const p = layer.parallax;
-  const topRef = layer.baseY - layer.amp;
-  const botRef = layer.baseY + layer.amp;
   const water = lerpColor(pal.sea, pal.seaHi, 0.3);
   const bank = shade(water, -0.42);
 
-  const y0 = Math.max(0, Math.round(topRef));
-  const y1 = Math.min(H, Math.round(botRef));
-
   for (const ev of riverEvents(layer, camera, W)) {
     const cx = ev.xc - camera.x * p;
+    const A = layer.amp * ampMulAt(ev.xc);
+    const topRef = layer.baseY - A;
+    const botRef = layer.baseY + A;
+    const y0 = Math.max(0, Math.round(topRef));
+    const y1 = Math.min(H, Math.round(botRef));
     for (let y = y0; y < y1; y++) {
       const u = (y - topRef) / (botRef - topRef);
       const hw = channelHalf(layer, ev.seed, u);
@@ -193,8 +209,6 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
   }
   const snow = pal.snow;
   const snowD = pal.snowD;
-  const snowThr = layer.amp * layer.snowFrac;
-  const band = Math.max(2, layer.amp * 0.22);
   const s = LSeed(layer);
 
   // vetas de roca integradas en la perspectiva atmosférica
@@ -205,6 +219,11 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
 
   for (let sx = 0; sx < W; sx++) {
     const wx = camera.x * p + sx;
+    const A = layer.amp * ampMulAt(wx);
+    // la nieve solo se desplaza en capas que ya la tienen
+    const sf = layer.snowFrac < 1.4 ? layer.snowFrac + snowShiftAt(wx) : layer.snowFrac;
+    const snowThr = A * sf;
+    const band = Math.max(2, A * 0.22);
     let y = Math.round(ridgeHeight(layer, wx));
     if (y > H) y = H;
 
@@ -223,10 +242,10 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
     }
 
     let snowBottom = 0;
-    if (snowThr > 0 && layer.snowFrac < 1.4) {
+    if (snowThr > 0 && sf < 1.4) {
       const hgt = layer.baseY - y;
       if (hgt > snowThr) {
-        const depth = Math.min(layer.amp * 0.36, (hgt - snowThr) * 0.9 + 2);
+        const depth = Math.min(A * 0.36, (hgt - snowThr) * 0.9 + 2);
         const jitter = Math.floor(fbm1(wx * 0.22, s + 7, 2) * 6);
         const d = Math.max(1, Math.round(depth - jitter));
         ctx.fillStyle = snow;
@@ -240,7 +259,7 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
     // estratos de roca: vetas continuas bajo la nieve (capas marcadas rocky)
     if (layer.rocky) {
       const base = y + snowBottom;
-      const depth = layer.amp * 0.72;
+      const depth = A * 0.72;
       for (let vi = 0; vi < 2; vi++) {
         const path = fbm1(wx * 0.02 + vi * 37, s + 41 + vi * 13, 2);
         const off = Math.floor(path * depth);

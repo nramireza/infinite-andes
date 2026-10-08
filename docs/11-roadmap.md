@@ -34,13 +34,14 @@
     - [x] Norte árido, Centro, Sur boscoso seleccionables (`?biome=`).
     - [x] Transición procedural entre biomas según la posición recorrida (`biomeWeights`).
     - [x] **Desierto florido** en el norte (`?bloom=`, [D-017](12-decisiones.md)).
-    - [ ] Modular la geometría por bioma (amplitud y línea de nieve).
+    - [x] Geometría por bioma: amplitud y línea de nieve ([D-018](12-decisiones.md), v0.7.0).
+    - [x] Flora nueva por bioma: cactus, alerce, nalca, colihue y palma chilena.
 - [ ] Estaciones del año (otoño en la Costa, nieve a menor altura en invierno).
 - [ ] Export de tira larga y/o secuencia.
-- [ ] Más flora (nalca, palma chilena, alerce, cactus, colihue).
+- [ ] Más flora (coihue/roble, copihue, michay) y fauna (choique, chucao, huillín).
 - [ ] Detalles: estrellas fugaces, huellas, reflejos en el agua.
 - [ ] Más "momentos" raros (vuelo de cóndor, bandada, manada).
-- [ ] Rana de Darwin y refinar sprites de fauna.
+- [x] Rana de Darwin ([D-018](12-decisiones.md), v0.7.0) y refinar sprites de fauna.
 - [ ] guardar/cargar "vistas" favoritas (semilla + x + hora + clima + aspecto).
 
 ## Pendientes transversales

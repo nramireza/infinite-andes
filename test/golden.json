@@ -8,8 +8,8 @@
   "rivers.valle": "ea9dadcb",
   "rivers.costa": "bc889c97",
   "flora.precordillera": "2656173c",
-  "flora.valle": "1cd2b42e",
-  "flora.costa": "1a80e5a5",
+  "flora.valle": "a0074549",
+  "flora.costa": "cee9820f",
   "flora.playa": "e54221d9",
   "palette.clear": "feacad14",
   "fauna.andes": "a71e923e",
@@ -18,7 +18,8 @@
   "fauna.costa": "fc876590",
   "fauna.playa": "96f64809",
   "fauna.mar": "e2127571",
-  "biome.norte": "33f4994c",
-  "biome.centro": "6a71a35b",
-  "biome.sur": "049a93b1"
+  "biome.norte": "5ebbbf2a",
+  "biome.centro": "fd079835",
+  "biome.sur": "10dc1031",
+  "fauna.rana": "05ba6c2f"
 }

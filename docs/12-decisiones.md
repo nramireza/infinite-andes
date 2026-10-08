@@ -204,6 +204,27 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Consecuencia:** nuevo tipo `flower` en `flora.js` y pool de fauna de floración en `biomes.js`;
   tests `biomes.test.js` y dorados `biome.*`.
 
+## D-018 · Completar los biomas: geometría y especies
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** completar los tres biomas con (a) **geometría** y (b) **especies nuevas**.
+  - **Geometría**: cada bioma declara `geometry: { ampMul, snowShift }`; `biomeGeometry` los mezcla
+    por pesos y `setBiomeGeometry(sampler)` los aplica en `bankHeight`/`drawLayer`/`drawChannel`. La
+    geometría es **función de `worldX`** (no de la cámara) para no "respirar" al hacer scroll; el
+    `snowShift` solo actúa en capas que ya tienen nieve. Sin sampler (tests y dorados) el factor es 1.
+  - **Flora**: `cactus` (norte), `alerce`/`nalca`/`colihue` (sur) y `palma` chilena (centro, en
+    `LAYERS`). **Fauna**: `rana` de Darwin (`Rhinoderma darwinii`) con movimiento `sit`, colocada en
+    el **borde del cauce** de valle y Costa (no por chunk), gated por el pool del bioma.
+- **Motivo:** el bioma debe leerse también en el relieve y la nieve, y en especies emblemáticas de
+  cada zona; era lo pendiente del roadmap tras [D-016](12-decisiones.md).
+- **Alternativas:** geometría uniforme por frame (descartado: la altura dependería de la cámara);
+  modular `freq` (descartado: discontinuidades del ruido); rana por chunk (descartado: no garantiza
+  cercanía al agua).
+- **Consecuencia:** el **centro** deja de ser pixel-idéntico (se le añaden palma y rana); se regeneran
+  dorados `flora.*`, `fauna.rana` y `biome.*` y las capturas. El sampler es estado de módulo en
+  `terrain.js`; los tests lo restauran a `null`.
+
 ## Decisiones abiertas
 
 - ¿Habrá audio? ¿Generado o muestreado?

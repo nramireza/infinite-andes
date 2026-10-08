@@ -3,11 +3,11 @@
 import { getPalette, nightAmount, applyBiome } from "./palette.js";
 import { Sky } from "./sky.js";
 import { Weather } from "./weather.js";
-import { LAYERS, drawLayer, drawSea, seedLayers } from "./terrain.js";
+import { LAYERS, drawLayer, drawSea, seedLayers, setBiomeGeometry } from "./terrain.js";
 import { placeFlora } from "./flora.js";
 import { placeFauna } from "./fauna.js";
 import { momentSky, momentGround } from "./moments.js";
-import { biomeAt, biomeFloraPool, biomeFaunaPool, resolveBloom, bloomChanceMul } from "./biomes.js";
+import { biomeAt, biomeGeometry, modeWeights, biomeFloraPool, biomeFaunaPool, resolveBloom, bloomChanceMul } from "./biomes.js";
 
 const WEATHER_POOL = ["clear", "clear", "snow", "rain", "fog", "wind"];
 
@@ -21,6 +21,7 @@ export class Scene {
 
     this.seed = seed;
     seedLayers(seed);
+    setBiomeGeometry((wx) => biomeGeometry(modeWeights(this.biomeMode, wx, this.seed)));
     this.sky = new Sky(seed);
     this.weather = new Weather(this.W, this.H);
 

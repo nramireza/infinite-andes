@@ -2,12 +2,12 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   BIOME_IDS, BIOMES, BLOOM_FAUNA, biomeWeights, modeWeights, biomeAt,
-  bloomAt, resolveBloom, biomeFloraPool, biomeFaunaPool, bloomChanceMul,
+  bloomAt, resolveBloom, biomeFloraPool, biomeFaunaPool, bloomChanceMul, biomeGeometry,
 } from "../src/biomes.js";
 import { applyBiome, getPalette } from "../src/palette.js";
 import { pickWeighted } from "../src/fauna.js";
 import { mulberry32, seedToInt } from "../src/rng.js";
-import { LAYERS } from "../src/terrain.js";
+import { LAYERS, seedLayers, bankHeight, setBiomeGeometry } from "../src/terrain.js";
 import { golden, digest } from "./helpers/golden.js";
 
 const SEED = seedToInt("andes");
@@ -100,6 +100,39 @@ test("el norte no tiene araucaria y la floración añade flower", () => {
 
   const bloom = biomeFloraPool("valle", w, 0.8, layerByName("valle").flora.types);
   assert.ok(bloom.some((e) => e.type === "flower"), "la floración no añadió flower");
+});
+
+test("los pools de bioma incluyen la flora y fauna nuevas", () => {
+  const norte = biomeFloraPool("precordillera", modeWeights("norte", 0, SEED), 0, layerByName("precordillera").flora.types);
+  assert.ok(norte.some((e) => e.type === "cactus"), "el norte no tiene cactus");
+
+  const sur = modeWeights("sur", 0, SEED);
+  const surCosta = biomeFloraPool("costa", sur, 0, layerByName("costa").flora.types);
+  for (const t of ["alerce", "nalca", "colihue"]) {
+    assert.ok(surCosta.some((e) => e.type === t), `el sur no tiene ${t}`);
+  }
+  const surValle = biomeFaunaPool("valle", sur, 0, layerByName("valle").fauna.species);
+  assert.ok(surValle.some((e) => e.type === "rana"), "el sur no tiene rana");
+});
+
+test("biomeGeometry mezcla amplitud y nieve; centro no cambia", () => {
+  assert.deepEqual(biomeGeometry(modeWeights("centro", 0, SEED)), { ampMul: 1, snowShift: 0 });
+  const norte = biomeGeometry(modeWeights("norte", 0, SEED));
+  assert.ok(norte.ampMul < 1 && norte.snowShift > 0);
+  const sur = biomeGeometry(modeWeights("sur", 0, SEED));
+  assert.ok(sur.ampMul > 1 && sur.snowShift < 0);
+});
+
+test("la geometría por bioma cambia la altura y es determinista", () => {
+  seedLayers(SEED);
+  const layer = layerByName("andes");
+  const base = bankHeight(layer, 1234);
+  setBiomeGeometry(() => biomeGeometry(modeWeights("sur", 0, SEED)));
+  const a = bankHeight(layer, 1234);
+  assert.equal(a, bankHeight(layer, 1234));
+  assert.notEqual(a, base);
+  setBiomeGeometry(null); // restaurar el estado global
+  assert.equal(bankHeight(layer, 1234), base);
 });
 
 test("la floración añade aves y zorros al pool de fauna", () => {

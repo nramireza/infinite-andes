@@ -50,8 +50,11 @@ según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay tres:
   paisaje **cambia al recorrer** (transición suave, sin saltos). Frecuencia `0.00015` (~regiones de
   miles de px).
 - **Seleccionable**: `?biome=norte|centro|sur|auto` o el selector **Región** del panel.
-- El bioma **solo tiñe** paleta de terreno/flora/suelo (nunca cielo ni astros) y **pondera** los pools
-  de especies; **no** toca la geometría del ruido.
+- **Geometría**: `biomeGeometry` modula la **amplitud** (`ampMul`) y la **línea de nieve**
+  (`snowShift`): el norte baja el relieve y sube la nieve; el sur lo eleva y la baja. Se aplica en
+  `bankHeight`/`drawLayer` vía `setBiomeGeometry` (solo en capas con nieve). El **centro** no cambia.
+- **Tinte**: el bioma tiñe paleta de terreno/flora/suelo (nunca cielo ni astros) y **pondera** los
+  pools de especies. La frecuencia del ruido (`freq`) no se toca: solo amplitud y nieve.
 - **Desierto florido**: en el norte, `bloomAt` abre **parches raros** de flores (tipo `flower`) y sube
   la actividad de aves/zorros. Se fuerza con `?biome=norte&bloom=on` (ver [D-017](12-decisiones.md)).
 
@@ -66,4 +69,3 @@ según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay tres:
 
 - TODO: fijar una nomenclatura/altitud "real" aproximada por capa (m s. n. m.) para dar escala.
 - TODO: documentar el largo de onda y la frecuencia de cada capa y por qué (sensación de escala).
-- TODO: modular la **geometría** por bioma (amplitud y línea de nieve; `snowFracShift` ya está como dato).

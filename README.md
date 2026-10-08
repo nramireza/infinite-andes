@@ -7,7 +7,7 @@ con ciclo día/noche, clima dinámico, ríos, volcanes y especies endémicas de 
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** en desarrollo · **Versión:** 0.6.0 · **Licencia:** MIT
+> **Estado:** en desarrollo · **Versión:** 0.7.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 

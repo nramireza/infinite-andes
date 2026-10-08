@@ -17,12 +17,12 @@ export const BIOMES = {
       floraL: "#8a8a4a", floraD: "#5e5e30", sand: "#e8d29a", sandD: "#c8ae72",
       rock: "#8a7a6a", rockD: "#6a5a4e", snow: "#fff6e6", snowD: "#e0d2b8",
     },
-    snowFracShift: 0.3,
-    // Sin araucaria ni árboles: matorral y roca del desierto.
+    geometry: { ampMul: 0.92, snowShift: 0.3 },
+    // Sin araucaria ni árboles: matorral, copao y roca del desierto.
     flora: {
-      precordillera: ["bush", "rock"],
-      valle: ["bush", "rock", "grass", "crop"],
-      costa: ["bush", "rock"],
+      precordillera: ["cactus", "bush", "rock"],
+      valle: ["cactus", "bush", "rock", "grass", "crop"],
+      costa: ["cactus", "bush", "rock"],
       playa: ["rock", "grass"],
     },
     fauna: {
@@ -35,7 +35,7 @@ export const BIOMES = {
   },
   centro: {
     palette: null,
-    snowFracShift: 0,
+    geometry: { ampMul: 1, snowShift: 0 },
     flora: null, // usa los pools de LAYERS
     fauna: null,
   },
@@ -45,18 +45,18 @@ export const BIOMES = {
       floraL: "#2a6a34", floraD: "#1c4a24", sand: "#d8c090", sandD: "#b0986e",
       rock: "#5f6a70", rockD: "#48525a", snow: "#ffffff", snowD: "#d8e6f0",
     },
-    snowFracShift: -0.3,
+    geometry: { ampMul: 1.06, snowShift: -0.3 },
     flora: {
-      precordillera: ["araucaria", "lenga", "bush"],
-      valle: ["lenga", "araucaria", "bush", "grass", "crop"],
-      costa: ["lenga", "lenga", "araucaria", "bush"],
+      precordillera: ["araucaria", "alerce", "lenga", "bush"],
+      valle: ["lenga", "nalca", "colihue", "araucaria", "bush"],
+      costa: ["lenga", "alerce", "nalca", "colihue", "araucaria", "bush"],
       playa: ["grass", "rock"],
     },
     fauna: {
       andes: ["condor", "chinchilla"],
       precordillera: ["huemul", "pudu", "puma"],
-      valle: ["pudu", "guina", "huemul", "chingue", "culpeo"],
-      costa: ["monito", "choroy", "cachana", "pudu", "guina"],
+      valle: ["pudu", "guina", "huemul", "chingue", "culpeo", "rana"],
+      costa: ["monito", "choroy", "cachana", "pudu", "guina", "rana"],
       playa: ["chilla", "flamenco"],
     },
   },
@@ -121,6 +121,21 @@ function tintFor(weights) {
   const out = {};
   for (const k in acc) out[k] = acc[k].color;
   return out;
+}
+
+// Geometría mezclada por pesos: multiplicador de amplitud y desplazamiento de la
+// línea de nieve. Centro no cambia nada (1 / 0).
+export function biomeGeometry(weights) {
+  let ampMul = 0;
+  let snowShift = 0;
+  for (const id of BIOME_IDS) {
+    const w = weights[id] || 0;
+    if (w <= 0) continue;
+    const g = BIOMES[id].geometry || { ampMul: 1, snowShift: 0 };
+    ampMul += w * g.ampMul;
+    snowShift += w * g.snowShift;
+  }
+  return { ampMul: ampMul || 1, snowShift };
 }
 
 // Floración de desierto: bloques raros y suaves, solo con presencia de norte.

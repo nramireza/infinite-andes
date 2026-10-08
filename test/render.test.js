@@ -144,3 +144,16 @@ test("la floración del norte dibuja flores (tipo flower)", () => {
   const drew = ctx.calls.fillRect.some((c) => flowerColors.has(c[4]));
   assert.ok(drew, "no se dibujaron flores en el norte con floración");
 });
+
+test("los nuevos tipos de flora dibujan dentro del lienzo", () => {
+  seedLayers(SEED);
+  const pal = getPalette(12, "clear");
+  const base = layerByName("valle");
+  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower"]) {
+    const layer = { ...base, flora: { ...base.flora, types: [type] } };
+    const ctx = makeFakeCtx();
+    placeFlora(ctx, layer, pal, { x: 100 }, W, H, SEED, 0);
+    assert.ok(ctx.calls.fillRect.length > 0, `${type} no dibujó`);
+    assert.deepEqual(collectOutOfBounds(ctx, W, H, 64), [], `${type} dibujó fuera`);
+  }
+});

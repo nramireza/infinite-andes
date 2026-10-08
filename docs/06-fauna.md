@@ -27,6 +27,7 @@ la hora.
 | `flamenco` | Flamenco | Playa | `walk` | día |
 | `chungungo` | Chungungo | Mar | `swim` | día |
 | `pinguino` | Pingüino de Humboldt | Mar | `swim` | día |
+| `rana` | Rana de Darwin | Valle, Costa (borde del cauce) | `sit` | día |
 
 ### Especificación de sprites
 
@@ -57,7 +58,8 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 - **Movimiento**: `fly` y `flock` trazan una trayectoria senoidal en el cielo de su capa; las
   bandadas (`flock`) dibujan dos compañeros en formación; `walk`/`hop`/`swim` siguen
   `bankHeight` y evitan el cauce (`riverInfluence > 0.25`). `swim` añade un vaivén sobre la
-  superficie del mar.
+  superficie del mar; `sit` (rana de Darwin) queda **estática** y se coloca aparte, en el
+  **borde del cauce** de valle y Costa.
 - **Despawn**: al salir de pantalla se descarta; el hash lo regenera idéntico al volver.
 - **Densidad y rareza**: cada especie declara una clase (`rarity`) y el sorteo por chunk es
   **ponderado** (`pickWeighted`), de modo que lo abundante aparece más seguido. Ver la tabla de
@@ -89,6 +91,7 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 | Huemul | EN | ~1.000 ind. | muy-rara | 0.12 |
 | Chungungo | EN | costero | muy-rara | 0.12 |
 | Chinchilla de cola larga | EN | casi extinta | muy-rara | 0.12 |
+| Rana de Darwin | EN | endémica, en declive | muy-rara | 0.12 |
 
 - **Chance por capa**: andes 0.25, precordillera 0.3, valle 0.5, costa 0.55, playa 0.3, mar 0.35.
 - Fuentes: listados de la UICN (versiones 2016–2025), clasificación nacional del MMA y
@@ -98,9 +101,10 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 ### Biomas y floración
 
 El bioma (`src/biomes.js`) **pondera** las `species` de cada capa con `biomeFaunaPool` (ver
-[D-016](12-decisiones.md)): el norte trae guanaco, vicuña y flamenco; el sur, pudú, monito, choroy y
-huemul. Durante el **desierto florido** (`bloomAt`, [D-017](12-decisiones.md)) sube la densidad
-(`chance × (1 + 0.6·bloom)`) y se refuerzan aves y zorros (`condor`, `culpeo`, `chilla`, `flamenco`).
+[D-016](12-decisiones.md)): el norte trae guanaco, vicuña y flamenco; el sur, pudú, monito, choroy,
+huemul y la **rana de Darwin** (junto al cauce). Durante el **desierto florido** (`bloomAt`,
+[D-017](12-decisiones.md)) sube la densidad (`chance × (1 + 0.6·bloom)`) y se refuerzan aves y zorros
+(`condor`, `culpeo`, `chilla`, `flamenco`).
 
 ## Especies objetivo (endémicas / nativas de Chile)
 
@@ -131,7 +135,7 @@ huemul. Durante el **desierto florido** (`bloomAt`, [D-017](12-decisiones.md)) s
 
 ## Modelo de datos de una especie
 
-Cada entrada de `SPECIES` (`fauna.js`) declara: `movement` (`fly`/`walk`/`hop`/`swim`/`flock`), `active`
+Cada entrada de `SPECIES` (`fauna.js`) declara: `movement` (`fly`/`walk`/`hop`/`swim`/`flock`/`sit`), `active`
 (franja horaria), `speed`/`range` (vaivén), `fps`, `anchor` (centro o pies), `palette`
 (carácter → clave de `getPalette`) y `frames` (matrices de píxeles). Para documentar una
 especie con detalle (UICN, nombre científico, referencia), usa
@@ -143,7 +147,7 @@ especie con detalle (UICN, nombre científico, referencia), usa
 - [x] Especies extra: puma, zorros, guanaco, vicuña, chingue, monito del monte, chinchilla,
       choroy, cachaña, flamenco, chungungo, pingüino de Humboldt.
 - [x] Ajustar densidad y rareza por especie según estado UICN/nacional (ver [D-015](12-decisiones.md)).
-- [ ] Rana de Darwin (*Rhinoderma darwinii*): humedales/río, estática.
+- [x] Rana de Darwin (*Rhinoderma darwinii*): borde del cauce, estática (`sit`).
 - [ ] Decidir si el cóndor pasa a ser un "momento" destacado (vuelo largo ocasional).
 - [ ] Completar cada especie con la plantilla [`templates/especimen.md`](templates/especimen.md)
       (estado UICN, nombre científico, referencia visual) y refinar los sprites.

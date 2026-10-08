@@ -156,8 +156,125 @@ function drawPlant(ctx, x, baseY, size, type, pal, sway, warm) {
     case "crop": return drawCrop(ctx, x, baseY, size, pal);
     case "rock": return drawRock(ctx, x, baseY, size, pal);
     case "flower": return drawFlower(ctx, x, baseY, size, pal, sway);
+    case "cactus": return drawCactus(ctx, x, baseY, size, pal);
+    case "alerce": return drawAlerce(ctx, x, baseY, size, pal);
+    case "nalca": return drawNalca(ctx, x, baseY, size, pal);
+    case "colihue": return drawColihue(ctx, x, baseY, size, pal);
+    case "palma": return drawPalma(ctx, x, baseY, size, pal);
     default: return drawGrass(ctx, x, baseY, size, pal);
   }
+}
+
+// Copao / cactus columnar (norte árido): columna con brazos y espinas.
+function drawCactus(ctx, x, baseY, size, pal) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const h = Math.max(6, Math.round(size * 0.9));
+  const top = baseY - h;
+  ctx.fillStyle = pal.floraD;
+  ctx.fillRect(x - 1, top, 2, h);
+  ctx.fillStyle = pal.floraL;
+  ctx.fillRect(x - 1, top, 1, h);
+
+  const dir = hash1(x, 0xcac) < 0.5 ? -1 : 1;
+  const armY = top + Math.round(h * 0.35);
+  const armH = Math.max(2, Math.round(h * 0.35));
+  ctx.fillStyle = pal.floraD;
+  ctx.fillRect(x + dir, armY, 1, 1);
+  ctx.fillRect(x + dir * 2, armY, 1, armH);
+
+  ctx.fillStyle = pal.sandD;
+  for (let i = 1; i < h; i += 3) {
+    ctx.fillRect(x - 2, top + i, 1, 1);
+    ctx.fillRect(x + 1, top + i + 1, 1, 1);
+  }
+}
+
+// Alerce: conífera austral alta y estrecha.
+function drawAlerce(ctx, x, baseY, size, pal) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const h = Math.max(8, Math.round(size * 1.05));
+  const trunkH = Math.max(2, Math.round(size * 0.2));
+  const top = baseY - h;
+  const halfMax = Math.max(2, Math.round(size * 0.32));
+
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
+
+  for (let i = 0; i < h - trunkH; i++) {
+    const t = i / (h - trunkH);
+    const half = Math.max(1, Math.round(halfMax * Math.pow(t, 0.6)));
+    const yy = top + i;
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - half, yy, half * 2, 1);
+    if (i % 2 === 0) {
+      ctx.fillStyle = pal.floraL;
+      ctx.fillRect(x - half, yy, half * 2, 1);
+    }
+  }
+  ctx.fillStyle = pal.floraL;
+  ctx.fillRect(x - 1, top - 1, 2, 1);
+}
+
+// Nalca / pangue: hojas gigantes en roseta sobre tallos cortos.
+function drawNalca(ctx, x, baseY, size, pal) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const n = 3 + Math.floor(size * 0.15);
+  for (let i = 0; i < n; i++) {
+    const h = hash1(i * 13 + x, 0xaa11);
+    const lx = x + Math.round((h - 0.5) * size * 0.8);
+    const stemH = Math.max(2, Math.round(size * (0.3 + h * 0.3)));
+    ctx.fillStyle = pal.trunk;
+    ctx.fillRect(lx, baseY - stemH, 1, stemH);
+    const r = Math.max(1, Math.round(size * 0.22));
+    const cy = baseY - stemH;
+    ctx.fillStyle = pal.floraD;
+    for (let dy = -r; dy <= r; dy++) {
+      const span = Math.floor(r * Math.sqrt(Math.max(0, 1 - (dy / r) ** 2)));
+      ctx.fillRect(lx - span, cy + dy, span * 2 + 1, 1);
+    }
+    ctx.fillStyle = pal.floraL;
+    ctx.fillRect(lx - r, cy - r, r * 2 + 1, 1);
+  }
+}
+
+// Colihue / quila: cañaveral de tallos finos con hojas.
+function drawColihue(ctx, x, baseY, size, pal) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const n = 3 + Math.floor(size * 0.2);
+  for (let i = 0; i < n; i++) {
+    const h = hash1(i * 17 + x, 0xc01);
+    const cxp = x + i - (n >> 1);
+    const ch = Math.max(4, Math.round(size * (0.7 + h * 0.5)));
+    ctx.fillStyle = pal.trunk;
+    ctx.fillRect(cxp, baseY - ch, 1, ch);
+    ctx.fillStyle = i % 2 ? pal.floraL : pal.floraD;
+    for (let j = 0; j < 4; j++) {
+      const ly = baseY - ch + 1 + j * 2;
+      const dir = (j + i) % 2 ? 1 : -1;
+      ctx.fillRect(cxp + dir, ly, 1, 1);
+      ctx.fillRect(cxp + dir * 2, ly + 1, 1, 1);
+    }
+  }
+}
+
+// Palma chilena: tronco esbelto y corona de frondas.
+function drawPalma(ctx, x, baseY, size, pal) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const trunkH = Math.max(3, Math.round(size * 0.4));
+  const crownY = baseY - trunkH - 1;
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
+
+  const fronds = [[0, -2], [-2, -1], [2, -1], [-3, 0], [3, 0], [-2, 1], [2, 1], [0, -3]];
+  ctx.fillStyle = pal.floraD;
+  for (const [dx, dy] of fronds) ctx.fillRect(x + dx, crownY + dy, 1, 1);
+  ctx.fillStyle = pal.floraL;
+  ctx.fillRect(x - 1, crownY - 1, 2, 1);
 }
 
 // Parche de flores del desierto florido: tallos cortos con corola de 3 px.
