@@ -1,0 +1,14 @@
+{
+  "name": "infinite-andes",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "Paisaje procedural infinito de los Andes chilenos en pixel art.",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node --test test/",
+    "check": "for f in src/*.js; do node --check \"$f\" || exit 1; done",
+    "palette": "node scripts/palette-table.mjs > docs/14-paleta-maestra.md",
+    "shots": "bash scripts/capture.sh"
+  }
+}

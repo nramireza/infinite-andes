@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infinite Andes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="stage">
+    <canvas id="scene" width="960" height="270"></canvas>
+  </div>
+
+  <button id="panelToggle" title="Mostrar / ocultar controles">∞</button>
+
+  <aside id="panel" class="open">
+    <h1>Infinite Andes</h1>
+    <p class="sub">Cordillera procedural infinita · pixel art</p>
+
+    <label class="field">
+      <span>Semilla</span>
+      <div class="row">
+        <input id="seedInput" type="text" spellcheck="false" />
+        <button id="btnGenerate" title="Nueva semilla">↻</button>
+      </div>
+    </label>
+
+    <div class="field">
+      <span>Recorrer</span>
+      <div class="row">
+        <button id="btnPrev" title="Izquierda">◀</button>
+        <button id="btnNext" title="Derecha">▶</button>
+        <label class="inline"><input id="chkAuto" type="checkbox" checked /> auto</label>
+      </div>
+      <input id="speed" type="range" min="0" max="120" value="30" />
+    </div>
+
+    <label class="field">
+      <span>Relación</span>
+      <select id="aspectSel">
+        <option value="16:9">16:9 · 480×270</option>
+        <option value="21:9">21:9 · 630×270</option>
+        <option value="32:9">32:9 · 960×270</option>
+        <option value="custom">Personalizada…</option>
+      </select>
+      <input id="aspectCustom" type="text" spellcheck="false" placeholder="p. ej. 2.4 o 21:9" hidden />
+    </label>
+
+    <label class="field">
+      <span>Hora <b id="timeLabel">08:00</b></span>
+      <input id="timeRange" type="range" min="0" max="1439" value="480" />
+      <label class="inline"><input id="chkTimeAuto" type="checkbox" checked /> paso del tiempo</label>
+    </label>
+
+    <label class="field">
+      <span>Clima</span>
+      <select id="weatherSel">
+        <option value="auto">Automático</option>
+        <option value="clear">Despejado</option>
+        <option value="snow">Nieve</option>
+        <option value="rain">Lluvia</option>
+        <option value="fog">Niebla</option>
+        <option value="wind">Viento</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span>Momento</span>
+      <select id="momentSel">
+        <option value="auto">Raro (automático)</option>
+        <option value="none">Ninguno</option>
+        <option value="18sep">18 de septiembre</option>
+        <option value="leorey">Leo Rey</option>
+        <option value="kungleo">Kung Leo</option>
+      </select>
+    </label>
+
+    <div class="row">
+      <button id="btnExport" class="wide">Exportar PNG</button>
+      <button id="btnCopy" title="Copiar enlace">⧉</button>
+    </div>
+
+    <p id="hud" class="hud">seed — · x — · —</p>
+  </aside>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

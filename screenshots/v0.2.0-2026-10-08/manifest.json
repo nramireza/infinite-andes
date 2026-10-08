@@ -1,0 +1,81 @@
+{
+  "version": "0.2.0",
+  "tag": "v0.2.0-2026-10-08",
+  "generatedAt": "2026-10-08T16:19:46.694Z",
+  "chrome": "google-chrome-stable",
+  "git": null,
+  "shots": [
+    {
+      "seed": "andes",
+      "hour": "6.7",
+      "weather": "clear",
+      "file": "andes_h6.7_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "file": "andes_h12_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "18.2",
+      "weather": "clear",
+      "file": "andes_h18.2_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "23",
+      "weather": "clear",
+      "file": "andes_h23_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "6.7",
+      "weather": "clear",
+      "file": "pewen_h6.7_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "12",
+      "weather": "clear",
+      "file": "pewen_h12_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "18.2",
+      "weather": "clear",
+      "file": "pewen_h18.2_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "23",
+      "weather": "clear",
+      "file": "pewen_h23_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "snow",
+      "file": "andes_h12_snow.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "rain",
+      "file": "andes_h12_rain.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "fog",
+      "file": "andes_h12_fog.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "wind",
+      "file": "andes_h12_wind.png"
+    }
+  ]
+}
