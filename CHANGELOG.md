@@ -6,6 +6,15 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-10-08
+
+### Changed
+- **El desierto florido cubre el valle** ([D-024](docs/12-decisiones.md)): parche ~22x
+  (`BLOOM_BLOCK` 20000→60000, `BLOOM_CHANCE` 0.20→0.28, `BLOOM_FLORA_WEIGHT` 2.5) y reparto vertical
+  de las flores hacia el interior de la banda visible de cada capa (`depth` determinista en
+  `floraSpawns`, aplicado en `placeFlora`), en vez de solo en el contorno. `applyBiome` refuerza y
+  amplía el rubor de floración al suelo del valle. Test nuevo de reparto vertical.
+
 ## [0.10.0] - 2026-10-08
 
 ### Changed

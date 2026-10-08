@@ -66,9 +66,9 @@ export const BIOMES = {
 export const BLOOM_FAUNA = ["condor", "culpeo", "chilla", "flamenco"];
 
 const BIOME_FREQ = 0.00015; // longitud de onda amplia: regiones de miles de px
-const BLOOM_BLOCK = 20000;  // px de mundo por bloque de floración (~7x el original)
-const BLOOM_CHANCE = 0.20;  // probabilidad de floración por bloque (más raro, pero más extenso)
-const BLOOM_FLORA_WEIGHT = 2.0;
+const BLOOM_BLOCK = 60000;  // px de mundo por bloque de floración (~22x el original)
+const BLOOM_CHANCE = 0.28;  // probabilidad de floración por bloque (raro pero muy extenso)
+const BLOOM_FLORA_WEIGHT = 2.5;
 const BLOOM_FAUNA_WEIGHT = 1.5;
 const BLOOM_CHANCE_MUL = 0.6;
 

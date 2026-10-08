@@ -233,9 +233,14 @@ export function applyBiome(pal, tint, amount = 1, bloom = 0) {
     }
   }
   if (b > 0) {
-    out.sand = lerpColor(out.sand, "#e6b8c8", b * 0.5);
-    out.valleyL = lerpColor(out.valleyL, "#c8a86a", b * 0.35);
-    out.floraL = lerpColor(out.floraL, "#d98ab0", b * 0.4);
+    out.sand = lerpColor(out.sand, "#e6b8c8", b * 0.6);
+    out.sandD = lerpColor(out.sandD, "#c89aa0", b * 0.45);
+    out.valleyL = lerpColor(out.valleyL, "#c8a86a", b * 0.45);
+    out.valleyD = lerpColor(out.valleyD, "#b08a58", b * 0.4);
+    out.costaL = lerpColor(out.costaL, "#c2a878", b * 0.4);
+    out.costaD = lerpColor(out.costaD, "#9a8060", b * 0.35);
+    out.floraL = lerpColor(out.floraL, "#d98ab0", b * 0.5);
+    out.floraD = lerpColor(out.floraD, "#a86a90", b * 0.4);
   }
   return out;
 }

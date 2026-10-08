@@ -103,3 +103,26 @@ test("floraSpawns respeta los límites de pantalla del margen", () => {
     }
   }
 });
+
+test("las flores de floración se reparten hacia dentro de la banda", () => {
+  seedLayers(SEED);
+  const layer = layerByName("costa");
+  const onlyFlower = () => [{ type: "flower", w: 1 }];
+  const hits = floraSpawns(layer, { x: 0 }, W, H, SEED, onlyFlower);
+  assert.ok(hits.length > 0, "sin flores en la ventana");
+  assert.ok(hits.every((s) => s.type === "flower"));
+  assert.ok(hits.some((s) => s.depth > 0), "ninguna flor se reparte hacia dentro");
+  const maxD = Math.round((layer.amp || 12) * 1.3);
+  for (const s of hits) {
+    assert.ok(s.depth >= 0 && s.depth <= maxD, `depth fuera de rango: ${s.depth}`);
+  }
+});
+
+test("sin floración los spawns no llevan depth (dorados intactos)", () => {
+  seedLayers(SEED);
+  for (const layer of LAYERS) {
+    for (const s of floraSpawns(layer, { x: 0 }, W, H, SEED)) {
+      assert.equal(s.depth, 0, `${layer.name} añadió depth sin floración`);
+    }
+  }
+});

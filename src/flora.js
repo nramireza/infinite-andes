@@ -457,7 +457,14 @@ export function floraSpawns(layer, camera, W, H, seed, poolAt) {
         ? pickType(pool, rng)
         : f.types[Math.floor(rng() * f.types.length)];
       const warm = rng() < 0.4;
-      out.push({ wx, sx, gy, size, type, warm });
+      // Las flores de la floración se reparten hacia el interior de la banda
+      // visible de la capa (no solo en el contorno). El hash no consume rng.
+      let depth = 0;
+      if (type === "flower") {
+        const d = hash1(Math.floor(wx * 0.5), 0xf100);
+        depth = Math.round(d * (layer.amp || 12) * 1.3);
+      }
+      out.push({ wx, sx, gy, size, type, warm, depth });
     }
   }
   return out;
@@ -479,6 +486,7 @@ export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt) {
   }
   for (const s of floraSpawns(layer, camera, W, H, seed, poolAt)) {
     const sway = Math.sin(tSec * 0.9 + s.wx * 0.05);
-    drawPlant(ctx, s.sx, s.gy, s.size, s.type, pal, sway, s.warm);
+    const gy = s.depth ? Math.min(H - 2, s.gy + s.depth) : s.gy;
+    drawPlant(ctx, s.sx, gy, s.size, s.type, pal, sway, s.warm);
   }
 }

@@ -310,6 +310,26 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   bloque (memo de un bloque). No cambian los dorados (`flora.*` no usa bioma; `biome.*` usa
   `bloom=0`); se añade un test de ancho de parche.
 
+## D-024 · Floración que cubre el valle, no solo las crestas
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** llevar el desierto florido a su forma final en dos frentes.
+  **(1) Parche más grande:** `BLOOM_BLOCK` 20000→**60000 px** (~22x el original), `BLOOM_CHANCE`
+  0.20→**0.28** (~10% de cobertura) y `BLOOM_FLORA_WEIGHT` 2.0→**2.5**. **(2) Cubrir el valle:** en
+  `floraSpawns` el tipo `flower` recibe un `depth` determinista (hash de `wx`, **sin consumir el RNG
+  compartido**) y `placeFlora` lo dibuja en `gy + depth`, repartiendo las flores hacia el interior de
+  la banda visible de la capa; las capas de adelante ocultan lo que sobra. `applyBiome` refuerza y
+  amplía el rubor de floración a `costaL/costaD/valleyD/sandD/floraD`.
+- **Motivo:** el reparto por contorno (`bankHeight`) dejaba las flores solo en la cresta de cada
+  capa, porque la capa siguiente tapaba el resto; se quería un manto que cubriera también el valle.
+- **Alternativas:** solo engrosar el contorno (descartado: no cubre el cuerpo); solo teñir el suelo
+  (descartado: las flores seguían en la cresta); `depth` vía `rng()` (descartado: altera los dorados
+  `flora.*`).
+- **Consecuencia:** `floraSpawns` añade el campo `depth` (0 sin floración, dorados intactos);
+  `placeFlora` desplaza la base de las flores. Test nuevo de reparto vertical. Refina
+  [D-023](#d-023--parches-de-desierto-florido-más-extensos-y-raros).
+
 ## Decisiones abiertas
 
 - ¿Habrá audio? ¿Generado o muestreado?
