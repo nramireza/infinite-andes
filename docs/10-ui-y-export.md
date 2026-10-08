@@ -20,10 +20,14 @@ Estilo retro (monoespaciado, mayúsculas, acento cian).
 | paso del tiempo | `chkTimeAuto` | Avance automático de la hora |
 | Clima | `weatherSel` | `auto` o uno fijo |
 | Relación | `aspectSel` / `aspectCustom` | 16:9 · 21:9 · 32:9 · personalizada (`W = round(270·ratio)`) |
+| Estación | `seasonSel` | `auto` (ciclo) o una fija |
 | Momento | `momentSel` | `auto` (raro), `none`, `18sep`, `leorey`, `kungleo` |
+| Región | `biomeSel` | `auto` (procedural), `norte`, `centro`, `sur` |
+| Floración | `bloomSel` | `auto`, `on`, `off` |
+| Vistas | `viewSel` / `viewName` / `btnSaveView` / `btnDelView` | Guardar/cargar/eliminar vistas favoritas |
 | Exportar PNG | `btnExport` | Descarga la vista actual |
 | Copiar enlace | `btnCopy` | Copia la URL con la vista actual |
-| HUD | `hud` | Semilla, `x`, hora y clima |
+| HUD | `hud` | Semilla, `x`, hora, clima, estación y bioma |
 
 ## Estado de la escena (`Scene`)
 
@@ -48,16 +52,29 @@ Pendiente: exportar una **tira larga** seleccionable.
 | Parámetro | Efecto | Se escribe al cambiar |
 |-----------|--------|------------------------|
 | `seed` | Semilla | Sí (semilla) |
+| `x` | Posición de mundo (desactiva auto-scroll) | Sí, salvo con auto-scroll activo |
 | `hour` | Hora fija (desactiva auto) | Sí (hora / paso del tiempo) |
 | `weather` | Clima fijo | Sí (selector de clima) |
 | `aspect` | Relación de aspecto (`32:9`, `2.4`, …) | Sí (selector / campo de relación) |
 | `moment` | Momento raro | Sí (selector de momento) |
+| `season` | Estación fija o `auto` | Sí (selector de estación) |
+| `biome` | Región fija o `auto` | Sí (selector de región) |
+| `bloom` | Floración (`auto`/`on`/`off`) | Sí (selector de floración) |
 | `ui` | `0` oculta el panel (modo kiosco) | No |
 
-Al cargar, se leen `seed` (por defecto `andes`), `hour`, `weather`, `aspect` y `moment`.
+Al cargar, se leen `seed` (por defecto `andes`), `x`, `hour`, `weather`, `aspect`, `moment`,
+`season`, `biome` y `bloom`. La carga inicial y las **vistas favoritas** comparten
+`applyView`/`decodeView` de `src/views.js`.
+
+## Vistas favoritas
+
+El panel permite guardar el estado actual (semilla, `x`, hora, clima, relación, momento, estación,
+región y floración) con un nombre y recargarlo luego. Se guardan en `localStorage`
+(`infinite-andes:views`) como `{name, query}`; el selector **Vistas** carga y el botón `✕` elimina.
+Cargar una vista ancla la posición y **desactiva el auto-scroll**. Ver [D-020](12-decisiones.md).
 
 ## Pendiente
 
 - TODO: exportar tira larga (rango de `x`) y/o GIF/secuencia.
-- TODO: modos de kiosco adicionales (cursor oculto, sin HUD).
+- TODO: modos de kiosco adicionales (sin HUD).
 - TODO: accesibilidad y atajos de teclado (flechas para desplazar, espacio para auto-scroll).

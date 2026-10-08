@@ -31,9 +31,10 @@ google-chrome-stable --headless=new --disable-gpu --no-sandbox \
   --screenshot=/tmp/out.png "http://localhost:8000/?seed=andes&hour=12"
 ```
 
-Parámetros de URL útiles: `seed`, `hour` (0–24), `weather` (`clear|snow|rain|fog|wind`),
-`aspect` (`16:9|21:9|32:9` o decimal; por defecto `32:9`), `moment` (`auto|none|18sep|leorey|kungleo`)
-y `ui` (`0` = kiosco).
+Parámetros de URL útiles: `seed`, `x` (posición; desactiva auto-scroll), `hour` (0–24),
+`weather` (`clear|snow|rain|fog|wind`), `aspect` (`16:9|21:9|32:9` o decimal; por defecto `32:9`),
+`season` (`auto|verano|otono|invierno|primavera`), `biome` (`auto|norte|centro|sur`),
+`bloom` (`auto|on|off`), `moment` (`auto|none|18sep|leorey|kungleo`) y `ui` (`0` = kiosco).
 
 - **Capturas versionadas**: `npm run shots` genera `screenshots/v<versión>-<hash|fecha>/` con la
   matriz de semillas/horas/climas, `manifest.json` y `contact-sheet.png`. La versión sale de
@@ -68,6 +69,27 @@ y las funciones `ridgeHeight`, `bankHeight`, `riverInfluence`, `drawLayer`, `dra
 1. Actualiza el doc correspondiente en `docs/`.
 2. Registra la decisión en [`docs/12-decisiones.md`](docs/12-decisiones.md).
 3. Añade una entrada en [`CHANGELOG.md`](CHANGELOG.md).
+4. Publica los cambios en GitHub (ver [Publicación en GitHub](#publicación-en-github)).
+
+## Publicación en GitHub
+
+El repositorio es `origin` (`git@github.com:nramireza/infinite-andes.git`), rama `main`, que también
+sirve la demo por **GitHub Pages** (`.github/workflows/pages.yml`).
+
+**Toda modificación grande de código debe quedar publicada en el repositorio**: no basta con dejar
+los cambios en local. Al terminar una tanda:
+
+1. Verifica: `npm run check` y `npm test` (regenera dorados con `UPDATE_GOLDEN=1 npm test` si el
+   cambio es intencional). Si algo falla, no se publica.
+2. Actualiza docs, `docs/12-decisiones.md`, `CHANGELOG.md` y sube la versión en `package.json`.
+3. Haz **dos commits**, siguiendo la convención del historial:
+   - Código y docs: `Infinite Andes vX.Y.Z: <resumen>`.
+   - Capturas: `Capturas vX.Y.Z (<resumen>)`.
+4. Genera las capturas **después** del commit de código, para que la carpeta use su hash:
+   `npm run shots` → `screenshots/vX.Y.Z-<hash>/` (y regenera `screenshots/README.md`).
+5. Sube: `git push origin main`.
+
+Nunca se publican cambios a medias o sin verificar; tampoco secretos ni credenciales.
 
 ## Plantillas
 

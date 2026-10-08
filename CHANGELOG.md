@@ -6,6 +6,30 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-08
+
+### Added
+- **Vistas favoritas y deep-link de posición** ([D-020](docs/12-decisiones.md)): nuevo
+  `src/views.js` (serialización pura del estado) y `?x=` en la URL. Al abrir un enlace con `x` se
+  **desactiva el auto-scroll** para caer exacto. El panel suma un selector de **Vistas** con
+  guardar/eliminar (persistencia en `localStorage`). Tests `views.test.js`.
+- **Detalles visuales** ([D-021](docs/12-decisiones.md)): **estrellas fugaces** deterministas
+  (`meteorAt` en `sky.js`, solo de noche), **reflejo del astro** sobre el mar (`drawSea` recibe el
+  estado celeste) y **huellas** desvanecidas tras la fauna que camina (puma, huemul, guanaco,
+  culpeo, chilla). Tests de meteoro, reflejo y sprites.
+- **Flora austral y de sotobosque** ([D-022](docs/12-decisiones.md)): `coihue`, `roble`, `copihue`
+  (enredadera) y `michay`, repartidos por el **sur** y la Costa.
+- **Fauna nueva** ([D-022](docs/12-decisiones.md)): `choique` (ñandú petizo), `chucao` (ave de
+  sotobosque) y `huillín` (lontra de río, en el borde del cauce). La pasada de río se generaliza a
+  `RIVER_SPECIES` (la rana conserva su siembra y su dorado).
+
+### Changed
+- `ui.js`: `updateURL` incluye `x` (solo si el auto-scroll está pausado) y unifica la aplicación de
+  estado con `applyView`/`decodeView`; la carga inicial y los favoritos comparten el mismo camino.
+- `terrain.js`: `drawSea` acepta `cel` para el reflejo; `scene.js` le pasa el estado del astro.
+- `fauna.js`: `drawFauna` recibe `W` y dibuja huellas; nuevos movimientos/campos en `SPECIES`.
+- Regenerados los dorados `biome.*`, `flora.*` y `fauna.*`.
+
 ## [0.8.0] - 2026-10-08
 
 ### Added
@@ -167,7 +191,8 @@ Primera versión funcional (Fase 1: paisaje, cielo y clima).
 - Ríos tallados en el valle y la Costa con curso meándrico sinusoidal.
 - Panel de control (semilla, scroll, hora, clima), export PNG y parámetros de URL.
 
-[Unreleased]: https://example.com/infinite-andes/compare/v0.8.0...HEAD
+[Unreleased]: https://example.com/infinite-andes/compare/v0.9.0...HEAD
+[0.9.0]: https://example.com/infinite-andes/compare/v0.8.0...v0.9.0
 [0.8.0]: https://example.com/infinite-andes/compare/v0.7.0...v0.8.0
 [0.7.0]: https://example.com/infinite-andes/compare/v0.6.0...v0.7.0
 [0.6.0]: https://example.com/infinite-andes/compare/v0.5.0...v0.6.0

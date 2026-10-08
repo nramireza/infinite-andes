@@ -243,6 +243,53 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Consecuencia:** nuevo `?season=` y selector **Estación**; `pickSeasonWeather` reemplaza el sorteo
   uniforme del clima automático; dorados `palette.season.*` y capturas. El verano no tiñe (base).
 
+## D-020 · Vistas favoritas y deep-link de posición
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** serializar el estado de la escena en un módulo puro (`src/views.js`) con
+  `encodeView`/`decodeView` y un campo nuevo `x` en la URL. Al cargar un enlace **con `x`** se
+  **desactiva el auto-scroll** para reproducir la vista exacta. El panel añade un selector de
+  **Vistas** con guardar/eliminar, persistido en `localStorage` (`infinite-andes:views`) como
+  `{name, query}`. La carga inicial y los favoritos comparten `applyView`.
+- **Motivo:** poder compartir un punto concreto del paisaje y volver a él; sin backend ni formato
+  propio de archivo.
+- **Alternativas:** solo URL sin favoritos (descartado: perder las vistas propias); guardar en
+  `IndexedDB` (descartado: sobra para pocas entradas).
+- **Consecuencia:** `updateURL` omite `x` mientras hay auto-scroll (el enlace "fluye"); al pausar o
+  cargar un favorito, la posición queda anclada. Tests `views.test.js`.
+
+## D-021 · Detalles visuales: fugaces, reflejos y huellas
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** añadir tres detalles sutiles y deterministas: **estrellas fugaces** (`meteorAt`
+  puro en `sky.js`, bloques temporales raros, solo con `nightAmt > 0.25`), **reflejo del astro**
+  sobre el mar (columna de brillo con destellos en `drawSea`, que recibe el estado celeste desde
+  `scene.render`) y **huellas** de la fauna que camina (bandera `tracks` en `SPECIES`, píxeles
+  desvanecidos tras el animal).
+- **Motivo:** dar vida al cielo nocturno y al agua, y dejar rastro de los animales sin introducir
+  sistemas nuevos.
+- **Alternativas:** fugaces por posición de mundo (descartado: son fenómenos temporales);
+  reflejo horneado en la paleta (descartado: no seguiría al astro).
+- **Consecuencia:** `drawSea(ctx, pal, camera, W, H, tSec, cel)`; `drawFauna(..., W, ...)`.
+
+## D-022 · Flora austral y fauna nueva
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** completar la biodiversidad con **flora** `coihue` (*Nothofagus dombeyi*), `roble`
+  (*N. obliqua*), `copihue` (*Lapageria rosea*, enredadera) y `michay` (*Berberis darwinii*), y
+  **fauna** `choique` (*Rhea pennata*), `chucao` (*Scelorchilus rubecula*) y `huillín`
+  (*Lontra provocax*). La pasada de río (antes exclusiva de la rana) se generaliza a
+  `RIVER_SPECIES`, cada especie con su `chance`, `offset` y `seed`.
+- **Motivo:** cerrar los TODOs de [05 · Flora](05-flora.md) y [06 · Fauna](06-fauna.md) y poblar el
+  sur boscoso y los ríos.
+- **Alternativas:** huillín por chunk (descartado: no garantiza cercanía al agua); copihue como flor
+  suelta (descartado: es una enredadera).
+- **Consecuencia:** cambian los pools de `LAYERS` y `BIOMES`; se regeneran los dorados `biome.*`,
+  `flora.*` y `fauna.*`. La rana conserva su siembra (dorado `fauna.rana` intacto).
+
 ## Decisiones abiertas
 
 - ¿Habrá audio? ¿Generado o muestreado?

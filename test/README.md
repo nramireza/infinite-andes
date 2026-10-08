@@ -17,13 +17,14 @@ npm run check     # verifica sintaxis de src/*.js
 | `palette.test.js` | interpolación de color y clima |
 | `terrain.test.js` | alturas, muesca del río y semillas |
 | `spawn.test.js` | spawn por capa con parallax: ríos y flora |
-| `fauna.test.js` | fauna: actividad, determinismo, parallax, cauce, mar y validez de sprites |
-| `sky.test.js` | determinismo del cielo y Vía Láctea |
+| `fauna.test.js` | fauna: actividad, determinismo, parallax, cauce, mar, huillín y validez de sprites |
+| `sky.test.js` | determinismo del cielo, Vía Láctea y estrellas fugaces |
 | `sky-order.test.js` | orden de render del cielo (astro/nubes/terreno) |
 | `moments.test.js` | momentos raros: determinismo y dibujo |
 | `biomes.test.js` | biomas: pesos, floración del norte, pools ponderados y tinte |
 | `seasons.test.js` | estaciones: ciclo, línea de nieve, sesgo de clima y tinte |
-| `render.test.js` | *smoke* de dibujo con `helpers/fakeCtx.js` |
+| `views.test.js` | vistas: serialización URL/estado, favoritos (alta/baja/parseo) |
+| `render.test.js` | *smoke* de dibujo con `helpers/fakeCtx.js` (incluye reflejo del astro) |
 | `golden.test.js` | snapshots dorados (terreno, ríos, flora, fauna, paleta) |
 
 ## Snapshots dorados

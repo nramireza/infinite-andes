@@ -38,11 +38,13 @@
     - [x] Flora nueva por bioma: cactus, alerce, nalca, colihue y palma chilena.
 - [x] Estaciones del año (tinte, línea de nieve y clima) ([D-019](12-decisiones.md), v0.8.0).
 - [ ] Export de tira larga y/o secuencia.
-- [ ] Más flora (coihue/roble, copihue, michay) y fauna (choique, chucao, huillín).
-- [ ] Detalles: estrellas fugaces, huellas, reflejos en el agua.
+- [x] Más flora (coihue/roble, copihue, michay) y fauna (choique, chucao, huillín)
+      ([D-022](12-decisiones.md), v0.9.0).
+- [x] Detalles: estrellas fugaces, huellas y reflejos en el agua ([D-021](12-decisiones.md), v0.9.0).
 - [ ] Más "momentos" raros (vuelo de cóndor, bandada, manada).
 - [x] Rana de Darwin ([D-018](12-decisiones.md), v0.7.0) y refinar sprites de fauna.
-- [ ] guardar/cargar "vistas" favoritas (semilla + x + hora + clima + aspecto).
+- [x] guardar/cargar "vistas" favoritas (semilla + x + hora + clima + aspecto)
+      ([D-020](12-decisiones.md), v0.9.0).
 
 ## Pendientes transversales
 
@@ -58,12 +60,12 @@
 ## Próximos pasos (hacia v1.0)
 
 1. **Export de tira larga**: rango de `x` en PNG y/o secuencia.
-2. **Vistas favoritas + `?x=`**: deep-link de posición (semilla + x + hora + clima + aspecto + estación + bioma).
-3. **Detalles**: estrellas fugaces y reflejos en el agua.
-4. **Accesibilidad/teclado** (flechas para desplazar, espacio para auto-scroll) y **chequeo de rendimiento**.
-5. **Cierre de docs** (estados a *estable*, glosario, paleta) y README → **tag v1.0.0**.
-   - *Post-1.0*: más flora/fauna (coihue/roble, copihue; choique, chucao, huillín), audio y más
-     biomas (altiplano/patagonia/austral/fiordos).
+2. **Accesibilidad/teclado** (flechas para desplazar, espacio para auto-scroll) y **chequeo de rendimiento**.
+3. **Cierre de docs** (estados a *estable*, glosario, paleta) y README → **tag v1.0.0**.
+   - *Post-1.0*: más momentos raros (vuelo de cóndor, bandada), audio y más biomas
+     (altiplano/patagonia/austral/fiordos).
+   - *Hecho en v0.9.0*: vistas favoritas + `?x=` ([D-020](12-decisiones.md)); estrellas fugaces,
+     reflejos y huellas ([D-021](12-decisiones.md)); flora y fauna austral ([D-022](12-decisiones.md)).
 
 ## Backlog / ideas
 

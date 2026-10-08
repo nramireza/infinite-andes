@@ -5,6 +5,7 @@
 import { mulberry32, hashInt, hash1 } from "./rng.js";
 import { bankHeight, riverInfluence, riverEvents } from "./terrain.js";
 import { px } from "./pixel.js";
+import { shade } from "./palette.js";
 
 const BAND = {
   day: (h) => h >= 7 && h <= 19,
@@ -20,6 +21,13 @@ export const RARITY_WEIGHT = {
   rara: 0.5,
   "muy-rara": 0.12,
 };
+
+// Especies ligadas al borde del cauce: `offset` en anchos de río y `seed` propio
+// (la rana conserva su siembra original para no romper el dorado).
+const RIVER_SPECIES = [
+  { type: "rana", chance: 0.3, offset: 2.4, seed: 0x5a1a },
+  { type: "huillin", chance: 0.25, offset: 1.6, seed: 0x7a77 },
+];
 
 // `active`: franja horaria · `movement`: fly/walk/hop/swim/flock · `speed` y `range`: vaivén.
 // `rarity`: clase de rareza (ver RARITY_WEIGHT) · `palette`: carácter -> clave de getPalette.
@@ -47,7 +55,7 @@ export const SPECIES = {
     ],
   },
   huemul: {
-    movement: "walk", active: "day", speed: 0.9, range: 9, fps: 2, anchor: "ground", rarity: "muy-rara",
+    movement: "walk", active: "day", speed: 0.9, range: 9, fps: 2, anchor: "ground", rarity: "muy-rara", tracks: true,
     palette: { d: "trunk", l: "sandD" },
     frames: [
       [
@@ -113,7 +121,7 @@ export const SPECIES = {
     ],
   },
   puma: {
-    movement: "walk", active: "dusk", speed: 0.7, range: 10, fps: 2, anchor: "ground", rarity: "poco-comun",
+    movement: "walk", active: "dusk", speed: 0.7, range: 10, fps: 2, anchor: "ground", rarity: "poco-comun", tracks: true,
     palette: { d: "sandD", l: "sand", k: "trunk" },
     frames: [
       [
@@ -131,7 +139,7 @@ export const SPECIES = {
     ],
   },
   culpeo: {
-    movement: "walk", active: "day", speed: 1.0, range: 8, fps: 3, anchor: "ground", rarity: "abundante",
+    movement: "walk", active: "day", speed: 1.0, range: 8, fps: 3, anchor: "ground", rarity: "abundante", tracks: true,
     palette: { d: "sandD", l: "sand", t: "sandD" },
     frames: [
       [
@@ -149,7 +157,7 @@ export const SPECIES = {
     ],
   },
   chilla: {
-    movement: "walk", active: "dusk", speed: 1.1, range: 7, fps: 3, anchor: "ground", rarity: "abundante",
+    movement: "walk", active: "dusk", speed: 1.1, range: 7, fps: 3, anchor: "ground", rarity: "abundante", tracks: true,
     palette: { d: "sandD", l: "sand" },
     frames: [
       [
@@ -167,7 +175,7 @@ export const SPECIES = {
     ],
   },
   guanaco: {
-    movement: "walk", active: "day", speed: 0.6, range: 12, fps: 2, anchor: "ground", rarity: "poco-comun",
+    movement: "walk", active: "day", speed: 0.6, range: 12, fps: 2, anchor: "ground", rarity: "poco-comun", tracks: true,
     palette: { d: "sandD", l: "sand" },
     frames: [
       [
@@ -396,6 +404,76 @@ export const SPECIES = {
       ],
     ],
   },
+  choique: {
+    movement: "walk", active: "day", speed: 0.7, range: 9, fps: 2, anchor: "ground", rarity: "poco-comun", tracks: true,
+    palette: { d: "trunk", l: "sand" },
+    frames: [
+      [
+        "..dd...",
+        "..dd...",
+        ".dddd..",
+        "dddddd.",
+        "dddddd.",
+        ".dddd..",
+        "..dd...",
+        "..d.d..",
+        "..d.d..",
+        ".ll.ll.",
+      ],
+      [
+        "..dd...",
+        "..dd...",
+        ".dddd..",
+        "dddddd.",
+        "dddddd.",
+        ".dddd..",
+        "..dd...",
+        "..d.d..",
+        ".d...d.",
+        "ll...ll",
+      ],
+    ],
+  },
+  chucao: {
+    movement: "hop", active: "day", speed: 0.9, range: 5, fps: 3, anchor: "ground", rarity: "comun",
+    palette: { d: "trunk", r: "#c0502a", l: "sandD" },
+    frames: [
+      [
+        "..dd..",
+        ".drdd.",
+        "dddddd",
+        ".ddd..",
+        ".l.l..",
+        ".d.d..",
+      ],
+      [
+        "..dd..",
+        ".drdd.",
+        "dddddd",
+        ".ddd..",
+        ".l.l..",
+        "d...d.",
+      ],
+    ],
+  },
+  huillin: {
+    movement: "swim", active: "day", speed: 0.55, range: 6, fps: 2, anchor: "ground", rarity: "rara",
+    palette: { d: "trunk", l: "sand" },
+    frames: [
+      [
+        "......dd.",
+        ".ddddddd.",
+        "ddllllldd",
+        "..d....d.",
+      ],
+      [
+        ".....dd..",
+        ".ddddddd.",
+        "ddllllldd",
+        ".d.....d.",
+      ],
+    ],
+  },
 };
 
 export function isActive(species, hour) {
@@ -505,31 +583,55 @@ export function faunaSpawns(layer, camera, W, H, seed, hour, poolAt, chanceAt) {
     out.push({ wx, sx, gy, flightY, type, phase, dir });
   }
 
-  // Rana de Darwin: en el borde del cauce, si el bioma la incluye.
+  // Especies del borde del cauce (rana de Darwin, huillín), si el bioma las incluye.
   if (layer.rivers) {
-    const sp = SPECIES.rana;
-    for (const ev of riverEvents(layer, camera, W)) {
-      const rng = mulberry32(hashInt(Math.floor(ev.xc), (chunkSeed + 0x5a1a) >>> 0));
-      if (rng() > 0.3) continue;
-      const side = rng() < 0.5 ? -1 : 1;
-      const wx = ev.xc + side * layer.rivers.width * 2.4;
-      const sx = wx - camera.x * p;
-      if (sx < -60 || sx > W + 60) continue;
-      const pool = poolAt ? poolAt(wx) : null;
-      const list = pool && pool.length ? pool : f.species;
-      if (!list.some((e) => entryType(e) === "rana")) continue;
-      if (!isActive(sp, hour)) continue;
-      const gy = bankHeight(layer, wx);
-      if (gy > H + 4) continue;
-      const phase = rng() * Math.PI * 2;
-      const dir = rng() < 0.5 ? -1 : 1;
-      out.push({ wx, sx, gy, flightY: null, type: "rana", phase, dir });
+    for (const rs of RIVER_SPECIES) {
+      const sp = SPECIES[rs.type];
+      for (const ev of riverEvents(layer, camera, W)) {
+        const rng = mulberry32(hashInt(Math.floor(ev.xc), (chunkSeed + rs.seed) >>> 0));
+        if (rng() > rs.chance) continue;
+        const side = rng() < 0.5 ? -1 : 1;
+        const wx = ev.xc + side * layer.rivers.width * rs.offset;
+        const sx = wx - camera.x * p;
+        if (sx < -60 || sx > W + 60) continue;
+        const pool = poolAt ? poolAt(wx) : null;
+        const list = pool && pool.length ? pool : f.species;
+        if (!list.some((e) => entryType(e) === rs.type)) continue;
+        if (!isActive(sp, hour)) continue;
+        const gy = bankHeight(layer, wx);
+        if (gy > H + 4) continue;
+        const phase = rng() * Math.PI * 2;
+        const dir = rng() < 0.5 ? -1 : 1;
+        out.push({ wx, sx, gy, flightY: null, type: rs.type, phase, dir });
+      }
     }
   }
   return out;
 }
 
-function drawFauna(ctx, layer, pal, camera, s, tSec) {
+// Huellas que deja un animal que camina: unos píxeles desvanecidos tras él.
+function drawTracks(ctx, layer, pal, camera, W, s, tSec) {
+  const sp = SPECIES[s.type];
+  const p = layer.parallax;
+  const osc = Math.sin(tSec * sp.speed + s.phase);
+  const vel = Math.cos(tSec * sp.speed + s.phase);
+  const dir = vel >= 0 ? 1 : -1;
+  const wx = s.wx + osc * sp.range;
+  const col = shade(pal.sandD, -0.3);
+  for (let i = 1; i <= 3; i++) {
+    const bx = wx - dir * i * 3;
+    const sx = Math.round(bx - camera.x * p);
+    if (sx < 0 || sx >= W) continue;
+    const by = Math.round(bankHeight(layer, bx));
+    ctx.globalAlpha = 0.4 * (1 - i / 4);
+    ctx.fillStyle = col;
+    ctx.fillRect(sx, by - 1, 1, 1);
+    ctx.fillRect(sx + (i % 2 ? 1 : -1), by - 1, 1, 1);
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawFauna(ctx, layer, pal, camera, W, s, tSec) {
   if (!Number.isFinite(tSec)) tSec = 0;
   const sp = SPECIES[s.type];
   const p = layer.parallax;
@@ -551,6 +653,8 @@ function drawFauna(ctx, layer, pal, camera, s, tSec) {
     top = Math.round(ground - h);
   }
 
+  if (sp.tracks && sp.movement === "walk") drawTracks(ctx, layer, pal, camera, W, s, tSec);
+
   const nFrames = sp.frames.length;
   const framePos = Math.floor(tSec * sp.fps + s.phase / (Math.PI * 2));
   const fi = ((framePos % nFrames) + nFrames) % nFrames; // seguro ante tSec negativo
@@ -570,6 +674,6 @@ function drawFauna(ctx, layer, pal, camera, s, tSec) {
 export function placeFauna(ctx, layer, pal, camera, W, H, seed, hour, tSec, poolAt, chanceAt) {
   if (!layer.fauna) return;
   for (const s of faunaSpawns(layer, camera, W, H, seed, hour, poolAt, chanceAt)) {
-    drawFauna(ctx, layer, pal, camera, s, tSec);
+    drawFauna(ctx, layer, pal, camera, W, s, tSec);
   }
 }

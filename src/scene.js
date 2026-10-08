@@ -171,7 +171,7 @@ export class Scene {
     // Capas de atrás hacia adelante.
     for (const layer of LAYERS) {
       if (layer.sea) {
-        drawSea(ctx, pal, this.camera, W, H, this.tSec);
+        drawSea(ctx, pal, this.camera, W, H, this.tSec, cel);
       } else {
         drawLayer(ctx, layer, pal, this.camera, W, H);
         placeFlora(ctx, layer, pal, this.camera, W, H, this.seed, this.tSec,

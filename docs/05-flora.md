@@ -12,7 +12,7 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 |--------------|-------------------|----------|----------------|-----------|-------|
 | Araucaria / Pehuén | *Araucaria araucana* | Sí (Chile/Argentina) | `araucaria` | Precordillera, Valle, Costa | Silueta de paraguas; árbol emblema |
 | Lenga / Ñire | *Nothofagus pumilio* / *N. antarctica* | No (Patagonia) | `lenga` | Costa, Valle | Copa redonda; variante cálida (otoño) |
-| Copihue | *Lapageria rosea* | Sí (Chile) | detalle | Primer plano | Flor nacional; puntos de color ocasionales |
+| Copihue | *Lapageria rosea* | Sí (Chile) | `copihue` | Costa, Valle (sur) | Enredadera con campanas rojas; flor nacional |
 | Arbusto genérico | — | — | `bush` | Varias | Bulto verde redondeado |
 | Cultivos / campos | — | — | `crop` | Valle | Hileras; refuerza el valle como zona agrícola |
 | Pasto / duna | — | — | `grass` | Playa, Valle, Costa | Matas pequeñas |
@@ -23,6 +23,9 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 | Nalca / Pangue | *Gunnera tinctoria* | Sí (Chile/Arg) | `nalca` | Sur (valle, costa) | Hojas gigantes junto al agua |
 | Colihue / Quila | *Chusquea* spp. | No | `colihue` | Sur (valle, costa) | Cañaverales |
 | Palma chilena | *Jubaea chilensis* | Sí (Chile) | `palma` | Centro (valle, costa) | Tronco esbelto y frondas; en peligro |
+| Coihue | *Nothofagus dombeyi* | No (Patagonia) | `coihue` | Costa, Valle (sur) | Copa ancha y redondeada; tronco recto |
+| Roble | *Nothofagus obliqua* | Sí (Chile/Arg) | `roble` | Costa, Valle (sur) | Copa estrecha y erguida |
+| Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Precordillera, Valle, Costa (sur) | Arbusto espinoso con flores naranjas |
 
 > La vegetación no crece dentro del cauce: `placeFlora` omite las columnas con `riverInfluence > 0.25`
 > y usa `bankHeight` para sentarse en el banco.
@@ -31,7 +34,8 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 
 El bioma (`src/biomes.js`) **pondera** los `types` de cada capa; el pool efectivo se construye con
 `biomeFloraPool` (ver [D-016](12-decisiones.md)). El **norte árido no tiene araucaria** (matorral,
-copao y roca); el **sur** suma alerce, nalca y colihue. El tipo `flower` solo aparece con la floración
+copao y roca); el **sur** suma alerce, nalca, colihue, coihue, roble, copihue y michay
+([D-022](12-decisiones.md)). El tipo `flower` solo aparece con la floración
 del norte (`bloomAt`, [D-017](12-decisiones.md)); se dibuja como parche de tallos con corola de 3 px.
 
 ## Especificación de sprites
@@ -51,13 +55,16 @@ Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante)
 | Nalca | 8–? | 1 | — |
 | Colihue | 4–? | 1 | — |
 | Palma | 8–? | 1 | — |
+| Coihue | 6–? | 1 | — |
+| Roble | 6–? | 1 | — |
+| Copihue | 5–? | 1 | — |
+| Michay | 3–? | 1 | — |
 | Flor | 4–? | 1 | Bamboleo por seno (sway) |
 
 ## Especies por añadir (propuestas)
 
-- TODO: Copihue como enredadera en bosque de la Costa (no solo flor suelta).
-- TODO: Coihue (*Nothofagus dombeyi*) y Roble (*N. obliqua*) para el bosque de la Costa.
-- TODO: Michay, Chaura y otros arbustos del sotobosque.
+- TODO: Chaura (*Gaultheria*) y otros arbustos del sotobosque.
+- TODO: variantes estacionales de flora (caída de hojas, brotes), ver [15 · Estaciones](15-estaciones.md).
 
 ## Cómo añadir una especie
 

@@ -48,5 +48,5 @@ El panel se oculta con el botón `∞`.
 
 ## Pendiente
 
-- TODO: definir si habrá "momentos" (p. ej. avistamiento de un cóndor) como pequeños eventos.
-- TODO: decidir si el recorrido tendrá "biomas" o anclas visuales que ayuden a orientarse.
+- [x] "Momentos" raros como pequeños eventos ([D-014](12-decisiones.md), v0.4.0).
+- [x] Biomas/regiones como anclas visuales ([D-016](12-decisiones.md), v0.6.0).

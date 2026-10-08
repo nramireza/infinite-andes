@@ -28,6 +28,9 @@ la hora.
 | `chungungo` | Chungungo | Mar | `swim` | día |
 | `pinguino` | Pingüino de Humboldt | Mar | `swim` | día |
 | `rana` | Rana de Darwin | Valle, Costa (borde del cauce) | `sit` | día |
+| `choique` | Choique / Ñandú petizo | Precordillera, Valle | `walk` | día |
+| `chucao` | Chucao | Costa | `hop` | día |
+| `huillin` | Huillín | Valle, Costa (borde del cauce) | `swim` | día |
 
 ### Especificación de sprites
 
@@ -42,6 +45,9 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 | `choroy` / `cachana` | 8 × 4 | 2 | centro | verde/rojizo, en bandada |
 | `flamenco` | 6 × 9 | 2 | pies | rosa literal `#f2a0b8` |
 | `pinguino` | 6 × 8 | 2 | pies | negro/blanco, pico naranja |
+| `choique` | 7 × 10 | 2 | pies | cuerpo `trunk`, patas `sand` |
+| `chucao` | 6 × 6 | 2 | pies | cuerpo `trunk`, pecho literal `#c0502a` |
+| `huillin` | 9 × 4 | 2 | pies | cuerpo `trunk`, vientre `sand` |
 
 - Los caracteres de la matriz se mapean a **claves de `getPalette(hour, weather)`** (o a un hex
   literal), así que la fauna responde a la hora y al clima sin reescribir colores.
@@ -58,8 +64,9 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 - **Movimiento**: `fly` y `flock` trazan una trayectoria senoidal en el cielo de su capa; las
   bandadas (`flock`) dibujan dos compañeros en formación; `walk`/`hop`/`swim` siguen
   `bankHeight` y evitan el cauce (`riverInfluence > 0.25`). `swim` añade un vaivén sobre la
-  superficie del mar; `sit` (rana de Darwin) queda **estática** y se coloca aparte, en el
-  **borde del cauce** de valle y Costa.
+  superficie del agua; `sit` (rana de Darwin) queda **estática**. Las especies ligadas al cauce
+  (`RIVER_SPECIES`: rana y huillín) se colocan aparte, en el **borde del río** de valle y Costa,
+  con `chance`, `offset` y `seed` propios.
 - **Despawn**: al salir de pantalla se descarta; el hash lo regenera idéntico al volver.
 - **Densidad y rareza**: cada especie declara una clase (`rarity`) y el sorteo por chunk es
   **ponderado** (`pickWeighted`), de modo que lo abundante aparece más seguido. Ver la tabla de
@@ -92,6 +99,9 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 | Chungungo | EN | costero | muy-rara | 0.12 |
 | Chinchilla de cola larga | EN | casi extinta | muy-rara | 0.12 |
 | Rana de Darwin | EN | endémica, en declive | muy-rara | 0.12 |
+| Chucao | LC | común, sotobosque | comun | 3 |
+| Choique | NT | decreciente | poco-comun | 1.2 |
+| Huillín | EN | ríos del sur | rara | 0.5 |
 
 - **Chance por capa**: andes 0.25, precordillera 0.3, valle 0.5, costa 0.55, playa 0.3, mar 0.35.
 - Fuentes: listados de la UICN (versiones 2016–2025), clasificación nacional del MMA y
@@ -102,7 +112,7 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 
 El bioma (`src/biomes.js`) **pondera** las `species` de cada capa con `biomeFaunaPool` (ver
 [D-016](12-decisiones.md)): el norte trae guanaco, vicuña y flamenco; el sur, pudú, monito, choroy,
-huemul y la **rana de Darwin** (junto al cauce). Durante el **desierto florido** (`bloomAt`,
+huemul, choique, chucao, **huillín** y la **rana de Darwin** (junto al cauce). Durante el **desierto florido** (`bloomAt`,
 [D-017](12-decisiones.md)) sube la densidad (`chance × (1 + 0.6·bloom)`) y se refuerzan aves y zorros
 (`condor`, `culpeo`, `chilla`, `flamenco`).
 
@@ -148,6 +158,8 @@ especie con detalle (UICN, nombre científico, referencia), usa
       choroy, cachaña, flamenco, chungungo, pingüino de Humboldt.
 - [x] Ajustar densidad y rareza por especie según estado UICN/nacional (ver [D-015](12-decisiones.md)).
 - [x] Rana de Darwin (*Rhinoderma darwinii*): borde del cauce, estática (`sit`).
+- [x] Choique (*Rhea pennata*), chucao (*Scelorchilus rubecula*) y huillín (*Lontra provocax*)
+      ([D-022](12-decisiones.md)); huellas tras la fauna que camina ([D-021](12-decisiones.md)).
 - [ ] Decidir si el cóndor pasa a ser un "momento" destacado (vuelo largo ocasional).
 - [ ] Completar cada especie con la plantilla [`templates/especimen.md`](templates/especimen.md)
       (estado UICN, nombre científico, referencia visual) y refinar los sprites.

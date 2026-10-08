@@ -47,6 +47,17 @@ test("drawSea se mantiene dentro del lienzo", () => {
   assert.deepEqual(collectOutOfBounds(ctx, W, H, 1), []);
 });
 
+test("drawSea refleja el astro cuando se pasa el estado celeste", () => {
+  seedLayers(SEED);
+  const pal = getPalette(6.7, "clear");
+  const cel = { x: W / 2, y: 120, horizonY: 118, rising: true, visible: true, isSun: true, r: 4, depth: 0.2, u: 0.1 };
+  const ctx = makeFakeCtx();
+  drawSea(ctx, pal, { x: 0 }, W, H, 2, cel);
+  const refl = ctx.calls.fillRect.filter(([x, y]) => Math.abs(x - W / 2) < 20 && y >= 242);
+  assert.ok(refl.length > 0, "no se dibujó el reflejo del astro");
+  assert.deepEqual(collectOutOfBounds(ctx, W, H, 1), []);
+});
+
 test("placeFlora no falla y dibuja", () => {
   seedLayers(SEED);
   const pal = getPalette(12, "clear");
@@ -149,7 +160,7 @@ test("los nuevos tipos de flora dibujan dentro del lienzo", () => {
   seedLayers(SEED);
   const pal = getPalette(12, "clear");
   const base = layerByName("valle");
-  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower"]) {
+  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower", "coihue", "roble", "copihue", "michay"]) {
     const layer = { ...base, flora: { ...base.flora, types: [type] } };
     const ctx = makeFakeCtx();
     placeFlora(ctx, layer, pal, { x: 100 }, W, H, SEED, 0);

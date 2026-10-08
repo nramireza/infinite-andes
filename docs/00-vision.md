@@ -41,4 +41,4 @@ Personas que disfrutan de arte generativo, pixel art y paisajes; sin necesidad d
 
 - TODO: ¿habrá audio ambiente (viento, aves) y de ser así, generado o muestreado?
 - TODO: ¿se quiere exportar también una "tira larga" del paisaje, no solo la vista actual?
-- TODO: ¿habrá una fase de "biomas" seleccionables o un solo perfil fijo?
+- [x] Biomas/regiones seleccionables o procedurales ([D-016](12-decisiones.md), v0.6.0).

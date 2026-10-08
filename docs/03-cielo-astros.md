@@ -47,6 +47,18 @@ arriba-derecha) determinista por semilla, visible con `nightAmount > 0.15`. Se c
 capas tenues (`pal.star`/`pal.cloud`) más polvo brillante disperso, y queda **por detrás de las
 estrellas** para que estas la salpiquen.
 
+## Estrellas fugaces
+
+`meteorAt(seed, tSec)` (puro, exportado) define **estrellas fugaces** en bloques de tiempo raros
+(~5.5 s, p≈0.55) con un trazo de ~0.7 s; `drawShootingStars` lo dibuja solo con `nightAmt > 0.25`,
+tras las estrellas y la aurora. La posición va en fracciones de ancho/alto del cielo, así no depende
+de `W`/`H`. Ver [D-021](12-decisiones.md).
+
+## Reflejo del astro en el mar
+
+`drawSea` (`src/terrain.js`) recibe el **estado celeste** y pinta una columna de brillo con destellos
+bajo el astro (`cel.x`), teñida con `sunGlow`/`sun`. Es determinista y se anima con `tSec`.
+
 ## Aurora austral
 
 Bandas verticales semitransparentes (verde/cian/violeta) cerca de la parte superior del cielo,
@@ -61,5 +73,4 @@ y **por detrás del terreno**.
 ## Pendiente
 
 - TODO: fase lunar (luna creciente/menguante) y su relación con las estrellas.
-- TODO: estrellas fugaces ocasionales.
 - TODO: ajustar el tono del resplandor según estación.

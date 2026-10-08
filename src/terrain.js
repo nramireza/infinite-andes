@@ -26,15 +26,15 @@ export const LAYERS = [
     name: "valle", parallax: 0.32, baseY: 200, amp: 20, freq: 0.012, seed: 307,
     rugged: 0.12, snowFrac: 1.4, lightKey: "valleyL", darkKey: "valleyD", alpha: 0.97, fields: true,
     rivers: { spacing: 1100, chance: 0.45, width: 3.2, depth: 7, wfreq: 4.2 },
-    flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria", "palma"] },
-    fauna: { chunkW: 150, chance: 0.5, species: ["pudu", "huemul", "guina", "culpeo", "chingue"] },
+    flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria", "palma", "coihue", "roble", "michay"] },
+    fauna: { chunkW: 150, chance: 0.5, species: ["pudu", "huemul", "guina", "culpeo", "chingue", "huillin"] },
   },
   {
     name: "costa", parallax: 0.52, baseY: 226, amp: 12, freq: 0.010, seed: 419,
     rugged: 0.05, snowFrac: 1.4, lightKey: "costaL", darkKey: "costaD", alpha: 1,
     rivers: { spacing: 1500, chance: 0.4, width: 2.1, depth: 5, wfreq: 4.5 },
-    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma"] },
-    fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana", "rana"] },
+    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma", "coihue", "roble", "copihue", "michay"] },
+    fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana", "rana", "huillin"] },
   },
   {
     name: "playa", parallax: 0.78, baseY: 232, amp: 7, freq: 0.020, seed: 523,
@@ -333,8 +333,34 @@ function drawPlumes(ctx, layer, pal, camera, W, H) {
   ctx.globalAlpha = 1;
 }
 
-// El mar: oleaje, espuma y gradiente de profundidad.
-export function drawSea(ctx, pal, camera, W, H, tSec) {
+// Reflejo del astro sobre el agua: columna de brillo con destellos animados.
+function drawReflection(ctx, pal, W, H, tSec, cel) {
+  if (!cel) return;
+  const cx = Math.round(cel.x);
+  const col = lerpColor(pal.sea, pal.sunGlow, 0.55);
+  const hi = lerpColor(col, pal.sun, 0.5);
+  const maxHalf = 14;
+  for (let y = SEA_Y; y < H; y++) {
+    const t = (y - SEA_Y) / (H - SEA_Y);
+    const half = Math.round(maxHalf * (0.35 + t * 0.9));
+    for (let sx = cx - half; sx <= cx + half; sx++) {
+      if (sx < 0 || sx >= W) continue;
+      const d = Math.abs(sx - cx) / (half + 1);
+      const wave = Math.sin(y * 0.7 + tSec * 2.2 + sx * 0.35);
+      if (wave < 0.35) continue;
+      const a = (1 - d) * 0.28 * (0.5 + 0.5 * Math.sin(tSec * 1.3 + y * 0.5));
+      if (a <= 0.02) continue;
+      ctx.globalAlpha = a;
+      ctx.fillStyle = d < 0.3 ? hi : col;
+      ctx.fillRect(sx, y, 1, 1);
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+// El mar: oleaje, espuma y gradiente de profundidad. `cel` (opcional) añade el
+// reflejo del astro.
+export function drawSea(ctx, pal, camera, W, H, tSec, cel) {
   const p = LAYERS[5].parallax;
   for (let sx = 0; sx < W; sx++) {
     const wx = camera.x * p + sx;
@@ -360,6 +386,8 @@ export function drawSea(ctx, pal, camera, W, H, tSec) {
       ctx.fillRect(sx, top + 3 + Math.floor(w * 4), 1, 1);
     }
   }
+
+  drawReflection(ctx, pal, W, H, tSec, cel);
 }
 
 

@@ -218,3 +218,17 @@ test("la rana de Darwin aparece en el borde del cauce (costa)", () => {
   assert.ok(riverInfluence(layer, found.wx) <= 0.25, "la rana nació dentro del cauce");
   assert.equal(isActive(SPECIES.rana, 20), false, "la rana no debería estar activa de noche");
 });
+
+test("el huillín aparece en el borde del cauce (valle)", () => {
+  seedLayers(SEED);
+  const layer = layerByName("valle");
+  let found = null;
+  for (let x = 0; x < 200000 && !found; x += 200) {
+    for (const s of faunaSpawns(layer, { x }, W, H, SEED, 12)) {
+      if (s.type === "huillin") { found = s; break; }
+    }
+  }
+  assert.ok(found, "no se halló el huillín");
+  assert.ok(riverInfluence(layer, found.wx) <= 0.25, "el huillín nació dentro del cauce");
+  assert.equal(SPECIES.huillin.movement, "swim");
+});

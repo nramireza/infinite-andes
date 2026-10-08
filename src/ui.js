@@ -2,6 +2,9 @@
 
 import { seedToInt } from "./rng.js";
 import { ASPECT_PRESETS, DEFAULT_ASPECT, ratioFromString } from "./viewport.js";
+import { addView, decodeView, encodeView, parseViews, removeView } from "./views.js";
+
+const VIEWS_STORAGE_KEY = "infinite-andes:views";
 
 const WEATHER_LABEL = {
   clear: "despejado", snow: "nieve", rain: "lluvia", fog: "niebla", wind: "viento",
@@ -35,26 +38,113 @@ export function setupUI(scene, hooks = {}) {
   const bloomSel = $("bloomSel");
   const btnExport = $("btnExport");
   const btnCopy = $("btnCopy");
+  const viewSel = $("viewSel");
+  const viewName = $("viewName");
+  const btnSaveView = $("btnSaveView");
+  const btnDelView = $("btnDelView");
   const hud = $("hud");
   const panelToggle = $("panelToggle");
   const panel = $("panel");
 
   let draggingTime = false;
   let aspectLabel = DEFAULT_ASPECT;
+  let views = loadViews();
+
+  // Estado actual como "view" (mismos campos que la URL/favorito).
+  function currentView() {
+    return {
+      seed: seedInput.value,
+      x: Math.round(scene.camera.x),
+      hour: scene.hour,
+      weather: weatherSel.value,
+      aspect: aspectLabel,
+      moment: momentSel.value,
+      season: seasonSel.value,
+      biome: biomeSel.value,
+      bloom: bloomSel.value,
+    };
+  }
 
   function updateURL() {
     try {
       const url = new URL(window.location.href);
-      url.searchParams.set("seed", seedInput.value);
-      url.searchParams.set("hour", scene.hour.toFixed(2));
-      url.searchParams.set("weather", weatherSel.value);
-      url.searchParams.set("aspect", aspectLabel);
-      url.searchParams.set("moment", momentSel.value);
-      url.searchParams.set("season", seasonSel.value);
-      url.searchParams.set("biome", biomeSel.value);
-      url.searchParams.set("bloom", bloomSel.value);
+      const view = currentView();
+      // Con auto-scroll activo no se ancla la posición: el enlace sigue fluyendo.
+      if (scene.autoScroll) delete view.x;
+      url.search = encodeView(view);
       history.replaceState(null, "", url);
     } catch (_) {}
+  }
+
+  function loadViews() {
+    try {
+      return parseViews(localStorage.getItem(VIEWS_STORAGE_KEY));
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function storeViews(list) {
+    try {
+      localStorage.setItem(VIEWS_STORAGE_KEY, JSON.stringify(list));
+    } catch (_) {}
+  }
+
+  function populateViewSelect(selected) {
+    viewSel.innerHTML = "";
+    const none = document.createElement("option");
+    none.value = "";
+    none.textContent = "— sin vistas —";
+    viewSel.appendChild(none);
+    for (const v of views) {
+      const opt = document.createElement("option");
+      opt.value = v.name;
+      opt.textContent = v.name;
+      viewSel.appendChild(opt);
+    }
+    viewSel.value = selected && views.some((v) => v.name === selected) ? selected : "";
+  }
+
+  function applyAspectParam(aspect) {
+    const ratio = ratioFromString(aspect);
+    if (!ratio) return;
+    const preset = ASPECT_PRESETS.find((p) => p.ratio === ratio);
+    if (preset) {
+      aspectSel.value = preset.id;
+      aspectLabel = preset.id;
+      aspectCustom.hidden = true;
+    } else {
+      aspectSel.value = "custom";
+      aspectCustom.value = aspect;
+      aspectCustom.hidden = false;
+      aspectLabel = String(aspect).trim();
+    }
+    hooks.setAspect?.(ratio);
+  }
+
+  // Aplica un "view" a la escena y sincroniza los controles.
+  function applyView(view) {
+    if (view.seed != null) {
+      scene.regenerate(seedToInt(view.seed));
+      seedInput.value = String(view.seed);
+    }
+    if (Number.isFinite(view.x)) {
+      scene.camera.x = view.x;
+      scene.autoScroll = false;
+      chkAuto.checked = false;
+    }
+    if (Number.isFinite(view.hour)) {
+      scene.hour = view.hour;
+      scene.timeAuto = false;
+      chkTimeAuto.checked = false;
+    }
+    if (view.weather) { scene.setWeatherType(view.weather); weatherSel.value = view.weather; }
+    if (view.moment) { scene.setMoment(view.moment); momentSel.value = view.moment; }
+    if (view.season) { scene.setSeason(view.season); seasonSel.value = view.season; }
+    if (view.biome) { scene.setBiome(view.biome); biomeSel.value = view.biome; }
+    if (view.bloom) { scene.setBloom(view.bloom); bloomSel.value = view.bloom; }
+    if (view.aspect) applyAspectParam(view.aspect);
+    updateURL();
   }
 
   function applySeed(raw) {
@@ -73,7 +163,7 @@ export function setupUI(scene, hooks = {}) {
 
   btnPrev.addEventListener("click", () => { scene.camera.x -= 90; });
   btnNext.addEventListener("click", () => { scene.camera.x += 90; });
-  chkAuto.addEventListener("change", () => { scene.autoScroll = chkAuto.checked; });
+  chkAuto.addEventListener("change", () => { scene.autoScroll = chkAuto.checked; updateURL(); });
   speed.addEventListener("input", () => { scene.scrollSpeed = Number(speed.value); });
 
   function applyAspectFromControls() {
@@ -112,6 +202,28 @@ export function setupUI(scene, hooks = {}) {
   seasonSel.addEventListener("change", () => { scene.setSeason(seasonSel.value); updateURL(); });
   biomeSel.addEventListener("change", () => { scene.setBiome(biomeSel.value); updateURL(); });
   bloomSel.addEventListener("change", () => { scene.setBloom(bloomSel.value); updateURL(); });
+
+  function saveCurrentView() {
+    const name = (viewName.value || "").trim();
+    if (!name) { viewName.focus(); return; }
+    views = addView(views, currentView(), name);
+    storeViews(views);
+    viewName.value = "";
+    populateViewSelect(name);
+  }
+  btnSaveView.addEventListener("click", saveCurrentView);
+  viewName.addEventListener("keydown", (e) => { if (e.key === "Enter") saveCurrentView(); });
+  btnDelView.addEventListener("click", () => {
+    if (!viewSel.value) return;
+    views = removeView(views, viewSel.value);
+    storeViews(views);
+    populateViewSelect("");
+  });
+  viewSel.addEventListener("change", () => {
+    const v = views.find((x) => x.name === viewSel.value);
+    if (v) applyView(decodeView(v.query));
+  });
+
   btnExport.addEventListener("click", () => scene.exportPNG());
   btnCopy.addEventListener("click", async () => {
     updateURL();
@@ -139,67 +251,16 @@ export function setupUI(scene, hooks = {}) {
     hud.textContent = `seed ${scene.seed} · x ${Math.round(scene.camera.x)} · ${label} · ${weather} · ${season} · ${biome}`;
   }
 
-  // Estado inicial desde la URL
+  // Estado inicial desde la URL (mismo camino que cargar un favorito).
   const params = new URLSearchParams(window.location.search);
-  const initial = params.get("seed") || "andes";
-  applySeed(initial);
-
-  const hourParam = parseFloat(params.get("hour"));
-  if (Number.isFinite(hourParam)) {
-    scene.hour = ((hourParam % 24) + 24) % 24;
-    scene.timeAuto = false;
-  }
-  const weatherParam = params.get("weather");
-  if (weatherParam && weatherParam in WEATHER_LABEL) {
-    scene.setWeatherType(weatherParam);
-    weatherSel.value = weatherParam;
-  }
-
-  const momentParam = params.get("moment");
-  if (momentParam && [...momentSel.options].some((o) => o.value === momentParam)) {
-    scene.setMoment(momentParam);
-    momentSel.value = momentParam;
-  }
-
-  const biomeParam = params.get("biome");
-  if (biomeParam && [...biomeSel.options].some((o) => o.value === biomeParam)) {
-    scene.setBiome(biomeParam);
-    biomeSel.value = biomeParam;
-  }
-
-  const seasonParam = params.get("season");
-  if (seasonParam && [...seasonSel.options].some((o) => o.value === seasonParam)) {
-    scene.setSeason(seasonParam);
-    seasonSel.value = seasonParam;
-  }
-
-  const bloomParam = params.get("bloom");
-  if (bloomParam && [...bloomSel.options].some((o) => o.value === bloomParam)) {
-    scene.setBloom(bloomParam);
-    bloomSel.value = bloomParam;
-  }
-
-  // Relación de aspecto: sincroniza los controles con lo ya aplicado en main.js.
-  const aspectParam = params.get("aspect");
-  if (aspectParam) {
-    const ratio = ratioFromString(aspectParam);
-    const preset = ASPECT_PRESETS.find((p) => p.ratio === ratio);
-    if (preset) {
-      aspectSel.value = preset.id;
-      aspectLabel = preset.id;
-    } else if (ratio) {
-      aspectSel.value = "custom";
-      aspectCustom.value = aspectParam;
-      aspectCustom.hidden = false;
-      aspectLabel = aspectParam;
-    }
-  } else {
-    aspectSel.value = DEFAULT_ASPECT;
-  }
+  const initialView = decodeView(params);
+  applyView({ ...initialView, seed: initialView.seed || "andes" });
+  if (!initialView.aspect) aspectSel.value = DEFAULT_ASPECT;
 
   chkAuto.checked = scene.autoScroll;
   chkTimeAuto.checked = scene.timeAuto;
   speed.value = String(scene.scrollSpeed);
+  populateViewSelect("");
 
   // Modo kiosco: sin panel ni botón.
   if (params.get("ui") === "0") {

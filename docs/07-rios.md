@@ -34,6 +34,8 @@ desde la cordillera hacia el nivel de la capa siguiente:
 - **Oclusión natural**: la capa siguiente (más al frente) tapa la desembocadura, así que no hacen
   falta costuras entre capas.
 - **Flora**: `floraSpawns` usa `bankHeight` y omite las columnas con `riverInfluence > 0.25`.
+- **Fauna del cauce**: la rana de Darwin y el huillín (`RIVER_SPECIES` en `fauna.js`) se colocan
+  aparte, en el **borde del cauce** (`ev.xc ± offset`), no por chunk ([D-022](12-decisiones.md)).
 
 ## Estado
 

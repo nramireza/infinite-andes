@@ -11,6 +11,27 @@ const SET = 18.5; // hora de puesta
 const BACK_HORIZON = 118;  // horizonte tras los Andes
 const FRONT_HORIZON = 212; // línea del mar (frente)
 
+const METEOR_PERIOD = 5.5; // segundos entre posibles estrellas fugaces
+const METEOR_DUR = 0.7;    // duración del trazo
+
+// Estrella fugaz determinista para un instante dado; null si no hay ninguna.
+// Posición y dirección en fracciones de ancho/alto del cielo, así no depende de W/H.
+export function meteorAt(seed, tSec) {
+  if (!Number.isFinite(tSec) || tSec < 0) return null;
+  const s = (seed ^ 0x7e70) >>> 0;
+  const block = Math.floor(tSec / METEOR_PERIOD);
+  if (hash1(block, s) > 0.55) return null;
+  const t0 = tSec - block * METEOR_PERIOD;
+  if (t0 > METEOR_DUR) return null;
+  const p = t0 / METEOR_DUR; // 0..1
+  const dir = hash1(block, s + 1) < 0.5 ? -1 : 1;
+  const x0 = 0.12 + hash1(block, s + 2) * 0.76;
+  const y0 = 0.04 + hash1(block, s + 3) * 0.34;
+  const dx = dir * (0.05 + hash1(block, s + 4) * 0.07);
+  const dy = 0.03 + hash1(block, s + 5) * 0.04;
+  return { x: x0 + dx * p, y: y0 + dy * p, dx, dy, alpha: Math.sin(p * Math.PI) };
+}
+
 export class Sky {
   constructor(seed) {
     this.seed = seed;
@@ -64,8 +85,32 @@ export class Sky {
     if (nightAmt > 0.15) this.drawMilkyWay(ctx, W, H, pal, nightAmt);
     if (nightAmt > 0.02) this.drawStars(ctx, W, H, pal, nightAmt, tSec);
     if (nightAmt > 0.35) this.drawAurora(ctx, W, nightAmt, tSec);
+    this.drawShootingStars(ctx, W, H, pal, nightAmt, tSec);
 
     this.drawGlow(ctx, pal, cel, W, H);
+  }
+
+  // Estrella fugaz ocasional: cabeza brillante con cola que se desvanece.
+  drawShootingStars(ctx, W, H, pal, nightAmt, tSec) {
+    if (nightAmt <= 0.25) return;
+    const m = meteorAt(this.seed, tSec);
+    if (!m) return;
+    const span = H * 0.56;
+    const hx = m.x * W;
+    const hy = m.y * span;
+    const tx = hx - m.dx * W;
+    const ty = hy - m.dy * span;
+    const steps = 9;
+    for (let i = 0; i < steps; i++) {
+      const t = i / steps;
+      const x = Math.round(hx + (tx - hx) * t);
+      const y = Math.round(hy + (ty - hy) * t);
+      if (x < 0 || x >= W || y < 0 || y > span) continue;
+      ctx.globalAlpha = m.alpha * (1 - t) * nightAmt;
+      ctx.fillStyle = i === 0 ? pal.snow : pal.star;
+      ctx.fillRect(x, y, 1, 1);
+    }
+    ctx.globalAlpha = 1;
   }
 
   // Resplandor cálido/frío cerca del horizonte según el astro esté bajo.
