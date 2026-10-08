@@ -1,6 +1,6 @@
 # 00 · Visión
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-08
 
 ## Qué es
 

@@ -1,8 +1,10 @@
 // Flora andina en pixel art: araucaria (pehuén), lenga/ñire, arbustos, rocas y pasto.
 
-import { mulberry32, hashInt } from "./rng.js";
+import { mulberry32, hashInt, hash1 } from "./rng.js";
 import { bankHeight, riverInfluence } from "./terrain.js";
 import { shade } from "./palette.js";
+
+const FLOWER_COLORS = ["#e05a9a", "#f2c14e", "#f4f0e6", "#9a6ad0"];
 
 function drawAraucaria(ctx, x, baseY, size, pal, sway) {
   x = Math.round(x);
@@ -153,13 +155,46 @@ function drawPlant(ctx, x, baseY, size, type, pal, sway, warm) {
     case "bush": return drawBush(ctx, x, baseY, size, pal);
     case "crop": return drawCrop(ctx, x, baseY, size, pal);
     case "rock": return drawRock(ctx, x, baseY, size, pal);
+    case "flower": return drawFlower(ctx, x, baseY, size, pal, sway);
     default: return drawGrass(ctx, x, baseY, size, pal);
   }
 }
 
+// Parche de flores del desierto florido: tallos cortos con corola de 3 px.
+function drawFlower(ctx, x, baseY, size, pal, sway) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const n = 2 + Math.floor(size * 0.25);
+  for (let i = 0; i < n; i++) {
+    const h = hash1(i * 31 + x, 0xf10e);
+    const fx = x + Math.round((h - 0.5) * size * 0.9 + sway);
+    const stemH = 1 + Math.floor(h * 3);
+    const col = FLOWER_COLORS[Math.floor(hash1(i * 7 + x, 0xf1a) * FLOWER_COLORS.length)];
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(fx, baseY - stemH, 1, stemH);
+    ctx.fillStyle = col;
+    ctx.fillRect(fx, baseY - stemH - 1, 1, 1);
+    ctx.fillRect(fx - 1, baseY - stemH, 1, 1);
+    ctx.fillRect(fx + 1, baseY - stemH, 1, 1);
+  }
+}
+
+// Sorteo ponderado de tipo (consume un único `rng()`, como la elección uniforme).
+function pickType(pool, rng) {
+  let total = 0;
+  for (const e of pool) total += e.w;
+  if (total <= 0) return pool[0].type;
+  let r = rng() * total;
+  for (const e of pool) {
+    r -= e.w;
+    if (r < 0) return e.type;
+  }
+  return pool[pool.length - 1].type;
+}
+
 // Posiciones deterministas de flora por chunk (sin dibujar). El parallax ya está
 // aplicado (`sx` es pantalla, `wx` mundo). No depende del tiempo, así es testeable.
-export function floraSpawns(layer, camera, W, H, seed) {
+export function floraSpawns(layer, camera, W, H, seed, poolAt) {
   const f = layer.flora;
   if (!f) return [];
   const p = layer.parallax;
@@ -180,7 +215,10 @@ export function floraSpawns(layer, camera, W, H, seed) {
       const gy = Math.round(bankHeight(layer, wx));
       if (gy > H + 4) continue;
       const size = f.minSize + rng() * (f.maxSize - f.minSize);
-      const type = f.types[Math.floor(rng() * f.types.length)];
+      const pool = poolAt ? poolAt(wx) : null;
+      const type = pool && pool.length
+        ? pickType(pool, rng)
+        : f.types[Math.floor(rng() * f.types.length)];
       const warm = rng() < 0.4;
       out.push({ wx, sx, gy, size, type, warm });
     }
@@ -188,7 +226,7 @@ export function floraSpawns(layer, camera, W, H, seed) {
   return out;
 }
 
-export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec) {
+export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt) {
   if (!layer.flora) return;
   if (layer.darken) {
     pal = {
@@ -202,7 +240,7 @@ export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec) {
       sunGlow: shade(pal.sunGlow, -layer.darken * 0.5),
     };
   }
-  for (const s of floraSpawns(layer, camera, W, H, seed)) {
+  for (const s of floraSpawns(layer, camera, W, H, seed, poolAt)) {
     const sway = Math.sin(tSec * 0.9 + s.wx * 0.05);
     drawPlant(ctx, s.sx, s.gy, s.size, s.type, pal, sway, s.warm);
   }

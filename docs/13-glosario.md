@@ -1,6 +1,6 @@
 # 13 · Glosario
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-08
 
 ## Términos técnicos
 

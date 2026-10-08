@@ -211,6 +211,35 @@ export function applyWeather(pal, weather, strength = 1) {
   return out;
 }
 
+// Claves que un bioma puede teñir: terreno, flora y suelo. Nunca cielo, astros,
+// nubes, estrellas, niebla ni mar (el bioma es terrestre).
+const BIOME_KEYS = new Set([
+  "farL", "farD", "midL", "midD", "nearL", "nearD",
+  "valleyL", "valleyD", "costaL", "costaD",
+  "sand", "sandD", "rock", "rockD", "floraL", "floraD",
+  "snow", "snowD", "ground", "groundHi",
+]);
+
+// Aplica el tinte de bioma (`amount` 0..1) y el rubor de la floración (`bloom` 0..1).
+export function applyBiome(pal, tint, amount = 1, bloom = 0) {
+  const a = Math.max(0, Math.min(1, amount));
+  const b = Math.max(0, Math.min(1, bloom));
+  if ((!tint || a <= 0) && b <= 0) return pal;
+  const out = { ...pal };
+  if (tint && a > 0) {
+    for (const k in tint) {
+      if (!BIOME_KEYS.has(k)) continue;
+      out[k] = lerpColor(out[k], tint[k], a);
+    }
+  }
+  if (b > 0) {
+    out.sand = lerpColor(out.sand, "#e6b8c8", b * 0.5);
+    out.valleyL = lerpColor(out.valleyL, "#c8a86a", b * 0.35);
+    out.floraL = lerpColor(out.floraL, "#d98ab0", b * 0.4);
+  }
+  return out;
+}
+
 export function getPalette(hour24, weather = "clear", strength = 1) {
   const base = interpKeys(hour24 / 24);
   return applyWeather(base, weather, strength);

@@ -7,6 +7,10 @@ const WEATHER_LABEL = {
   clear: "despejado", snow: "nieve", rain: "lluvia", fog: "niebla", wind: "viento",
 };
 
+const BIOME_LABEL = {
+  auto: "procedural", norte: "norte", centro: "centro", sur: "sur",
+};
+
 export function setupUI(scene, hooks = {}) {
   const $ = (id) => document.getElementById(id);
   const seedInput = $("seedInput");
@@ -22,6 +26,8 @@ export function setupUI(scene, hooks = {}) {
   const timeLabel = $("timeLabel");
   const weatherSel = $("weatherSel");
   const momentSel = $("momentSel");
+  const biomeSel = $("biomeSel");
+  const bloomSel = $("bloomSel");
   const btnExport = $("btnExport");
   const btnCopy = $("btnCopy");
   const hud = $("hud");
@@ -39,6 +45,8 @@ export function setupUI(scene, hooks = {}) {
       url.searchParams.set("weather", weatherSel.value);
       url.searchParams.set("aspect", aspectLabel);
       url.searchParams.set("moment", momentSel.value);
+      url.searchParams.set("biome", biomeSel.value);
+      url.searchParams.set("bloom", bloomSel.value);
       history.replaceState(null, "", url);
     } catch (_) {}
   }
@@ -95,6 +103,8 @@ export function setupUI(scene, hooks = {}) {
 
   weatherSel.addEventListener("change", () => { scene.setWeatherType(weatherSel.value); updateURL(); });
   momentSel.addEventListener("change", () => { scene.setMoment(momentSel.value); updateURL(); });
+  biomeSel.addEventListener("change", () => { scene.setBiome(biomeSel.value); updateURL(); });
+  bloomSel.addEventListener("change", () => { scene.setBloom(bloomSel.value); updateURL(); });
   btnExport.addEventListener("click", () => scene.exportPNG());
   btnCopy.addEventListener("click", async () => {
     updateURL();
@@ -116,7 +126,9 @@ export function setupUI(scene, hooks = {}) {
     const label = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     timeLabel.textContent = label;
     if (!draggingTime) timeRange.value = String(Math.round(scene.hour * 60));
-    hud.textContent = `seed ${scene.seed} · x ${Math.round(scene.camera.x)} · ${label} · ${WEATHER_LABEL[scene.weather.type] || scene.weather.type}`;
+    const weather = WEATHER_LABEL[scene.weather.type] || scene.weather.type;
+    const biome = BIOME_LABEL[scene.biomeMode] || scene.biomeMode;
+    hud.textContent = `seed ${scene.seed} · x ${Math.round(scene.camera.x)} · ${label} · ${weather} · ${biome}`;
   }
 
   // Estado inicial desde la URL
@@ -139,6 +151,18 @@ export function setupUI(scene, hooks = {}) {
   if (momentParam && [...momentSel.options].some((o) => o.value === momentParam)) {
     scene.setMoment(momentParam);
     momentSel.value = momentParam;
+  }
+
+  const biomeParam = params.get("biome");
+  if (biomeParam && [...biomeSel.options].some((o) => o.value === biomeParam)) {
+    scene.setBiome(biomeParam);
+    biomeSel.value = biomeParam;
+  }
+
+  const bloomParam = params.get("bloom");
+  if (bloomParam && [...bloomSel.options].some((o) => o.value === bloomParam)) {
+    scene.setBloom(bloomParam);
+    bloomSel.value = bloomParam;
   }
 
   // Relación de aspecto: sincroniza los controles con lo ya aplicado en main.js.

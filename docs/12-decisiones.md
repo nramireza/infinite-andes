@@ -168,9 +168,44 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Consecuencia:** cambia la identidad/densidad de la fauna; se regeneran dorados y capturas.
   Se retiran los nombres repetidos en `LAYERS[*].fauna.species` (el peso los reemplaza).
 
+## D-016 · Biomas procedurales y seleccionables
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** crear `src/biomes.js` con presets **norte** (árido), **centro** y **sur** (boscoso).
+  Los biomas se combinan de dos formas: **procedural** (`biomeWeights(worldX, seed)`, ruido de baja
+  frecuencia determinista, de modo que el paisaje cambia al recorrer) y **seleccionable** (forzar una
+  región con `?biome=norte|centro|sur` y un selector en el panel). En esta primera iteración el bioma
+  afecta **paleta** (tinte árido/lush) y **composición de flora y fauna** (pools por bioma); **no**
+  toca la geometría del ruido.
+- **Motivo:** variar el paisaje por región y a lo largo del recorrido sin romper el determinismo ni la
+  continuidad del campo de ruido; es el foco de la Fase 3 del roadmap.
+- **Alternativas:** perfiles fijos por región como único modo (descartado: pierde el recorrido);
+  modular `freq`/`amp` por columna (descartado en esta iteración: introduce discontinuidades en el
+  ruido; la amplitud/nieve se evaluarán después).
+- **Consecuencia:** se añade `applyBiome` en `palette.js` y pools de bioma en `flora.js`/`fauna.js`;
+  tests `biomes.test.js` y dorados; docs en [02 · Mundo](02-mundo.md). La modulación de geometría y la
+  flora nueva (cactus, alerce, nalca, palma, colihue) quedan para iteraciones siguientes.
+
+## D-017 · Desierto florido como estado de bioma
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** el **desierto florido** es un estado del bioma **norte**, no un momento raro global.
+  `bloomAt(worldX, seed, weights)` devuelve 0..1 en **bloques raros** (~6000 px, p≈0.18) con envolvente
+  suave y **solo con presencia de norte**. Añade el tipo de flora `flower` (parches, no alfombra), un
+  rubor de tinte en `sand`/`valleyL`/`floraL` (`applyBiome`) y sube la densidad de fauna
+  (`chance × (1 + 0.6·bloom)`) reforzando aves y zorros (`BLOOM_FAUNA`). Se controla con
+  `?bloom=auto|on|off` y el selector **Floración**.
+- **Motivo:** es un fenómeno geográfico del norte árido; atarlo al bioma evita que el sorteo de
+  "momentos" lo dispare fuera de lugar y permite teñir el suelo y componer flora/fauna a la vez.
+- **Alternativas:** como momento raro en `moments.js` (descartado: puede salir fuera del norte y no
+  compone pools); alfombra continua (descartado: menos creíble que los parches).
+- **Consecuencia:** nuevo tipo `flower` en `flora.js` y pool de fauna de floración en `biomes.js`;
+  tests `biomes.test.js` y dorados `biome.*`.
+
 ## Decisiones abiertas
 
 - ¿Habrá audio? ¿Generado o muestreado?
-- ¿El perfil será fijo o por regiones (Norte/Centro/Sur)?
 - ¿Se exportará una tira larga además del PNG de la vista?
 - ¿Los sprites serán matrices de píxeles definitivas o se admitirán PNG externos?

@@ -1,6 +1,6 @@
 # 02 · Mundo y geografía
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-08
 
 ## Punto de vista
 
@@ -35,6 +35,26 @@ De atrás hacia adelante (todas definidas en `src/terrain.js`, arreglo `LAYERS`)
 - **Línea de marea**: arena húmeda en la playa (`beach`).
 - **Ríos**: tallados en el valle y la Costa (`rivers`). Ver [07 · Ríos](07-rios.md).
 
+## Biomas y regiones
+
+El perfil de las 6 capas es común, pero el **bioma** cambia el tinte y la composición de flora/fauna
+según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay tres:
+
+| Bioma | Carácter | Flora | Fauna |
+|-------|----------|-------|-------|
+| **norte** | árido (Atacama/Coquimbo) | matorral y roca, **sin araucaria** | guanaco, vicuña, culpeo, flamenco, chinchilla |
+| **centro** | actual (Linares–O'Higgins) | pools de `LAYERS` sin cambios | pools de `LAYERS` sin cambios |
+| **sur** | boscoso (Araucanía/Patagonia) | lenga y araucaria densas | pudú, monito del monte, choroy, huemul, puma |
+
+- **Procedural**: `biomeWeights(worldX, seed)` mezcla los biomas con ruido de baja frecuencia, así el
+  paisaje **cambia al recorrer** (transición suave, sin saltos). Frecuencia `0.00015` (~regiones de
+  miles de px).
+- **Seleccionable**: `?biome=norte|centro|sur|auto` o el selector **Región** del panel.
+- El bioma **solo tiñe** paleta de terreno/flora/suelo (nunca cielo ni astros) y **pondera** los pools
+  de especies; **no** toca la geometría del ruido.
+- **Desierto florido**: en el norte, `bloomAt` abre **parches raros** de flores (tipo `flower`) y sube
+  la actividad de aves/zorros. Se fuerza con `?biome=norte&bloom=on` (ver [D-017](12-decisiones.md)).
+
 ## Escala y determinismo
 
 - 1 unidad de mundo ≈ 1 px interno; el mundo avanza de forma continua en `x` (infinito).
@@ -45,5 +65,5 @@ De atrás hacia adelante (todas definidas en `src/terrain.js`, arreglo `LAYERS`)
 ## Pendiente
 
 - TODO: fijar una nomenclatura/altitud "real" aproximada por capa (m s. n. m.) para dar escala.
-- TODO: decidir si el perfil es siempre el mismo o si varía por región (Norte/Centro/Sur).
 - TODO: documentar el largo de onda y la frecuencia de cada capa y por qué (sensación de escala).
+- TODO: modular la **geometría** por bioma (amplitud y línea de nieve; `snowFracShift` ya está como dato).

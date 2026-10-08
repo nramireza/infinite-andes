@@ -1,12 +1,13 @@
 // Composición de la escena: cámara, parallax, ciclo día/noche y clima.
 
-import { getPalette, nightAmount } from "./palette.js";
+import { getPalette, nightAmount, applyBiome } from "./palette.js";
 import { Sky } from "./sky.js";
 import { Weather } from "./weather.js";
 import { LAYERS, drawLayer, drawSea, seedLayers } from "./terrain.js";
 import { placeFlora } from "./flora.js";
 import { placeFauna } from "./fauna.js";
 import { momentSky, momentGround } from "./moments.js";
+import { biomeAt, biomeFloraPool, biomeFaunaPool, resolveBloom, bloomChanceMul } from "./biomes.js";
 
 const WEATHER_POOL = ["clear", "clear", "snow", "rain", "fog", "wind"];
 
@@ -35,6 +36,8 @@ export class Scene {
     this.weatherTimer = 12;
 
     this.moment = "auto";
+    this.biomeMode = "auto";
+    this.bloomMode = "auto";
     this.tSec = 0;
   }
 
@@ -70,6 +73,37 @@ export class Scene {
     this.moment = mode || "auto";
   }
 
+  setBiome(mode) {
+    this.biomeMode = mode || "auto";
+  }
+
+  setBloom(mode) {
+    this.bloomMode = mode || "auto";
+  }
+
+  // Contexto de bioma en una posición de mundo (tinte, pools y floración).
+  biomeAt(worldX) {
+    return biomeAt(worldX, this.seed, this.biomeMode);
+  }
+
+  bloomValue(b) {
+    return resolveBloom(this.bloomMode, b);
+  }
+
+  floraPoolAt(layer, wx) {
+    const b = this.biomeAt(wx);
+    return biomeFloraPool(layer.name, b.weights, this.bloomValue(b), layer.flora?.types);
+  }
+
+  faunaPoolAt(layer, wx) {
+    const b = this.biomeAt(wx);
+    return biomeFaunaPool(layer.name, b.weights, this.bloomValue(b), layer.fauna?.species);
+  }
+
+  faunaChanceAt(wx) {
+    return bloomChanceMul(this.bloomValue(this.biomeAt(wx)));
+  }
+
   update(dt) {
     this.tSec += dt;
 
@@ -96,7 +130,12 @@ export class Scene {
   render() {
     const ctx = this.ctx;
     const { W, H } = this;
-    const pal = getPalette(this.hour, this.weather.type, this.weather.strength);
+    const biome = this.biomeAt(this.camera.x + W * 0.5);
+    const bloom = this.bloomValue(biome);
+    const pal = applyBiome(
+      getPalette(this.hour, this.weather.type, this.weather.strength),
+      biome.tint, biome.amount, bloom
+    );
     const nightAmt = nightAmount(this.hour);
     const cel = this.sky.celestial(this.hour, W, H);
 
@@ -114,9 +153,11 @@ export class Scene {
         drawSea(ctx, pal, this.camera, W, H, this.tSec);
       } else {
         drawLayer(ctx, layer, pal, this.camera, W, H);
-        placeFlora(ctx, layer, pal, this.camera, W, H, this.seed, this.tSec);
+        placeFlora(ctx, layer, pal, this.camera, W, H, this.seed, this.tSec,
+          (wx) => this.floraPoolAt(layer, wx));
       }
-      placeFauna(ctx, layer, pal, this.camera, W, H, this.seed, this.hour, this.tSec);
+      placeFauna(ctx, layer, pal, this.camera, W, H, this.seed, this.hour, this.tSec,
+        (wx) => this.faunaPoolAt(layer, wx), (wx) => this.faunaChanceAt(wx));
     }
 
     momentGround(ctx, pal, this.camera, W, H, this.seed, this.tSec, this.moment);

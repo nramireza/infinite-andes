@@ -1,6 +1,6 @@
 # 06 · Fauna
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-08
 
 **Set implementado** (Fase 2) en [`src/fauna.js`](../src/fauna.js): el grueso de la tabla objetivo,
 con sprites de **matrices de píxeles en código**, spawn determinista por *chunk* y actividad según
@@ -95,6 +95,13 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
   BirdLife/GBIF. Es una **aproximación artística**: el paisaje es un compendio nacional y las
   especies del sur (huemul, chinchilla, choroy) viven en su banda aunque no coincidan en latitud.
 
+### Biomas y floración
+
+El bioma (`src/biomes.js`) **pondera** las `species` de cada capa con `biomeFaunaPool` (ver
+[D-016](12-decisiones.md)): el norte trae guanaco, vicuña y flamenco; el sur, pudú, monito, choroy y
+huemul. Durante el **desierto florido** (`bloomAt`, [D-017](12-decisiones.md)) sube la densidad
+(`chance × (1 + 0.6·bloom)`) y se refuerzan aves y zorros (`condor`, `culpeo`, `chilla`, `flamenco`).
+
 ## Especies objetivo (endémicas / nativas de Chile)
 
 | Nombre común | Nombre científico | Endémica | Capa/zona | Actividad | Comportamiento |
@@ -124,7 +131,7 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 
 ## Modelo de datos de una especie
 
-Cada entrada de `SPECIES` (`fauna.js`) declara: `movement` (`fly`/`walk`/`hop`), `active`
+Cada entrada de `SPECIES` (`fauna.js`) declara: `movement` (`fly`/`walk`/`hop`/`swim`/`flock`), `active`
 (franja horaria), `speed`/`range` (vaivén), `fps`, `anchor` (centro o pies), `palette`
 (carácter → clave de `getPalette`) y `frames` (matrices de píxeles). Para documentar una
 especie con detalle (UICN, nombre científico, referencia), usa

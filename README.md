@@ -7,7 +7,7 @@ con ciclo día/noche, clima dinámico, ríos, volcanes y especies endémicas de 
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** en desarrollo · **Versión:** 0.4.0 · **Licencia:** MIT
+> **Estado:** en desarrollo · **Versión:** 0.6.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -39,10 +39,12 @@ npm start
 | `weather` | `?weather=snow` | Clima fijo: `clear`, `snow`, `rain`, `fog`, `wind` |
 | `aspect`  | `?aspect=21:9` | Relación de aspecto: `16:9`, `21:9`, `32:9` (def.) o decimal (`2.4`) |
 | `moment`  | `?moment=kungleo` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo` |
+| `biome`   | `?biome=norte` | Región: `auto` (procedural), `norte` (árido), `centro`, `sur` (boscoso) |
+| `bloom`   | `?bloom=on`   | Desierto florido (norte): `auto`, `on`, `off` |
 | `ui`      | `?ui=0`       | Oculta el panel (modo kiosco) |
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
-`?aspect=32:9&moment=leorey`.
+`?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido).
 
 ---
 
@@ -69,6 +71,8 @@ Panel superior izquierdo (se oculta con el botón `∞`):
 - **Hora**: deslizador + paso del tiempo automático.
 - **Clima**: automático o forzado a uno de los cinco.
 - **Momento**: raro automático o forzado (18 de septiembre, Leo Rey, Kung Leo).
+- **Región**: procedural (automático), Norte árido, Centro o Sur boscoso.
+- **Floración**: desierto florido automático, forzado o desactivado (solo en el norte).
 - **Exportar PNG**: descarga la vista actual. **Copiar enlace**: comparte la vista.
 - **HUD**: semilla, posición, hora y clima.
 
@@ -93,6 +97,7 @@ infinite-andes/
 │   ├── flora.js          # araucaria, lenga, cultivos, arbustos, rocas
 │   ├── fauna.js          # especies endémicas (sprites + spawn)
 │   ├── moments.js        # momentos raros (18-sep, Leo Rey, Kung Leo)
+│   ├── biomes.js         # biomas norte/centro/sur y desierto florido
 │   ├── scene.js          # composición, cámara/parallax, día/noche, export
 │   ├── ui.js             # controles enlazados a la escena
 │   └── main.js           # arranque y loop

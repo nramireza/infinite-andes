@@ -6,12 +6,38 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-08
+
+### Added
+- **Biomas y regiones** (`src/biomes.js`): presets **norte** (árido), **centro** y **sur** (boscoso).
+  El bioma se combina de forma **procedural** (`biomeWeights`, ruido de baja frecuencia: el paisaje
+  cambia al recorrer) o **fija** con `?biome=norte|centro|sur` y el selector **Región**. Tiñe la
+  paleta de terreno/flora/suelo (`applyBiome`, nunca cielo ni astros) y pondera los pools de flora y
+  fauna por capa. El **norte árido no tiene araucaria**. Ver [D-016](docs/12-decisiones.md).
+- **Desierto florido** (`bloomAt`): estado del bioma norte con **parches** raros de flores (tipo
+  `flower`), rubor de tinte en el suelo y más actividad de aves y zorros. Se controla con
+  `?bloom=auto|on|off` y el selector **Floración**. Ver [D-017](docs/12-decisiones.md).
+- Tests `biomes.test.js` (determinismo, mesetas de pesos, floración acotada al norte, pools, tinte) y
+  smoke de render con biomas; dorados `biome.*`.
+
+### Changed
+- `flora.js`/`fauna.js`: `floraSpawns` y `faunaSpawns` aceptan un pool ponderado opcional
+  (`poolAt`/`chanceAt`); el sorteo sigue consumiendo **un único `rng()`**, así el **centro** queda
+  pixel-idéntico (dorados `flora.*` y `fauna.*` sin cambios).
+- `scene.js`: `setBiome`/`setBloom` y aplicación del tinte y los pools por posición de mundo.
+- UI: selectores **Región** y **Floración**; parámetros `?biome=` y `?bloom=` en la URL.
+
+## [0.5.0] - 2026-10-08
+
 ### Changed
 - **Densidad de fauna según rareza real**: cada especie declara `rarity` (abundante…muy-rara) y el
   sorteo por chunk es **ponderado** (`pickWeighted`), basado en el estado UICN y la clasificación
   nacional (MMA). Lo común (zorros, chingue) domina y lo raro (huemul, chinchilla, chungungo) se ve
   poco. Se retiran los nombres duplicados en `LAYERS[*].fauna.species` y se ajusta el `chance` por
   capa. Nuevos tests de rareza y sorteo; dorado `fauna.*` regenerado. Ver [D-015](docs/12-decisiones.md).
+- **Documentación sincronizada** con el estado real: roadmap (publicación y modo kiosco marcados
+  como hechos; biomas como próximo foco), movimientos `swim`/`flock` documentados en
+  [06 · Fauna](docs/06-fauna.md) y estados de docs consolidados a *estable*.
 
 ## [0.4.0] - 2026-10-08
 
@@ -106,7 +132,9 @@ Primera versión funcional (Fase 1: paisaje, cielo y clima).
 - Ríos tallados en el valle y la Costa con curso meándrico sinusoidal.
 - Panel de control (semilla, scroll, hora, clima), export PNG y parámetros de URL.
 
-[Unreleased]: https://example.com/infinite-andes/compare/v0.4.0...HEAD
+[Unreleased]: https://example.com/infinite-andes/compare/v0.6.0...HEAD
+[0.6.0]: https://example.com/infinite-andes/compare/v0.5.0...v0.6.0
+[0.5.0]: https://example.com/infinite-andes/compare/v0.4.0...v0.5.0
 [0.4.0]: https://example.com/infinite-andes/compare/v0.3.0...v0.4.0
 [0.3.0]: https://example.com/infinite-andes/compare/v0.2.0...v0.3.0
 [0.2.0]: https://example.com/infinite-andes/compare/v0.1.0...v0.2.0

@@ -1,6 +1,6 @@
 # 01 · Experiencia
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-08
 
 ## Concepto
 

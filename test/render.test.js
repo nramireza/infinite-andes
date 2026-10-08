@@ -113,3 +113,34 @@ test("Scene.resize cambia el lienzo y sigue renderizando", () => {
   assert.equal(scene.weather.W, 960);
   assert.doesNotThrow(() => scene.render());
 });
+
+test("el pipeline de biomas (región y floración) no lanza y dibuja", () => {
+  for (const biome of ["auto", "norte", "centro", "sur"]) {
+    for (const bloom of ["auto", "on", "off"]) {
+      const ctx = makeFakeCtx();
+      const canvas = { width: W, height: H, getContext: () => ctx };
+      const scene = new Scene(canvas, SEED);
+      scene.weatherAuto = false;
+      scene.setBiome(biome);
+      scene.setBloom(bloom);
+      assert.doesNotThrow(() => scene.render(), `biome=${biome} bloom=${bloom}`);
+      assert.ok(ctx.calls.fillRect.length > 0, `sin dibujo: biome=${biome} bloom=${bloom}`);
+    }
+  }
+});
+
+test("la floración del norte dibuja flores (tipo flower)", () => {
+  seedLayers(SEED);
+  const layer = layerByName("valle");
+  const ctx = makeFakeCtx();
+  const canvas = { width: W, height: H, getContext: () => ctx };
+  const scene = new Scene(canvas, SEED);
+  scene.weatherAuto = false;
+  scene.setBiome("norte");
+  scene.setBloom("on");
+  scene.render();
+  // El desierto florido usa colores propios de flor; al menos uno debe aparecer.
+  const flowerColors = new Set(["#e05a9a", "#f2c14e", "#f4f0e6", "#9a6ad0"]);
+  const drew = ctx.calls.fillRect.some((c) => flowerColors.has(c[4]));
+  assert.ok(drew, "no se dibujaron flores en el norte con floración");
+});

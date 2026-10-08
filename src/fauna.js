@@ -416,24 +416,35 @@ export function speciesWeight(type) {
   return RARITY_WEIGHT[sp.rarity] ?? 1;
 }
 
-// Sorteo ponderado por rareza. Consume un único `rng()`, igual que la elección
-// uniforme anterior, así el resto de la secuencia determinista no se altera.
+// Sorteo ponderado por rareza × peso de bioma. Consume un único `rng()`, igual que
+// la elección uniforme anterior, así el resto de la secuencia determinista no se altera.
+// Cada entrada puede ser un nombre (`"pudu"`) o `{ type, w }` (peso de bioma).
 export function pickWeighted(list, rng) {
   let total = 0;
-  for (const t of list) total += speciesWeight(t);
-  if (total <= 0) return list[0];
+  for (const e of list) total += entryWeight(e);
+  if (total <= 0) return entryType(list[0]);
   let r = rng() * total;
-  for (const t of list) {
-    r -= speciesWeight(t);
-    if (r < 0) return t;
+  for (const e of list) {
+    r -= entryWeight(e);
+    if (r < 0) return entryType(e);
   }
-  return list[list.length - 1];
+  return entryType(list[list.length - 1]);
+}
+
+function entryType(entry) {
+  return typeof entry === "string" ? entry : entry.type;
+}
+
+function entryWeight(entry) {
+  const base = speciesWeight(entryType(entry));
+  const extra = typeof entry === "object" && entry.w != null ? entry.w : 1;
+  return base * extra;
 }
 
 // Posiciones deterministas de fauna por chunk (sin dibujar). El parallax ya está
 // aplicado (`sx` pantalla, `wx` mundo). La hora NO altera la identidad del candidato,
 // solo filtra si está activo, así el mismo sitio+hora reproduce los mismos animales.
-export function faunaSpawns(layer, camera, W, H, seed, hour) {
+export function faunaSpawns(layer, camera, W, H, seed, hour, poolAt, chanceAt) {
   const f = layer.fauna;
   if (!f) return [];
   const p = layer.parallax;
@@ -444,9 +455,12 @@ export function faunaSpawns(layer, camera, W, H, seed, hour) {
   const out = [];
 
   for (let c = startC; c <= endC; c++) {
+    const wx0 = c * chunkW;
+    const chanceMul = chanceAt ? chanceAt(wx0) : 1;
     const rng = mulberry32(hashInt(c, chunkSeed));
-    if (rng() > (f.chance ?? 0.5)) continue;
-    const type = pickWeighted(f.species, rng);
+    if (rng() > (f.chance ?? 0.5) * chanceMul) continue;
+    const pool = poolAt ? poolAt(wx0) : null;
+    const type = pool && pool.length ? pickWeighted(pool, rng) : pickWeighted(f.species, rng);
     const sp = SPECIES[type];
     if (!sp) continue;
 
@@ -510,9 +524,9 @@ function drawFauna(ctx, layer, pal, camera, s, tSec) {
   }
 }
 
-export function placeFauna(ctx, layer, pal, camera, W, H, seed, hour, tSec) {
+export function placeFauna(ctx, layer, pal, camera, W, H, seed, hour, tSec, poolAt, chanceAt) {
   if (!layer.fauna) return;
-  for (const s of faunaSpawns(layer, camera, W, H, seed, hour)) {
+  for (const s of faunaSpawns(layer, camera, W, H, seed, hour, poolAt, chanceAt)) {
     drawFauna(ctx, layer, pal, camera, s, tSec);
   }
 }
