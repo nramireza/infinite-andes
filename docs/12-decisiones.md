@@ -225,6 +225,24 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   dorados `flora.*`, `fauna.rana` y `biome.*` y las capturas. El sampler es estado de módulo en
   `terrain.js`; los tests lo restauran a `null`.
 
+## D-019 · Estaciones del año
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** añadir un **ciclo estacional** (`src/seasons.js`) con cuatro estaciones
+  (verano/otoño/invierno/primavera) que tiñe la paleta, desplaza la **línea de nieve** y sesga el
+  **clima**. El modo automático es un **ciclo temporal lento** (`SEASON_DURATION = 120 s` por
+  estación, año ≈ 8 min) con **meseta + crossfade**; también se puede fijar con `?season=`. El tinte
+  se compone tras el clima y antes del bioma, y se **atenúa de noche**. El `snowShift` estacional se
+  suma al del bioma en el sampler de geometría (sin tocar `terrain.js`).
+- **Motivo:** un eje de variación nuevo y coherente sobre el paisaje infinito, reutilizando la paleta
+  por hora y el `snowShift` del bioma; cierra el punto pendiente de la Fase 3.
+- **Alternativas:** estación fija por semilla (descartado: menos vivo); estación espacial por `x`
+  (descartado: las estaciones son temporales, no geográficas); duración muy larga (descartado: no se
+  percibe).
+- **Consecuencia:** nuevo `?season=` y selector **Estación**; `pickSeasonWeather` reemplaza el sorteo
+  uniforme del clima automático; dorados `palette.season.*` y capturas. El verano no tiñe (base).
+
 ## Decisiones abiertas
 
 - ¿Habrá audio? ¿Generado o muestreado?

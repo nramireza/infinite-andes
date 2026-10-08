@@ -6,6 +6,22 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-08
+
+### Added
+- **Estaciones del año** ([D-019](docs/12-decisiones.md)): nuevo `src/seasons.js` con
+  verano/otoño/invierno/primavera. Tinte de paleta (`applySeason`), desplazamiento de la **línea de
+  nieve** (`snowShift`, sumado al del bioma) y **sesgo de clima** (`pickSeasonWeather`). Ciclo
+  automático lento (≈2 min por estación, año ≈8 min) con meseta + crossfade, o fijo con `?season=` y
+  el selector **Estación**. El verano no tiñe; el tinte se atenúa de noche.
+- Tests `seasons.test.js` (ciclo, nieve, sesgo de clima, sin mutación) y dorado `palette.season.*`.
+- Documento [15 · Estaciones](docs/15-estaciones.md).
+
+### Changed
+- `scene.js`: composición de paleta **hora → clima → estación → bioma**; el sampler de geometría suma
+  el `snowShift` de la estación; el clima automático pasa de sorteo uniforme a ponderado por estación.
+- `04-clima.md` y `02-mundo.md` actualizados; UI con selector de estación y HUD.
+
 ## [0.7.0] - 2026-10-08
 
 ### Added
@@ -151,7 +167,8 @@ Primera versión funcional (Fase 1: paisaje, cielo y clima).
 - Ríos tallados en el valle y la Costa con curso meándrico sinusoidal.
 - Panel de control (semilla, scroll, hora, clima), export PNG y parámetros de URL.
 
-[Unreleased]: https://example.com/infinite-andes/compare/v0.7.0...HEAD
+[Unreleased]: https://example.com/infinite-andes/compare/v0.8.0...HEAD
+[0.8.0]: https://example.com/infinite-andes/compare/v0.7.0...v0.8.0
 [0.7.0]: https://example.com/infinite-andes/compare/v0.6.0...v0.7.0
 [0.6.0]: https://example.com/infinite-andes/compare/v0.5.0...v0.6.0
 [0.5.0]: https://example.com/infinite-andes/compare/v0.4.0...v0.5.0

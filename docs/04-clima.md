@@ -24,9 +24,10 @@ entonces entra el nuevo desde 0 (`transition = "in"`). Evita los cortes bruscos.
 
 ## Automático
 
-Con el clima en **Automático**, cada **30–60 s** se elige un estado aleatorio distinto del actual
-(la niebla y el despejado tienen peso similar). El usuario puede **forzar** un clima desde el panel
-(`weatherSel`), lo que desactiva el modo automático.
+Con el clima en **Automático**, cada **30–60 s** se elige un estado distinto del actual. El sorteo es
+**ponderado por la estación** (`pickSeasonWeather`, ver [15 · Estaciones](15-estaciones.md)):
+invierno favorece nieve/lluvia/niebla y verano el despejado. El usuario puede **forzar** un clima
+desde el panel (`weatherSel`), lo que desactiva el modo automático.
 
 ## Interacción con la paleta
 

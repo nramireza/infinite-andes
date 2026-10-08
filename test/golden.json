@@ -21,5 +21,9 @@
   "biome.norte": "5ebbbf2a",
   "biome.centro": "fd079835",
   "biome.sur": "10dc1031",
-  "fauna.rana": "05ba6c2f"
+  "fauna.rana": "05ba6c2f",
+  "palette.season.verano": "afcc4b30",
+  "palette.season.otono": "19a69582",
+  "palette.season.invierno": "e3ff9a5e",
+  "palette.season.primavera": "e799c5f6"
 }

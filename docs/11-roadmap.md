@@ -36,7 +36,7 @@
     - [x] **Desierto florido** en el norte (`?bloom=`, [D-017](12-decisiones.md)).
     - [x] Geometría por bioma: amplitud y línea de nieve ([D-018](12-decisiones.md), v0.7.0).
     - [x] Flora nueva por bioma: cactus, alerce, nalca, colihue y palma chilena.
-- [ ] Estaciones del año (otoño en la Costa, nieve a menor altura en invierno).
+- [x] Estaciones del año (tinte, línea de nieve y clima) ([D-019](12-decisiones.md), v0.8.0).
 - [ ] Export de tira larga y/o secuencia.
 - [ ] Más flora (coihue/roble, copihue, michay) y fauna (choique, chucao, huillín).
 - [ ] Detalles: estrellas fugaces, huellas, reflejos en el agua.
@@ -55,12 +55,15 @@
 - [x] Publicación: workflow de GitHub Pages (`.github/workflows/pages.yml`), botón "copiar enlace" y
       demo en vivo ([README](../README.md)).
 
-## Próximos pasos
+## Próximos pasos (hacia v1.0)
 
-1. **Estaciones del año**: tinte y nieve por estación (depende de la paleta; usar `snowFracShift`).
-2. **Export de tira larga**: rango de `x` en PNG/secuencia.
-3. **Flora y fauna pendientes**: nalca, palma chilena, alerce, cactus, colihue; Rana de Darwin.
-4. **Guardar/cargar vistas** favoritas y refinamiento de sprites.
+1. **Export de tira larga**: rango de `x` en PNG y/o secuencia.
+2. **Vistas favoritas + `?x=`**: deep-link de posición (semilla + x + hora + clima + aspecto + estación + bioma).
+3. **Detalles**: estrellas fugaces y reflejos en el agua.
+4. **Accesibilidad/teclado** (flechas para desplazar, espacio para auto-scroll) y **chequeo de rendimiento**.
+5. **Cierre de docs** (estados a *estable*, glosario, paleta) y README → **tag v1.0.0**.
+   - *Post-1.0*: más flora/fauna (coihue/roble, copihue; choique, chucao, huillín), audio y más
+     biomas (altiplano/patagonia/austral/fiordos).
 
 ## Backlog / ideas
 

@@ -26,7 +26,7 @@ TAG="v${VERSION}-${SUFFIX}"
 SHOTROOT="$ROOT/screenshots"
 OUTDIR="$SHOTROOT/$TAG"
 
-# matriz: seed|hour|weather[|biome[|bloom]]
+# matriz: seed|hour|weather[|biome[|bloom[|season]]]
 MATRIX=(
   "andes|6.7|clear"
   "andes|12|clear"
@@ -44,6 +44,9 @@ MATRIX=(
   "andes|12|clear|sur"
   "andes|12|clear|norte|on"
   "andes|12|clear|auto"
+  "andes|12|clear|||otono"
+  "andes|12|clear|||invierno"
+  "andes|12|clear|||primavera"
 )
 
 mkdir -p "$OUTDIR"
@@ -67,14 +70,16 @@ done
 
 echo "Capturando $TAG ($CHROME)"
 for entry in "${MATRIX[@]}"; do
-  IFS='|' read -r seed hour weather biome bloom <<< "$entry"
+  IFS='|' read -r seed hour weather biome bloom season <<< "$entry"
   suffix=""
   [ -n "${biome:-}" ] && suffix="${suffix}_${biome}"
   [ -n "${bloom:-}" ] && suffix="${suffix}_${bloom}"
+  [ -n "${season:-}" ] && suffix="${suffix}_${season}"
   out="$OUTDIR/${seed}_h${hour}_${weather}${suffix}.png"
   url="http://localhost:${PORT}/?seed=${seed}&hour=${hour}&weather=${weather}&aspect=${ASPECT}"
   [ -n "${biome:-}" ] && url="${url}&biome=${biome}"
   [ -n "${bloom:-}" ] && url="${url}&bloom=${bloom}"
+  [ -n "${season:-}" ] && url="${url}&season=${season}"
   "$CHROME" --headless=new --disable-gpu --no-sandbox \
     --window-size="$WINSIZE" --virtual-time-budget=2500 \
     --screenshot="$out" "$url" >/dev/null 2>&1
@@ -99,11 +104,12 @@ MATRIX_STR="$MATRIX_STR" VERSION="$VERSION" TAG="$TAG" CHROME="$CHROME" \
 GIT="$GIT" ASPECT="$ASPECT" OUTDIR="$OUTDIR" node -e '
 const fs = require("fs");
 const shots = (process.env.MATRIX_STR || "").split("\n").filter(Boolean).map((s) => {
-  const [seed, hour, weather, biome, bloom] = s.split("|");
+  const [seed, hour, weather, biome, bloom, season] = s.split("|");
   let suffix = "";
   if (biome) suffix += `_${biome}`;
   if (bloom) suffix += `_${bloom}`;
-  return { seed, hour, weather, biome: biome || null, bloom: bloom || null, file: `${seed}_h${hour}_${weather}${suffix}.png` };
+  if (season) suffix += `_${season}`;
+  return { seed, hour, weather, biome: biome || null, bloom: bloom || null, season: season || null, file: `${seed}_h${hour}_${weather}${suffix}.png` };
 });
 const manifest = {
   version: process.env.VERSION,

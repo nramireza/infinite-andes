@@ -21,6 +21,7 @@
 | 12 | [Decisiones](12-decisiones.md) | Registro de decisiones (ADR ligera) |
 | 13 | [Glosario](13-glosario.md) | Términos técnicos y especies |
 | 14 | [Paleta maestra](14-paleta-maestra.md) | Tabla de colores por hora (generada con `npm run palette`) |
+| 15 | [Estaciones](15-estaciones.md) | Ciclo estacional, tinte, nieve y clima |
 
 Plantillas en [`templates/`](templates/).
 

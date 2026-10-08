@@ -7,7 +7,7 @@ con ciclo día/noche, clima dinámico, ríos, volcanes y especies endémicas de 
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** en desarrollo · **Versión:** 0.7.0 · **Licencia:** MIT
+> **Estado:** en desarrollo · **Versión:** 0.8.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -37,6 +37,7 @@ npm start
 | `seed`    | `?seed=pewen` | Semilla del paisaje (texto o número) |
 | `hour`    | `?hour=6.7`   | Hora del día (0–24); desactiva el paso del tiempo |
 | `weather` | `?weather=snow` | Clima fijo: `clear`, `snow`, `rain`, `fog`, `wind` |
+| `season`  | `?season=otono` | Estación: `auto` (ciclo), `verano`, `otono`, `invierno`, `primavera` |
 | `aspect`  | `?aspect=21:9` | Relación de aspecto: `16:9`, `21:9`, `32:9` (def.) o decimal (`2.4`) |
 | `moment`  | `?moment=kungleo` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo` |
 | `biome`   | `?biome=norte` | Región: `auto` (procedural), `norte` (árido), `centro`, `sur` (boscoso) |
@@ -70,6 +71,7 @@ Panel superior izquierdo (se oculta con el botón `∞`):
 - **Relación**: 16:9, 21:9, 32:9 o personalizada (por defecto 32:9).
 - **Hora**: deslizador + paso del tiempo automático.
 - **Clima**: automático o forzado a uno de los cinco.
+- **Estación**: automática (ciclo de ~8 min) o fija (verano, otoño, invierno, primavera).
 - **Momento**: raro automático o forzado (18 de septiembre, Leo Rey, Kung Leo).
 - **Región**: procedural (automático), Norte árido, Centro o Sur boscoso.
 - **Floración**: desierto florido automático, forzado o desactivado (solo en el norte).
@@ -98,6 +100,7 @@ infinite-andes/
 │   ├── fauna.js          # especies endémicas (sprites + spawn)
 │   ├── moments.js        # momentos raros (18-sep, Leo Rey, Kung Leo)
 │   ├── biomes.js         # biomas norte/centro/sur y desierto florido
+│   ├── seasons.js        # ciclo estacional (tinte, nieve, clima)
 │   ├── scene.js          # composición, cámara/parallax, día/noche, export
 │   ├── ui.js             # controles enlazados a la escena
 │   └── main.js           # arranque y loop
@@ -126,5 +129,6 @@ infinite-andes/
 - [Decisiones](docs/12-decisiones.md)
 - [Glosario](docs/13-glosario.md)
 - [Paleta maestra](docs/14-paleta-maestra.md)
+- [Estaciones](docs/15-estaciones.md)
 
 → Índice y convenciones completas en [docs/README.md](docs/README.md).

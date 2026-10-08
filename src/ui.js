@@ -11,6 +11,10 @@ const BIOME_LABEL = {
   auto: "procedural", norte: "norte", centro: "centro", sur: "sur",
 };
 
+const SEASON_LABEL = {
+  auto: "auto", verano: "verano", otono: "otoño", invierno: "invierno", primavera: "primavera",
+};
+
 export function setupUI(scene, hooks = {}) {
   const $ = (id) => document.getElementById(id);
   const seedInput = $("seedInput");
@@ -26,6 +30,7 @@ export function setupUI(scene, hooks = {}) {
   const timeLabel = $("timeLabel");
   const weatherSel = $("weatherSel");
   const momentSel = $("momentSel");
+  const seasonSel = $("seasonSel");
   const biomeSel = $("biomeSel");
   const bloomSel = $("bloomSel");
   const btnExport = $("btnExport");
@@ -45,6 +50,7 @@ export function setupUI(scene, hooks = {}) {
       url.searchParams.set("weather", weatherSel.value);
       url.searchParams.set("aspect", aspectLabel);
       url.searchParams.set("moment", momentSel.value);
+      url.searchParams.set("season", seasonSel.value);
       url.searchParams.set("biome", biomeSel.value);
       url.searchParams.set("bloom", bloomSel.value);
       history.replaceState(null, "", url);
@@ -103,6 +109,7 @@ export function setupUI(scene, hooks = {}) {
 
   weatherSel.addEventListener("change", () => { scene.setWeatherType(weatherSel.value); updateURL(); });
   momentSel.addEventListener("change", () => { scene.setMoment(momentSel.value); updateURL(); });
+  seasonSel.addEventListener("change", () => { scene.setSeason(seasonSel.value); updateURL(); });
   biomeSel.addEventListener("change", () => { scene.setBiome(biomeSel.value); updateURL(); });
   bloomSel.addEventListener("change", () => { scene.setBloom(bloomSel.value); updateURL(); });
   btnExport.addEventListener("click", () => scene.exportPNG());
@@ -128,7 +135,8 @@ export function setupUI(scene, hooks = {}) {
     if (!draggingTime) timeRange.value = String(Math.round(scene.hour * 60));
     const weather = WEATHER_LABEL[scene.weather.type] || scene.weather.type;
     const biome = BIOME_LABEL[scene.biomeMode] || scene.biomeMode;
-    hud.textContent = `seed ${scene.seed} · x ${Math.round(scene.camera.x)} · ${label} · ${weather} · ${biome}`;
+    const season = SEASON_LABEL[scene.season] || scene.season;
+    hud.textContent = `seed ${scene.seed} · x ${Math.round(scene.camera.x)} · ${label} · ${weather} · ${season} · ${biome}`;
   }
 
   // Estado inicial desde la URL
@@ -157,6 +165,12 @@ export function setupUI(scene, hooks = {}) {
   if (biomeParam && [...biomeSel.options].some((o) => o.value === biomeParam)) {
     scene.setBiome(biomeParam);
     biomeSel.value = biomeParam;
+  }
+
+  const seasonParam = params.get("season");
+  if (seasonParam && [...seasonSel.options].some((o) => o.value === seasonParam)) {
+    scene.setSeason(seasonParam);
+    seasonSel.value = seasonParam;
   }
 
   const bloomParam = params.get("bloom");

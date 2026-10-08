@@ -22,6 +22,7 @@ npm run check     # verifica sintaxis de src/*.js
 | `sky-order.test.js` | orden de render del cielo (astro/nubes/terreno) |
 | `moments.test.js` | momentos raros: determinismo y dibujo |
 | `biomes.test.js` | biomas: pesos, floración del norte, pools ponderados y tinte |
+| `seasons.test.js` | estaciones: ciclo, línea de nieve, sesgo de clima y tinte |
 | `render.test.js` | *smoke* de dibujo con `helpers/fakeCtx.js` |
 | `golden.test.js` | snapshots dorados (terreno, ríos, flora, fauna, paleta) |
 

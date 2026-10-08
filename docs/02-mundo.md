@@ -28,7 +28,8 @@ De atrás hacia adelante (todas definidas en `src/terrain.js`, arreglo `LAYERS`)
 
 ## Suelo y agua
 
-- **Nieve**: aparece sobre cierta fracción de `amp` (`snowFrac`). Los Andes la tienen siempre.
+- **Nieve**: aparece sobre cierta fracción de `amp` (`snowFrac`). Los Andes la tienen siempre; la
+  línea la desplazan el bioma y la estación ([15 · Estaciones](15-estaciones.md)).
 - **Volcanes**: conos deterministas por hash, con penacho animado (`volcano`).
 - **Roca**: vetas sutiles bajo la nieve en los Andes (`rocky`).
 - **Campos**: textura de franjas en el valle (`fields`).

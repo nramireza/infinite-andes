@@ -8,8 +8,7 @@ import { placeFlora } from "./flora.js";
 import { placeFauna } from "./fauna.js";
 import { momentSky, momentGround } from "./moments.js";
 import { biomeAt, biomeGeometry, modeWeights, biomeFloraPool, biomeFaunaPool, resolveBloom, bloomChanceMul } from "./biomes.js";
-
-const WEATHER_POOL = ["clear", "clear", "snow", "rain", "fog", "wind"];
+import { seasonState, seasonSnowShift, applySeason, pickSeasonWeather, SEASON_DURATION, SEASON_STRENGTH } from "./seasons.js";
 
 export class Scene {
   constructor(canvas, seed) {
@@ -21,7 +20,11 @@ export class Scene {
 
     this.seed = seed;
     seedLayers(seed);
-    setBiomeGeometry((wx) => biomeGeometry(modeWeights(this.biomeMode, wx, this.seed)));
+    setBiomeGeometry((wx) => {
+      const g = biomeGeometry(modeWeights(this.biomeMode, wx, this.seed));
+      g.snowShift += seasonSnowShift(this.seasonState());
+      return g;
+    });
     this.sky = new Sky(seed);
     this.weather = new Weather(this.W, this.H);
 
@@ -39,6 +42,9 @@ export class Scene {
     this.moment = "auto";
     this.biomeMode = "auto";
     this.bloomMode = "auto";
+    this.season = "auto";
+    this.seasonPhase = 0;
+    this.seasonSpeed = 1 / SEASON_DURATION; // estaciones por segundo
     this.tSec = 0;
   }
 
@@ -82,6 +88,15 @@ export class Scene {
     this.bloomMode = mode || "auto";
   }
 
+  setSeason(mode) {
+    this.season = mode || "auto";
+  }
+
+  // Estado de la estación actual (índice, siguiente y mezcla).
+  seasonState() {
+    return seasonState(this.seasonPhase, this.season);
+  }
+
   // Contexto de bioma en una posición de mundo (tinte, pools y floración).
   biomeAt(worldX) {
     return biomeAt(worldX, this.seed, this.biomeMode);
@@ -115,10 +130,14 @@ export class Scene {
       if (this.hour >= 24) this.hour -= 24;
     }
 
+    if (this.season === "auto") {
+      this.seasonPhase = (this.seasonPhase + this.seasonSpeed * dt) % 4;
+    }
+
     if (this.weatherAuto) {
       this.weatherTimer -= dt;
       if (this.weatherTimer <= 0) {
-        let pick = WEATHER_POOL[Math.floor(Math.random() * WEATHER_POOL.length)];
+        let pick = pickSeasonWeather(this.seasonState(), Math.random);
         if (pick === this.weather.type) pick = pick === "clear" ? "wind" : "clear";
         this.weather.request(pick);
         this.weatherTimer = 30 + Math.random() * 30;
@@ -131,13 +150,14 @@ export class Scene {
   render() {
     const ctx = this.ctx;
     const { W, H } = this;
+    const nightAmt = nightAmount(this.hour);
+    const season = this.seasonState();
     const biome = this.biomeAt(this.camera.x + W * 0.5);
     const bloom = this.bloomValue(biome);
-    const pal = applyBiome(
-      getPalette(this.hour, this.weather.type, this.weather.strength),
-      biome.tint, biome.amount, bloom
-    );
-    const nightAmt = nightAmount(this.hour);
+    // Orden: hora → clima (en getPalette) → estación → bioma (manda en lo regional).
+    let pal = getPalette(this.hour, this.weather.type, this.weather.strength);
+    pal = applySeason(pal, season, SEASON_STRENGTH * (1 - 0.85 * nightAmt));
+    pal = applyBiome(pal, biome.tint, biome.amount, bloom);
     const cel = this.sky.celestial(this.hour, W, H);
 
     ctx.clearRect(0, 0, W, H);
