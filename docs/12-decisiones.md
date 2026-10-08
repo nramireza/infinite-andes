@@ -290,6 +290,26 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Consecuencia:** cambian los pools de `LAYERS` y `BIOMES`; se regeneran los dorados `biome.*`,
   `flora.*` y `fauna.*`. La rana conserva su siembra (dorado `fauna.rana` intacto).
 
+## D-023 · Parches de desierto florido más extensos y raros
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** agrandar el desierto florido. `drawFlower` pasa de un racimo de 2–6 tallos a un
+  **manto ~10x** (9–14 tallos, más ancho y en dos filas de profundidad). La zona de floración sube a
+  `BLOOM_BLOCK` 6000→**20000 px** con **envolvente en meseta** (laderas suaves, centro lleno) y
+  `BLOOM_CHANCE` 0.18→**0.20**. La **puerta de norte se evalúa en el centro del bloque** (en
+  `biomeAt`) para que el parche no lo recorte el ancho de las regiones norte del ruido (~2–6k px).
+  Refina [D-017](#d-017--desierto-florido-como-estado-de-bioma).
+- **Motivo:** los parches se veían pequeños y frecuentes; se busca un evento más extenso y menos
+  numeroso, conservando una cobertura florida parecida (~5% del terreno) para que el paisaje siga
+  vivo al recorrer.
+- **Alternativas:** bajar `BIOME_FREQ` 10x (descartado: biomas de horas a 30 px/s); solo racimos más
+  grandes sin tocar la zona (descartado: no da parches extensos); `BLOOM_BLOCK` 60000 (descartado:
+  cruzaba demasiado el bioma y quedaba casi invisible por semilla).
+- **Consecuencia:** `bloomAt` usa envolvente de meseta y `biomeAt` consulta los pesos del centro del
+  bloque (memo de un bloque). No cambian los dorados (`flora.*` no usa bioma; `biome.*` usa
+  `bloom=0`); se añade un test de ancho de parche.
+
 ## Decisiones abiertas
 
 - ¿Habrá audio? ¿Generado o muestreado?

@@ -36,7 +36,8 @@ El bioma (`src/biomes.js`) **pondera** los `types` de cada capa; el pool efectiv
 `biomeFloraPool` (ver [D-016](12-decisiones.md)). El **norte árido no tiene araucaria** (matorral,
 copao y roca); el **sur** suma alerce, nalca, colihue, coihue, roble, copihue y michay
 ([D-022](12-decisiones.md)). El tipo `flower` solo aparece con la floración
-del norte (`bloomAt`, [D-017](12-decisiones.md)); se dibuja como parche de tallos con corola de 3 px.
+del norte (`bloomAt`, [D-017](12-decisiones.md) y [D-023](12-decisiones.md)); se dibuja como manto
+amplio de tallos con corola de 3 px (`drawFlower`, ~10x el racimo original).
 
 ## Especificación de sprites
 

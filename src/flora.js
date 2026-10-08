@@ -393,22 +393,26 @@ function drawMichay(ctx, x, baseY, size, pal) {
   }
 }
 
-// Parche de flores del desierto florido: tallos cortos con corola de 3 px.
+// Parche de flores del desierto florido: manto amplio (~10x el área del racimo
+// original) de tallos cortos con corola de 3 px, en dos filas de profundidad.
 function drawFlower(ctx, x, baseY, size, pal, sway) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const n = 2 + Math.floor(size * 0.25);
+  const w = size * 2.6;
+  const n = 6 + Math.floor(size * 0.7);
   for (let i = 0; i < n; i++) {
     const h = hash1(i * 31 + x, 0xf10e);
-    const fx = x + Math.round((h - 0.5) * size * 0.9 + sway);
-    const stemH = 1 + Math.floor(h * 3);
+    const back = hash1(i * 53 + x, 0xf10f) < 0.45 ? 1 : 0; // fila de fondo
+    const fx = x + Math.round((h - 0.5) * w + sway) - back;
+    const stemH = 1 + Math.floor(h * 4);
     const col = FLOWER_COLORS[Math.floor(hash1(i * 7 + x, 0xf1a) * FLOWER_COLORS.length)];
+    const yy = baseY - back;
     ctx.fillStyle = pal.floraD;
-    ctx.fillRect(fx, baseY - stemH, 1, stemH);
+    ctx.fillRect(fx, yy - stemH, 1, stemH);
     ctx.fillStyle = col;
-    ctx.fillRect(fx, baseY - stemH - 1, 1, 1);
-    ctx.fillRect(fx - 1, baseY - stemH, 1, 1);
-    ctx.fillRect(fx + 1, baseY - stemH, 1, 1);
+    ctx.fillRect(fx, yy - stemH - 1, 1, 1);
+    ctx.fillRect(fx - 1, yy - stemH, 1, 1);
+    ctx.fillRect(fx + 1, yy - stemH, 1, 1);
   }
 }
 

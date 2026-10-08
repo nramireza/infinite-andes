@@ -56,8 +56,11 @@ según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay tres:
   `bankHeight`/`drawLayer` vía `setBiomeGeometry` (solo en capas con nieve). El **centro** no cambia.
 - **Tinte**: el bioma tiñe paleta de terreno/flora/suelo (nunca cielo ni astros) y **pondera** los
   pools de especies. La frecuencia del ruido (`freq`) no se toca: solo amplitud y nieve.
-- **Desierto florido**: en el norte, `bloomAt` abre **parches raros** de flores (tipo `flower`) y sube
-  la actividad de aves/zorros. Se fuerza con `?biome=norte&bloom=on` (ver [D-017](12-decisiones.md)).
+- **Desierto florido**: en el norte, `bloomAt` abre **parches amplios y raros** de flores (tipo
+  `flower`) y sube la actividad de aves/zorros. El ancho del parche lo fija `BLOOM_BLOCK` (~20000 px)
+  y la puerta de norte se evalúa en el centro del bloque, así el parche no queda recortado por el
+  ancho de la región norte. Se fuerza con `?biome=norte&bloom=on` (ver [D-017](12-decisiones.md) y
+  [D-023](12-decisiones.md)).
 
 ## Escala y determinismo
 

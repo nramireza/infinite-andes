@@ -6,6 +6,15 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-08
+
+### Changed
+- **Desierto florido más extenso y menos frecuente** ([D-023](docs/12-decisiones.md)): los parches de
+  flores del norte ahora miden ~7x (bloque 6000→20000 px, con envolvente en meseta) y aparecen más
+  raros (`BLOOM_CHANCE` 0.18→0.20). La puerta de norte se evalúa en el **centro del bloque**, así el
+  parche no queda recortado por el ancho de las regiones norte del ruido. El racimo `drawFlower`
+  crece ~10x (más tallos y más ancho). Test nuevo de ancho de parche.
+
 ## [0.9.0] - 2026-10-08
 
 ### Added

@@ -76,6 +76,20 @@ test("bloomAt solo florece donde hay norte y queda acotado", () => {
   assert.ok(positivos > 0, "nunca florece el norte");
 });
 
+test("el parche de floración es extenso (~7x) gracias a la puerta por bloque", () => {
+  let maxRun = 0;
+  let run = 0;
+  for (let x = 0; x < 300000; x += 200) {
+    if (biomeAt(x, SEED, "norte").bloom > 0) {
+      run += 200;
+      maxRun = Math.max(maxRun, run);
+    } else {
+      run = 0;
+    }
+  }
+  assert.ok(maxRun >= 15000, `parche demasiado corto: ${maxRun}px`);
+});
+
 test("resolveBloom respeta los modos auto/on/off", () => {
   const norte = biomeAt(0, SEED, "norte");
   assert.equal(resolveBloom("off", norte), 0);

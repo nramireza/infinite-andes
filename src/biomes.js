@@ -66,8 +66,8 @@ export const BIOMES = {
 export const BLOOM_FAUNA = ["condor", "culpeo", "chilla", "flamenco"];
 
 const BIOME_FREQ = 0.00015; // longitud de onda amplia: regiones de miles de px
-const BLOOM_BLOCK = 6000;   // px de mundo por bloque de floración
-const BLOOM_CHANCE = 0.18;  // probabilidad de floración por bloque
+const BLOOM_BLOCK = 20000;  // px de mundo por bloque de floración (~7x el original)
+const BLOOM_CHANCE = 0.20;  // probabilidad de floración por bloque (más raro, pero más extenso)
 const BLOOM_FLORA_WEIGHT = 2.0;
 const BLOOM_FAUNA_WEIGHT = 1.5;
 const BLOOM_CHANCE_MUL = 0.6;
@@ -138,14 +138,27 @@ export function biomeGeometry(weights) {
   return { ampMul: ampMul || 1, snowShift };
 }
 
-// Floración de desierto: bloques raros y suaves, solo con presencia de norte.
+// Floración de desierto: bloques raros y extensos, solo con presencia de norte.
+// La puerta se evalúa en el centro del bloque (`biomeAt`) para que el parche mida
+// ~BLOOM_BLOCK y no lo recorte el ancho de las regiones norte.
 export function bloomAt(worldX, seed, weights) {
   const gate = weights ? weights.norte || 0 : 0;
   if (gate <= 0.01) return 0;
   const c = Math.floor(worldX / BLOOM_BLOCK);
   if (hash1(c, (seed + 0xb100) >>> 0) > BLOOM_CHANCE) return 0;
   const u = worldX / BLOOM_BLOCK - c; // 0..1 dentro del bloque
-  return clamp01(gate * Math.sin(Math.PI * u)); // parche que crece y decrece
+  const env = smoothstep(0, 0.15, u) * smoothstep(1, 0.85, u); // meseta con laderas
+  return clamp01(gate * env);
+}
+
+// Pesos del bioma en el centro del bloque de floración (memo de un bloque).
+let bloomCenter = { key: "", weights: null };
+function bloomCenterWeights(block, seed, mode) {
+  const key = `${mode}:${seed}:${block}`;
+  if (bloomCenter.key !== key) {
+    bloomCenter = { key, weights: modeWeights(mode, (block + 0.5) * BLOOM_BLOCK, seed) };
+  }
+  return bloomCenter.weights;
 }
 
 // Resuelve la floración según el modo (`auto`/`on`/`off`).
@@ -155,12 +168,14 @@ export function resolveBloom(mode, biome) {
   return biome.bloom;
 }
 
-// Contexto de bioma en una posición de mundo.
+// Contexto de bioma en una posición de mundo. La floración usa la puerta de
+// norte del centro del bloque para que el parche no lo recorte la región norte.
 export function biomeAt(worldX, seed = 0, mode = "auto") {
   const weights = modeWeights(mode, worldX, seed);
   const tint = tintFor(weights);
   const amount = 1 - (weights.centro || 0);
-  const bloom = bloomAt(worldX, seed, weights);
+  const block = Math.floor(worldX / BLOOM_BLOCK);
+  const bloom = bloomAt(worldX, seed, bloomCenterWeights(block, seed, mode));
   return { weights, tint, amount, bloom };
 }
 
