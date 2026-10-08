@@ -59,10 +59,41 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
   `bankHeight` y evitan el cauce (`riverInfluence > 0.25`). `swim` añade un vaivén sobre la
   superficie del mar.
 - **Despawn**: al salir de pantalla se descarta; el hash lo regenera idéntico al volver.
-- **Densidad y rareza**: `chance` por chunk y repetición de especies en la lista (p. ej. el
-  huemul aparece más que el pudú en el valle). El cóndor es más escaso (`chance` bajo).
+- **Densidad y rareza**: cada especie declara una clase (`rarity`) y el sorteo por chunk es
+  **ponderado** (`pickWeighted`), de modo que lo abundante aparece más seguido. Ver la tabla de
+  abajo y [D-015](12-decisiones.md).
 - **Mar y playa**: la fauna marina (`swim`) se dibuja **sobre el mar**; la de playa (chilla,
   flamenco), sobre la arena.
+
+### Densidad según rareza real
+
+`chance` por capa fija cuánta fauna hay en el ambiente; la `rarity` de cada especie fija **cuál**
+(y con qué frecuencia relativa). Pesos en `RARITY_WEIGHT` (`fauna.js`).
+
+| Especie | UICN global | Chile | Clase | Peso |
+|---------|-------------|-------|-------|------|
+| Zorro chilla | LC | común | abundante | 6 |
+| Zorro culpeo | LC | común | abundante | 6 |
+| Chingue | LC | común | abundante | 6 |
+| Cóndor | NT | amplia | común | 3 |
+| Güiña | LC | común, esquiva | común | 3 |
+| Choroy | LC | endémica, estable | común | 3 |
+| Cachaña | LC | común | común | 3 |
+| Guanaco | LC | VU centro/norte | poco-común | 1.2 |
+| Pudú | NT | decreciente | poco-común | 1.2 |
+| Puma | LC | NT nacional | poco-común | 1.2 |
+| Vicuña | LC | localizada | poco-común | 1.2 |
+| Flamenco | NT | localizado | poco-común | 1.2 |
+| Monito del monte | NT | localizado | poco-común | 1.2 |
+| Pingüino de Humboldt | VU | colonias | rara | 0.5 |
+| Huemul | EN | ~1.000 ind. | muy-rara | 0.12 |
+| Chungungo | EN | costero | muy-rara | 0.12 |
+| Chinchilla de cola larga | EN | casi extinta | muy-rara | 0.12 |
+
+- **Chance por capa**: andes 0.25, precordillera 0.3, valle 0.5, costa 0.55, playa 0.3, mar 0.35.
+- Fuentes: listados de la UICN (versiones 2016–2025), clasificación nacional del MMA y
+  BirdLife/GBIF. Es una **aproximación artística**: el paisaje es un compendio nacional y las
+  especies del sur (huemul, chinchilla, choroy) viven en su banda aunque no coincidan en latitud.
 
 ## Especies objetivo (endémicas / nativas de Chile)
 
@@ -104,7 +135,7 @@ especie con detalle (UICN, nombre científico, referencia), usa
 - [x] Priorizar un primer set (cóndor, pudú, güiña, huemul) para la Fase 2.
 - [x] Especies extra: puma, zorros, guanaco, vicuña, chingue, monito del monte, chinchilla,
       choroy, cachaña, flamenco, chungungo, pingüino de Humboldt.
-- [ ] Ajustar densidad y rareza por especie (afinar `chance` y listas con capturas).
+- [x] Ajustar densidad y rareza por especie según estado UICN/nacional (ver [D-015](12-decisiones.md)).
 - [ ] Rana de Darwin (*Rhinoderma darwinii*): humedales/río, estática.
 - [ ] Decidir si el cóndor pasa a ser un "momento" destacado (vuelo largo ocasional).
 - [ ] Completar cada especie con la plantilla [`templates/especimen.md`](templates/especimen.md)

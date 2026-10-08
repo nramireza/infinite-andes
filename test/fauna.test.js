@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { LAYERS, seedLayers, riverInfluence } from "../src/terrain.js";
-import { faunaSpawns, placeFauna, isActive, SPECIES } from "../src/fauna.js";
+import { faunaSpawns, placeFauna, isActive, SPECIES, speciesWeight, pickWeighted, RARITY_WEIGHT } from "../src/fauna.js";
+import { mulberry32 } from "../src/rng.js";
 import { seedToInt } from "../src/rng.js";
 import { getPalette } from "../src/palette.js";
 import { BASE_H, widthForRatio } from "../src/viewport.js";
@@ -170,4 +171,36 @@ test("placeFauna no falla y dibuja en la ventana", () => {
     }
   }
   assert.ok(drawn > 0, "no se dibujó fauna");
+});
+
+test("cada especie declara una clase de rareza válida", () => {
+  for (const [name, sp] of Object.entries(SPECIES)) {
+    assert.ok(RARITY_WEIGHT[sp.rarity] > 0, `${name}: rareza inválida ${sp.rarity}`);
+    assert.equal(speciesWeight(name), RARITY_WEIGHT[sp.rarity]);
+  }
+});
+
+test("el sorteo ponderado es determinista y favorece lo abundante", () => {
+  const list = ["chilla", "chinchilla"]; // abundante vs muy-rara
+  const a = pickWeighted(list, mulberry32(12345));
+  const b = pickWeighted(list, mulberry32(12345));
+  assert.equal(a, b);
+
+  const rng = mulberry32(999);
+  let chilla = 0;
+  for (let i = 0; i < 2000; i++) if (pickWeighted(list, rng) === "chilla") chilla++;
+  assert.ok(chilla > 1900, `chilla debería dominar (fue ${chilla}/2000)`);
+});
+
+test("las especies raras aparecen menos que las comunes en el terreno", () => {
+  seedLayers(SEED);
+  const layer = LAYERS.find((l) => l.name === "valle"); // culpeo (abundante, día) + huemul (muy rara, día)
+  const counts = {};
+  for (let x = 0; x < 400000; x += 97) {
+    for (const s of faunaSpawns(layer, { x }, W, H, SEED, 12)) {
+      counts[s.type] = (counts[s.type] || 0) + 1;
+    }
+  }
+  assert.ok((counts.culpeo || 0) > (counts.huemul || 0) * 5,
+    `culpeo (${counts.culpeo}) debería superar ampliamente a huemul (${counts.huemul})`);
 });

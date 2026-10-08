@@ -29,6 +29,7 @@
 
 - [x] Relación de aspecto configurable (16:9/21:9/32:9/custom) en GUI y URL ([D-013](12-decisiones.md)).
 - [x] Momentos raros: **18 de septiembre**, **Leo Rey** y **Kung Leo** ([D-014](12-decisiones.md)).
+- [x] Densidad de fauna según rareza real (UICN/MMA) ([D-015](12-decisiones.md)).
 - [ ] Biomas/regiones seleccionables (Norte árido, Centro, Sur boscoso).
     - [ ] dejar que los biomas cambien de manera procedural.
 - [ ] Estaciones del año (otoño en la Costa, nieve a menor altura en invierno).

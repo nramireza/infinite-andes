@@ -153,6 +153,21 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Nota:** los personajes son **parodia estilizada en pixel**, no un deepfake fotorrealista; se
   usan matrices de píxeles y una fuente 3×5 propia.
 
+## D-015 · Densidad de fauna según rareza real
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** cada especie de `fauna.js` declara una clase `rarity`
+  (`abundante`/`comun`/`poco-comun`/`rara`/`muy-rara`) con un peso en `RARITY_WEIGHT`; el sorteo
+  por chunk pasa de uniforme a **ponderado** (`pickWeighted`). Las clases se basan en el estado de
+  conservación global (UICN) y nacional (MMA) de cada especie. El `chance` por capa queda como
+  densidad del ambiente.
+- **Motivo:** que lo raro (p. ej. huemul, chinchilla, chungungo) se vea poco y lo común (zorros,
+  chingue) domine, acercando la experiencia a la realidad chilena. Ver la tabla en
+  [06 · Fauna](06-fauna.md).
+- **Consecuencia:** cambia la identidad/densidad de la fauna; se regeneran dorados y capturas.
+  Se retiran los nombres repetidos en `LAYERS[*].fauna.species` (el peso los reemplaza).
+
 ## Decisiones abiertas
 
 - ¿Habrá audio? ¿Generado o muestreado?

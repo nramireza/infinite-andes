@@ -14,7 +14,7 @@ export const LAYERS = [
     name: "andes", parallax: 0.07, baseY: 128, amp: 92, freq: 0.0032, seed: 101,
     rugged: 0.78, snowFrac: 0.22, lightKey: "farL", darkKey: "farD", alpha: 0.8,
     volcano: { spacing: 600, height: 58 }, rocky: true,
-    fauna: { chunkW: 220, chance: 0.35, species: ["condor", "chinchilla"] },
+    fauna: { chunkW: 220, chance: 0.25, species: ["condor", "chinchilla"] },
   },
   {
     name: "precordillera", parallax: 0.16, baseY: 158, amp: 50, freq: 0.0060, seed: 211,
@@ -27,14 +27,14 @@ export const LAYERS = [
     rugged: 0.12, snowFrac: 1.4, lightKey: "valleyL", darkKey: "valleyD", alpha: 0.97, fields: true,
     rivers: { spacing: 1100, chance: 0.45, width: 3.2, depth: 7, wfreq: 4.2 },
     flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria"] },
-    fauna: { chunkW: 150, chance: 0.45, species: ["pudu", "huemul", "huemul", "guina", "culpeo", "chingue"] },
+    fauna: { chunkW: 150, chance: 0.5, species: ["pudu", "huemul", "guina", "culpeo", "chingue"] },
   },
   {
     name: "costa", parallax: 0.52, baseY: 226, amp: 12, freq: 0.010, seed: 419,
     rugged: 0.05, snowFrac: 1.4, lightKey: "costaL", darkKey: "costaD", alpha: 1,
     rivers: { spacing: 1500, chance: 0.4, width: 2.1, depth: 5, wfreq: 4.5 },
     flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria"] },
-    fauna: { chunkW: 160, chance: 0.4, species: ["pudu", "pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana"] },
+    fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana"] },
   },
   {
     name: "playa", parallax: 0.78, baseY: 232, amp: 7, freq: 0.020, seed: 523,
@@ -45,7 +45,7 @@ export const LAYERS = [
   {
     name: "mar", parallax: 1.0, baseY: SEA_Y, amp: 6, freq: 0.05, seed: 631,
     rugged: 0.2, snowFrac: 1.4, lightKey: "sea", darkKey: "seaD", alpha: 1, sea: true,
-    fauna: { chunkW: 240, chance: 0.3, species: ["chungungo", "pinguino"] },
+    fauna: { chunkW: 240, chance: 0.35, species: ["chungungo", "pinguino"] },
   },
 ];
 

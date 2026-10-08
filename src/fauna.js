@@ -1,6 +1,6 @@
 // Fauna endémica en pixel art: matrices de píxeles + fantasma por capa.
-// Set inicial: cóndor (vuela, día), huemul (pasta, día), pudú (crepúsculo/noche)
-// y güiña (a saltos, noche). Determinista por chunk; la hora solo filtra actividad.
+// Determinista por chunk; la hora solo filtra actividad. La `rarity` (rareza en
+// Chile, según UICN/clasificación nacional) pondera el sorteo de especies.
 
 import { mulberry32, hashInt, hash1 } from "./rng.js";
 import { bankHeight, riverInfluence } from "./terrain.js";
@@ -12,11 +12,20 @@ const BAND = {
   dusk: (h) => (h >= 17 && h <= 21) || (h >= 5 && h <= 8),
 };
 
-// `active`: franja horaria · `movement`: fly/walk/hop · `speed` y `range`: vaivén.
-// `palette`: carácter -> clave de getPalette (sensible a hora y clima).
+// Peso relativo de cada clase de rareza (más alto = más probable).
+export const RARITY_WEIGHT = {
+  abundante: 6,
+  comun: 3,
+  "poco-comun": 1.2,
+  rara: 0.5,
+  "muy-rara": 0.12,
+};
+
+// `active`: franja horaria · `movement`: fly/walk/hop/swim/flock · `speed` y `range`: vaivén.
+// `rarity`: clase de rareza (ver RARITY_WEIGHT) · `palette`: carácter -> clave de getPalette.
 export const SPECIES = {
   condor: {
-    movement: "fly", active: "day", speed: 0.35, range: 26, fps: 3, anchor: "center",
+    movement: "fly", active: "day", speed: 0.35, range: 26, fps: 3, anchor: "center", rarity: "comun",
     palette: { b: "trunk", w: "snow" },
     frames: [
       [
@@ -38,7 +47,7 @@ export const SPECIES = {
     ],
   },
   huemul: {
-    movement: "walk", active: "day", speed: 0.9, range: 9, fps: 2, anchor: "ground",
+    movement: "walk", active: "day", speed: 0.9, range: 9, fps: 2, anchor: "ground", rarity: "muy-rara",
     palette: { d: "trunk", l: "sandD" },
     frames: [
       [
@@ -64,7 +73,7 @@ export const SPECIES = {
     ],
   },
   pudu: {
-    movement: "walk", active: "dusk", speed: 0.8, range: 6, fps: 2, anchor: "ground",
+    movement: "walk", active: "dusk", speed: 0.8, range: 6, fps: 2, anchor: "ground", rarity: "poco-comun",
     palette: { d: "trunk", l: "sandD" },
     frames: [
       [
@@ -86,7 +95,7 @@ export const SPECIES = {
     ],
   },
   guina: {
-    movement: "hop", active: "night", speed: 1.1, range: 7, fps: 3, anchor: "ground",
+    movement: "hop", active: "night", speed: 1.1, range: 7, fps: 3, anchor: "ground", rarity: "comun",
     palette: { d: "trunk", s: "sandD" },
     frames: [
       [
@@ -104,7 +113,7 @@ export const SPECIES = {
     ],
   },
   puma: {
-    movement: "walk", active: "dusk", speed: 0.7, range: 10, fps: 2, anchor: "ground",
+    movement: "walk", active: "dusk", speed: 0.7, range: 10, fps: 2, anchor: "ground", rarity: "poco-comun",
     palette: { d: "sandD", l: "sand", k: "trunk" },
     frames: [
       [
@@ -122,7 +131,7 @@ export const SPECIES = {
     ],
   },
   culpeo: {
-    movement: "walk", active: "day", speed: 1.0, range: 8, fps: 3, anchor: "ground",
+    movement: "walk", active: "day", speed: 1.0, range: 8, fps: 3, anchor: "ground", rarity: "abundante",
     palette: { d: "sandD", l: "sand", t: "sandD" },
     frames: [
       [
@@ -140,7 +149,7 @@ export const SPECIES = {
     ],
   },
   chilla: {
-    movement: "walk", active: "dusk", speed: 1.1, range: 7, fps: 3, anchor: "ground",
+    movement: "walk", active: "dusk", speed: 1.1, range: 7, fps: 3, anchor: "ground", rarity: "abundante",
     palette: { d: "sandD", l: "sand" },
     frames: [
       [
@@ -158,7 +167,7 @@ export const SPECIES = {
     ],
   },
   guanaco: {
-    movement: "walk", active: "day", speed: 0.6, range: 12, fps: 2, anchor: "ground",
+    movement: "walk", active: "day", speed: 0.6, range: 12, fps: 2, anchor: "ground", rarity: "poco-comun",
     palette: { d: "sandD", l: "sand" },
     frames: [
       [
@@ -182,7 +191,7 @@ export const SPECIES = {
     ],
   },
   vicuna: {
-    movement: "walk", active: "day", speed: 0.7, range: 10, fps: 2, anchor: "ground",
+    movement: "walk", active: "day", speed: 0.7, range: 10, fps: 2, anchor: "ground", rarity: "poco-comun",
     palette: { d: "sand", l: "sandD" },
     frames: [
       [
@@ -206,7 +215,7 @@ export const SPECIES = {
     ],
   },
   chingue: {
-    movement: "walk", active: "night", speed: 0.5, range: 6, fps: 2, anchor: "ground",
+    movement: "walk", active: "night", speed: 0.5, range: 6, fps: 2, anchor: "ground", rarity: "abundante",
     palette: { d: "trunk", w: "snow" },
     frames: [
       [
@@ -222,7 +231,7 @@ export const SPECIES = {
     ],
   },
   monito: {
-    movement: "hop", active: "night", speed: 0.8, range: 5, fps: 3, anchor: "ground",
+    movement: "hop", active: "night", speed: 0.8, range: 5, fps: 3, anchor: "ground", rarity: "poco-comun",
     palette: { d: "trunk", l: "sandD" },
     frames: [
       [
@@ -242,7 +251,7 @@ export const SPECIES = {
     ],
   },
   chinchilla: {
-    movement: "hop", active: "night", speed: 1.2, range: 5, fps: 3, anchor: "ground",
+    movement: "hop", active: "night", speed: 1.2, range: 5, fps: 3, anchor: "ground", rarity: "muy-rara",
     palette: { d: "rock", l: "snowD" },
     frames: [
       [
@@ -262,7 +271,7 @@ export const SPECIES = {
     ],
   },
   choroy: {
-    movement: "flock", active: "day", speed: 0.55, range: 30, fps: 4, anchor: "center",
+    movement: "flock", active: "day", speed: 0.55, range: 30, fps: 4, anchor: "center", rarity: "comun",
     palette: { g: "floraL", d: "trunk" },
     frames: [
       [
@@ -280,7 +289,7 @@ export const SPECIES = {
     ],
   },
   cachana: {
-    movement: "flock", active: "day", speed: 0.5, range: 30, fps: 4, anchor: "center",
+    movement: "flock", active: "day", speed: 0.5, range: 30, fps: 4, anchor: "center", rarity: "comun",
     palette: { g: "sandD", d: "trunk" },
     frames: [
       [
@@ -298,7 +307,7 @@ export const SPECIES = {
     ],
   },
   flamenco: {
-    movement: "walk", active: "day", speed: 0.3, range: 4, fps: 1, anchor: "ground",
+    movement: "walk", active: "day", speed: 0.3, range: 4, fps: 1, anchor: "ground", rarity: "poco-comun",
     palette: { p: "#f2a0b8", w: "snow", k: "trunk" },
     frames: [
       [
@@ -326,7 +335,7 @@ export const SPECIES = {
     ],
   },
   chungungo: {
-    movement: "swim", active: "day", speed: 0.6, range: 7, fps: 2, anchor: "ground",
+    movement: "swim", active: "day", speed: 0.6, range: 7, fps: 2, anchor: "ground", rarity: "muy-rara",
     palette: { d: "trunk", l: "sand" },
     frames: [
       [
@@ -344,7 +353,7 @@ export const SPECIES = {
     ],
   },
   pinguino: {
-    movement: "swim", active: "day", speed: 0.5, range: 6, fps: 2, anchor: "ground",
+    movement: "swim", active: "day", speed: 0.5, range: 6, fps: 2, anchor: "ground", rarity: "rara",
     palette: { k: "#1b1b22", w: "snow", o: "#f5a623" },
     frames: [
       [
@@ -400,6 +409,27 @@ function drawMatrix(ctx, rows, colors, left, top, flip) {
   }
 }
 
+// Peso de sorteo de una especie según su rareza (mayor = más probable).
+export function speciesWeight(type) {
+  const sp = SPECIES[type];
+  if (!sp) return 0;
+  return RARITY_WEIGHT[sp.rarity] ?? 1;
+}
+
+// Sorteo ponderado por rareza. Consume un único `rng()`, igual que la elección
+// uniforme anterior, así el resto de la secuencia determinista no se altera.
+export function pickWeighted(list, rng) {
+  let total = 0;
+  for (const t of list) total += speciesWeight(t);
+  if (total <= 0) return list[0];
+  let r = rng() * total;
+  for (const t of list) {
+    r -= speciesWeight(t);
+    if (r < 0) return t;
+  }
+  return list[list.length - 1];
+}
+
 // Posiciones deterministas de fauna por chunk (sin dibujar). El parallax ya está
 // aplicado (`sx` pantalla, `wx` mundo). La hora NO altera la identidad del candidato,
 // solo filtra si está activo, así el mismo sitio+hora reproduce los mismos animales.
@@ -416,7 +446,7 @@ export function faunaSpawns(layer, camera, W, H, seed, hour) {
   for (let c = startC; c <= endC; c++) {
     const rng = mulberry32(hashInt(c, chunkSeed));
     if (rng() > (f.chance ?? 0.5)) continue;
-    const type = f.species[Math.floor(rng() * f.species.length)];
+    const type = pickWeighted(f.species, rng);
     const sp = SPECIES[type];
     if (!sp) continue;
 

@@ -9,6 +9,8 @@ pero con la geografía, la paleta y las especies de Chile.
 
 > **Estado:** en desarrollo · **Versión:** 0.4.0 · **Licencia:** MIT
 
+**Demo en vivo:** https://nramireza.github.io/infinite-andes/
+
 ---
 
 ## Cómo ejecutarlo

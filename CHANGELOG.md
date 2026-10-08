@@ -6,6 +6,13 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+### Changed
+- **Densidad de fauna según rareza real**: cada especie declara `rarity` (abundante…muy-rara) y el
+  sorteo por chunk es **ponderado** (`pickWeighted`), basado en el estado UICN y la clasificación
+  nacional (MMA). Lo común (zorros, chingue) domina y lo raro (huemul, chinchilla, chungungo) se ve
+  poco. Se retiran los nombres duplicados en `LAYERS[*].fauna.species` y se ajusta el `chance` por
+  capa. Nuevos tests de rareza y sorteo; dorado `fauna.*` regenerado. Ver [D-015](docs/12-decisiones.md).
+
 ## [0.4.0] - 2026-10-08
 
 ### Added
