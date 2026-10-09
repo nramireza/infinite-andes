@@ -37,7 +37,7 @@
     - [x] Geometría por bioma: amplitud y línea de nieve ([D-018](12-decisiones.md), v0.7.0).
     - [x] Flora nueva por bioma: cactus, alerce, nalca, colihue y palma chilena.
 - [x] Estaciones del año (tinte, línea de nieve y clima) ([D-019](12-decisiones.md), v0.8.0).
-- [ ] Export de tira larga y/o secuencia.
+- [ ] Export de tira larga y/o secuencia (opcional, no prioritario para wallpaper).
 - [x] Más flora (coihue/roble, copihue, michay) y fauna (choique, chucao, huillín)
       ([D-022](12-decisiones.md), v0.9.0).
 - [x] Detalles: estrellas fugaces, huellas y reflejos en el agua ([D-021](12-decisiones.md), v0.9.0).
@@ -45,6 +45,8 @@
 - [x] Rana de Darwin ([D-018](12-decisiones.md), v0.7.0) y refinar sprites de fauna.
 - [x] guardar/cargar "vistas" favoritas (semilla + x + hora + clima + aspecto)
       ([D-020](12-decisiones.md), v0.9.0).
+- [x] **Modo fondo de pantalla**: kiosco sin HUD/cursor/marco, `fit=cover`, pantalla completa,
+      atajos de teclado y rendimiento (FPS, pausa) ([D-026](12-decisiones.md), v0.11.1).
 
 ## Pendientes transversales
 
@@ -59,16 +61,18 @@
 
 ## Próximos pasos (hacia v1.0)
 
-1. **Export de tira larga**: rango de `x` en PNG y/o secuencia.
-2. **Accesibilidad/teclado** (flechas para desplazar, espacio para auto-scroll) y **chequeo de rendimiento**.
-3. **Cierre de docs** (estados a *estable*, glosario, paleta) y README → **tag v1.0.0**.
-   - *Post-1.0*: más momentos raros (vuelo de cóndor, bandada), audio y más biomas
+1. **Export de tira larga** (opcional): rango de `x` en PNG y/o secuencia.
+2. **Cierre de docs** (estados a *estable*, glosario, paleta) y README → **tag v1.0.0**.
+   - *Post-1.0*: más momentos raros (vuelo de cóndor, bandada) y más biomas
      (altiplano/patagonia/austral/fiordos).
+   - *Hecho en v0.11.1*: modo fondo de pantalla y rendimiento ([D-025](12-decisiones.md),
+     [D-026](12-decisiones.md)); sin audio.
    - *Hecho en v0.9.0*: vistas favoritas + `?x=` ([D-020](12-decisiones.md)); estrellas fugaces,
      reflejos y huellas ([D-021](12-decisiones.md)); flora y fauna austral ([D-022](12-decisiones.md)).
 
 ## Backlog / ideas
 
-- [x] Modo kiosco / screensaver (`?ui=0`). Variantes extra pendientes (cursor oculto, sin HUD).
-- TODO: audio ambiente (sin decidir).
+- [x] Modo kiosco / screensaver (`?ui=0`): panel, botón, HUD y cursor ocultos; variantes de fondo
+      (fullscreen, `fit=cover`, FPS, pausa) en [D-026](12-decisiones.md), v0.11.1.
+- [x] **Sin audio**: el proyecto es una pieza solo visual para fondo de pantalla ([D-025](12-decisiones.md)).
 

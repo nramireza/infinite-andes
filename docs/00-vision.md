@@ -9,6 +9,8 @@
 generada por ruido, con ciclo día/noche, clima dinámico, ríos, volcanes y especies endémicas.
 
 No es un juego: es una **pieza generativa explorable**, como una pintura continua que se despliega.
+Su destino natural es funcionar como **fondo de pantalla vivo**: solo imagen, dejada correr en la
+pantalla sin interacción ([D-025](12-decisiones.md), [D-026](12-decisiones.md)).
 
 ## Inspiración
 
@@ -29,6 +31,7 @@ No es un juego: es una **pieza generativa explorable**, como una pintura continu
 ## No-objetivos
 
 - Gameplay, puntaje, niveles, colisiones o personaje jugable.
+- **Audio**: es una pieza puramente visual (sin sonido), pensada como fondo de pantalla vivo.
 - Realismo fotográfico o 3D. La estética es pixel art deliberada.
 - Dependencias pesadas, frameworks o build step. Se mantiene JS puro y ligero.
 - Precisión cartográfica: es una interpretación artística del paisaje, no un mapa.
@@ -39,6 +42,6 @@ Personas que disfrutan de arte generativo, pixel art y paisajes; sin necesidad d
 
 ## Preguntas abiertas
 
-- TODO: ¿habrá audio ambiente (viento, aves) y de ser así, generado o muestreado?
-- TODO: ¿se quiere exportar también una "tira larga" del paisaje, no solo la vista actual?
+- TODO: ¿se quiere exportar también una "tira larga" del paisaje, no solo la vista actual? (opcional)
+- [x] ¿Habrá audio ambiente? **No**: pieza solo visual para fondo de pantalla ([D-025](12-decisiones.md)).
 - [x] Biomas/regiones seleccionables o procedurales ([D-016](12-decisiones.md), v0.6.0).

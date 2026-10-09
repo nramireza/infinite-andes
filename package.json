@@ -1,6 +1,6 @@
 {
   "name": "infinite-andes",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "private": true,
   "type": "module",
   "description": "Paisaje procedural infinito de los Andes chilenos en pixel art.",

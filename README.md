@@ -3,11 +3,12 @@
 Paisaje procedural infinito de los Andes chilenos en **pixel art**, para el navegador.
 Explorable, sin gameplay: se recorre horizontalmente una cordillera generada con ruido,
 con ciclo día/noche, clima dinámico, ríos, volcanes y especies endémicas de flora y fauna.
+Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** en desarrollo · **Versión:** 0.8.0 · **Licencia:** MIT
+> **Estado:** en desarrollo · **Versión:** 0.11.1 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -42,10 +43,13 @@ npm start
 | `moment`  | `?moment=kungleo` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo` |
 | `biome`   | `?biome=norte` | Región: `auto` (procedural), `norte` (árido), `centro`, `sur` (boscoso) |
 | `bloom`   | `?bloom=on`   | Desierto florido (norte): `auto`, `on`, `off` |
-| `ui`      | `?ui=0`       | Oculta el panel (modo kiosco) |
+| `ui`      | `?ui=0`       | Oculta el panel, HUD y cursor (modo kiosco/fondo de pantalla) |
+| `fit`     | `?fit=contain` | Ajuste a pantalla: `cover` (def., llena) o `contain` (encaja entero) |
+| `fps`     | `?fps=60`     | Límite de fotogramas (def. `30`; `0` = sin límite) |
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
-`?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido).
+`?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
+`?ui=0&fit=cover` (fondo de pantalla a pantalla completa).
 
 ---
 
@@ -78,6 +82,11 @@ Panel superior izquierdo (se oculta con el botón `∞`):
 - **Exportar PNG**: descarga la vista actual. **Copiar enlace**: comparte la vista.
 - **HUD**: semilla, posición, hora y clima.
 
+Atajos de teclado: `Espacio` pausa/reanuda el auto-scroll · `←`/`→` desplazan · `H`/`P` muestran el
+panel · `F` pantalla completa (en kiosco también con clic). Para dejarlo como fondo, abrir con
+`?ui=0&fit=cover`: sin panel ni cursor, llena la pantalla y limita a 30 fps (se pausa al ocultar la
+pestaña). Ver [D-026](docs/12-decisiones.md).
+
 ---
 
 ## Estructura del proyecto
@@ -91,6 +100,7 @@ infinite-andes/
 │   ├── rng.js            # PRNG sembrado + hashing por chunk
 │   ├── noise.js          # ruido de valor 1D + fBm + ridged
 │   ├── pixel.js          # utilidades de dibujo pixel-art (sprites, discos)
+│   ├── loop.js           # control de fotogramas (FPS, delta) puro
 │   ├── viewport.js       # altura fija + relación de aspecto
 │   ├── palette.js        # paletas día/noche/estaciones + clima
 │   ├── sky.js            # gradiente, astros, estrellas, Vía Láctea, aurora, nubes
@@ -101,6 +111,7 @@ infinite-andes/
 │   ├── moments.js        # momentos raros (18-sep, Leo Rey, Kung Leo)
 │   ├── biomes.js         # biomas norte/centro/sur y desierto florido
 │   ├── seasons.js        # ciclo estacional (tinte, nieve, clima)
+│   ├── views.js          # serialización del estado (enlaces y favoritos)
 │   ├── scene.js          # composición, cámara/parallax, día/noche, export
 │   ├── ui.js             # controles enlazados a la escena
 │   └── main.js           # arranque y loop

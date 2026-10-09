@@ -71,7 +71,15 @@ export function setupUI(scene, hooks = {}) {
       const view = currentView();
       // Con auto-scroll activo no se ancla la posición: el enlace sigue fluyendo.
       if (scene.autoScroll) delete view.x;
+      // Parámetros de modo (kiosco/ajuste/FPS) no forman parte de la vista.
+      const keep = {};
+      const prev = new URLSearchParams(window.location.search);
+      for (const k of ["ui", "fit", "fps"]) {
+        const v = prev.get(k);
+        if (v != null) keep[k] = v;
+      }
       url.search = encodeView(view);
+      for (const k in keep) url.searchParams.set(k, keep[k]);
       history.replaceState(null, "", url);
     } catch (_) {}
   }
@@ -239,6 +247,50 @@ export function setupUI(scene, hooks = {}) {
 
   panelToggle.addEventListener("click", () => panel.classList.toggle("open"));
 
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen?.();
+    else document.documentElement.requestFullscreen?.().catch?.(() => {});
+  }
+
+  // Atajos de teclado (accesibilidad y uso como fondo de pantalla).
+  document.addEventListener("keydown", (e) => {
+    const tag = (e.target?.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "select" || tag === "textarea" || e.target?.isContentEditable) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch (e.key) {
+      case " ":
+        e.preventDefault();
+        scene.autoScroll = !scene.autoScroll;
+        chkAuto.checked = scene.autoScroll;
+        updateURL();
+        break;
+      case "ArrowLeft":
+        scene.camera.x -= 90;
+        scene.autoScroll = false;
+        chkAuto.checked = false;
+        updateURL();
+        break;
+      case "ArrowRight":
+        scene.camera.x += 90;
+        scene.autoScroll = false;
+        chkAuto.checked = false;
+        updateURL();
+        break;
+      case "f":
+      case "F":
+        toggleFullscreen();
+        break;
+      case "h":
+      case "H":
+      case "p":
+      case "P":
+        panel.classList.toggle("open");
+        break;
+      default:
+        break;
+    }
+  });
+
   function updateHUD() {
     const h = Math.floor(scene.hour);
     const m = Math.floor((scene.hour % 1) * 60);
@@ -262,10 +314,11 @@ export function setupUI(scene, hooks = {}) {
   speed.value = String(scene.scrollSpeed);
   populateViewSelect("");
 
-  // Modo kiosco: sin panel ni botón.
+  // Modo kiosco: sin panel ni botón. Clic en el paisaje = pantalla completa.
   if (params.get("ui") === "0") {
     document.body.classList.add("kiosk");
     panel.classList.remove("open");
+    scene.canvas?.addEventListener("click", toggleFullscreen);
   }
 
   return { updateHUD };

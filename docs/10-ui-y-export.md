@@ -61,6 +61,8 @@ Pendiente: exportar una **tira larga** seleccionable.
 | `biome` | Región fija o `auto` | Sí (selector de región) |
 | `bloom` | Floración (`auto`/`on`/`off`) | Sí (selector de floración) |
 | `ui` | `0` oculta el panel (modo kiosco) | No |
+| `fit` | `cover` (def., llena) o `contain` (encaja entero) | No |
+| `fps` | Límite de fotogramas (def. `30`; `0` = sin límite) | No |
 
 Al cargar, se leen `seed` (por defecto `andes`), `x`, `hour`, `weather`, `aspect`, `moment`,
 `season`, `biome` y `bloom`. La carga inicial y las **vistas favoritas** comparten
@@ -73,8 +75,17 @@ región y floración) con un nombre y recargarlo luego. Se guardan en `localStor
 (`infinite-andes:views`) como `{name, query}`; el selector **Vistas** carga y el botón `✕` elimina.
 Cargar una vista ancla la posición y **desactiva el auto-scroll**. Ver [D-020](12-decisiones.md).
 
+## Modo fondo de pantalla
+
+`?ui=0` activa el **kiosco** (sin panel, botón, HUD, cursor ni marco) y `?fit=cover` llena la pantalla
+(recortando), pensado para dejar el paisaje encendido. Clic en el paisaje (o la tecla `F`) entra en
+**pantalla completa**. Atajos de teclado: `Espacio` auto-scroll, `←`/`→` desplazan, `H`/`P` muestran
+u ocultan el panel, `F` pantalla completa. El loop limita a **30 fps** por defecto (`?fps=`), se
+**pausa** al ocultar la pestaña y arranca quieto con `prefers-reduced-motion`. Ver
+[D-026](12-decisiones.md).
+
 ## Pendiente
 
-- TODO: exportar tira larga (rango de `x`) y/o GIF/secuencia.
-- TODO: modos de kiosco adicionales (sin HUD).
-- TODO: accesibilidad y atajos de teclado (flechas para desplazar, espacio para auto-scroll).
+- TODO: exportar tira larga (rango de `x`) y/o GIF/secuencia (opcional).
+- [x] Modos de kiosco adicionales: HUD y cursor ocultos en kiosco ([D-026](12-decisiones.md), v0.11.1).
+- [x] Accesibilidad y atajos de teclado (flechas, espacio, pantalla completa) ([D-026](12-decisiones.md), v0.11.1).

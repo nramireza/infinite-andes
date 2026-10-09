@@ -149,7 +149,7 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   ondulado, traje dorado, notas) y **Kung Leo** (alter ego de Mortal Kombat: sombrero de Kung Lao
   y destello "MORTAL KUMBIA"). Se disparan solos (raros) o forzados con `?moment=` y desde el panel.
 - **Motivo:** dar cabida a los "momentos" del roadmap y a los homenajes pedidos sin contaminar la
-  fauna ni la flora; son solo visuales (el audio sigue sin decidirse).
+  fauna ni la flora; son solo visuales (más tarde se descartó el audio, [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo)).
 - **Nota:** los personajes son **parodia estilizada en pixel**, no un deepfake fotorrealista; se
   usan matrices de píxeles y una fuente 3×5 propia.
 
@@ -330,8 +330,39 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   `placeFlora` desplaza la base de las flores. Test nuevo de reparto vertical. Refina
   [D-023](#d-023--parches-de-desierto-florido-más-extensos-y-raros).
 
+## D-025 · Sin audio; el objetivo es un fondo de pantalla vivo
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** **no habrá audio** (ni generado ni muestreado). El resultado buscado es un **fondo de
+  pantalla vivo** en el navegador: solo imagen, pensada para quedar encendida como *wallpaper*.
+- **Motivo:** el uso previsto es dejar el paisaje corriendo en pantalla; el audio no aporta y trae
+  complicaciones (autoplay, permisos, dependencias). El foco pasa a la experiencia visual continua.
+- **Alternativas:** audio ambiente generado o muestreado (descartados).
+- **Consecuencia:** se elimina el audio del roadmap y de las preguntas abiertas; se priorizan el modo
+  kiosco y el rendimiento ([D-026](#d-026--modo-fondo-de-pantalla-y-rendimiento)).
+
+## D-026 · Modo fondo de pantalla y rendimiento
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** habilitar el uso continuo como *wallpaper*:
+  - **Kiosco** (`?ui=0`): sin panel, botón, HUD, cursor ni marco del lienzo; clic en el paisaje entra
+    en **pantalla completa** (también con la tecla `F`).
+  - **Ajuste** (`?fit=cover|contain`, defecto **cover**): `cover` llena la pantalla y `contain` encaja
+    entero con barras.
+  - **Teclado** (accesibilidad): `Espacio` auto-scroll, `←`/`→` desplazar, `H`/`P` panel, `F` pantalla
+    completa.
+  - **Rendimiento**: límite de FPS (`?fps=`, defecto **30**; `0` = sin límite), pausa real al ocultar
+    la pestaña (`visibilitychange`, con reinicio de `dt`) y arranque pausado con
+    `prefers-reduced-motion`.
+- **Motivo:** el paisaje debe verse bien y consumir poco durante horas encendido.
+- **Alternativas:** 60 fps por defecto (descartado: más consumo); auto-fullscreen al cargar
+  (descartado: requiere gesto del usuario); `contain` por defecto (descartado: deja barras negras).
+- **Consecuencia:** nuevos `src/loop.js` (helpers puros) y `test/loop.test.js`; `main.js` controla el
+  loop y el ajuste; `ui.js` los atajos; `style.css` limpia el kiosco.
+
 ## Decisiones abiertas
 
-- ¿Habrá audio? ¿Generado o muestreado?
-- ¿Se exportará una tira larga además del PNG de la vista?
+- ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))
 - ¿Los sprites serán matrices de píxeles definitivas o se admitirán PNG externos?

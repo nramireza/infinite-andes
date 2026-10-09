@@ -98,5 +98,6 @@ Para nuevas especies o features, copia `docs/templates/especimen.md`, `feature.m
 ## Alcance / no-objetivos
 
 - **No hay gameplay** (sin puntaje, niveles ni personaje jugable).
+- **Sin audio**: es una pieza solo visual, pensada como **fondo de pantalla vivo** ([D-025](docs/12-decisiones.md), [D-026](docs/12-decisiones.md)).
 - No romper el determinismo ni la pixelación nítida.
 - Los ríos están en revisión (ver [`docs/07-rios.md`](docs/07-rios.md)); documenta cambios ahí.

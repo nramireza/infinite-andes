@@ -148,7 +148,8 @@ select { width: 100%; }
   #panel { width: 200px; }
 }
 
-/* Modo kiosco (?ui=0): sin panel ni botón, cursor oculto. */
+/* Modo kiosco (?ui=0): sin panel ni botón, cursor oculto, sin marco. */
 body.kiosk #panel,
 body.kiosk #panelToggle { display: none; }
 body.kiosk { cursor: none; }
+body.kiosk #scene { box-shadow: none; }

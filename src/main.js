@@ -4,6 +4,7 @@ import { Scene } from "./scene.js";
 import { seedToInt } from "./rng.js";
 import { setupUI } from "./ui.js";
 import { BASE_H, DEFAULT_ASPECT, ratioFromString, widthForRatio } from "./viewport.js";
+import { clampDt, shouldDraw } from "./loop.js";
 
 const canvas = document.getElementById("scene");
 const params = new URLSearchParams(window.location.search);
@@ -12,13 +13,21 @@ const initialRatio = ratioFromString(params.get("aspect")) || ratioFromString(DE
 canvas.width = widthForRatio(initialRatio);
 canvas.height = BASE_H;
 
+// Ajuste a pantalla: `cover` llena (recorta), `contain` encaja entero (defecto wallpaper).
+const fitMode = (params.get("fit") || "cover").toLowerCase() === "contain" ? "contain" : "cover";
+
 function fit() {
   const W = canvas.width;
   const H = canvas.height;
   const availW = window.innerWidth;
   const availH = window.innerHeight;
-  let s = Math.min(availW / W, availH / H);
-  if (s >= 1) s = Math.floor(s);
+  let s;
+  if (fitMode === "contain") {
+    s = Math.min(availW / W, availH / H);
+    if (s >= 1) s = Math.floor(s);
+  } else {
+    s = Math.max(availW / W, availH / H);
+  }
   canvas.style.width = Math.round(W * s) + "px";
   canvas.style.height = Math.round(H * s) + "px";
 }
@@ -27,6 +36,16 @@ window.addEventListener("resize", fit);
 
 const seed = seedToInt(params.get("seed") || "andes");
 const scene = new Scene(canvas, seed);
+
+// Fondo de pantalla: menos potencia y respeto por "reduced motion".
+const fpsParam = params.get("fps");
+const targetFps = fpsParam === null ? 30 : Number(fpsParam);
+const fps = Number.isFinite(targetFps) && targetFps >= 0 ? targetFps : 30;
+const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+if (prefersReduced) {
+  scene.autoScroll = false;
+  scene.timeAuto = false;
+}
 
 function setAspect(ratio) {
   canvas.width = widthForRatio(ratio);
@@ -38,11 +57,19 @@ function setAspect(ratio) {
 
 const ui = setupUI(scene, { setAspect });
 
-let last = performance.now();
+let running = !document.hidden;
+let lastDraw = performance.now();
+document.addEventListener("visibilitychange", () => {
+  running = !document.hidden;
+  if (running) lastDraw = performance.now(); // evita un salto al volver
+});
+
 let loopFailed = false;
 function frame(now) {
-  const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
-  last = now;
+  requestAnimationFrame(frame);
+  if (!running || !shouldDraw(now, lastDraw, fps)) return;
+  const dt = clampDt((now - lastDraw) / 1000);
+  lastDraw = now;
   try {
     scene.update(dt);
     scene.render();
@@ -53,6 +80,5 @@ function frame(now) {
       loopFailed = true;
     }
   }
-  requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

@@ -6,6 +6,19 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.11.1] - 2026-10-08
+
+### Added
+- **Modo fondo de pantalla y rendimiento** ([D-026](docs/12-decisiones.md)): kiosco sin HUD/cursor ni
+  marco, ajuste `?fit=cover|contain` (def. `cover`), pantalla completa con `F` o clic en kiosco y
+  atajos de teclado (`Espacio`, `←/→`, `H/P`, `F`). El loop limita FPS (`?fps=`, def. 30), se pausa al
+  ocultar la pestaña y arranca quieto con `prefers-reduced-motion`. Nuevo `src/loop.js` (puro) con
+  `test/loop.test.js`.
+
+### Changed
+- **Alcance: sin audio** ([D-025](docs/12-decisiones.md)): el proyecto es una pieza solo visual
+  pensada como fondo de pantalla vivo. Se retira el audio del roadmap y de las preguntas abiertas.
+
 ## [0.11.0] - 2026-10-08
 
 ### Changed
