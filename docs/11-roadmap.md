@@ -37,6 +37,8 @@
     - [x] Geometría por bioma: amplitud y línea de nieve ([D-018](12-decisiones.md), v0.7.0).
     - [x] Flora nueva por bioma: cactus, alerce, nalca, colihue y palma chilena.
 - [x] Estaciones del año (tinte, línea de nieve y clima) ([D-019](12-decisiones.md), v0.8.0).
+- [x] **Sincronía con Chile**: hora y estación reales y amanecer/atardecer solar
+      ([D-027](12-decisiones.md), v0.12.0).
 - [ ] Export de tira larga y/o secuencia (opcional, no prioritario para wallpaper).
 - [x] Más flora (coihue/roble, copihue, michay) y fauna (choique, chucao, huillín)
       ([D-022](12-decisiones.md), v0.9.0).
@@ -65,6 +67,8 @@
 2. **Cierre de docs** (estados a *estable*, glosario, paleta) y README → **tag v1.0.0**.
    - *Post-1.0*: más momentos raros (vuelo de cóndor, bandada) y más biomas
      (altiplano/patagonia/austral/fiordos).
+   - *Hecho en v0.12.0*: sincronía con la hora/estación y el sol reales de Chile
+     ([D-027](12-decisiones.md)).
    - *Hecho en v0.11.1*: modo fondo de pantalla y rendimiento ([D-025](12-decisiones.md),
      [D-026](12-decisiones.md)); sin audio.
    - *Hecho en v0.9.0*: vistas favoritas + `?x=` ([D-020](12-decisiones.md)); estrellas fugaces,

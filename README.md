@@ -8,7 +8,7 @@ Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** en desarrollo · **Versión:** 0.11.1 · **Licencia:** MIT
+> **Estado:** en desarrollo · **Versión:** 0.12.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -43,13 +43,18 @@ npm start
 | `moment`  | `?moment=kungleo` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo` |
 | `biome`   | `?biome=norte` | Región: `auto` (procedural), `norte` (árido), `centro`, `sur` (boscoso) |
 | `bloom`   | `?bloom=on`   | Desierto florido (norte): `auto`, `on`, `off` |
+| `clock`   | `?clock=fast` | Reloj: `real` (def., hora/estación y sol de Chile) o `fast` (ciclo) |
+| `lat`     | `?lat=-53`    | Latitud para el cálculo solar (por defecto −33.45, Santiago) |
 | `ui`      | `?ui=0`       | Oculta el panel, HUD y cursor (modo kiosco/fondo de pantalla) |
 | `fit`     | `?fit=contain` | Ajuste a pantalla: `cover` (def., llena) o `contain` (encaja entero) |
 | `fps`     | `?fps=60`     | Límite de fotogramas (def. `30`; `0` = sin límite) |
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
 `?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
-`?ui=0&fit=cover` (fondo de pantalla a pantalla completa).
+`?ui=0&fit=cover` (fondo de pantalla a pantalla completa) · `?clock=fast` (ciclo día/noche rápido).
+
+Por defecto la pantalla sigue el **reloj real**: hora local, estación del hemisferio sur y el
+amanecer/atardecer de Chile, así lo que se ve coincide con el momento y la época del lugar.
 
 ---
 
@@ -74,6 +79,7 @@ Panel superior izquierdo (se oculta con el botón `∞`):
 - **Recorrer**: `◀` `▶`, auto-scroll y velocidad.
 - **Relación**: 16:9, 21:9, 32:9 o personalizada (por defecto 32:9).
 - **Hora**: deslizador + paso del tiempo automático.
+- **Reloj**: real (hora local, estación y sol de Chile) o ciclo rápido.
 - **Clima**: automático o forzado a uno de los cinco.
 - **Estación**: automática (ciclo de ~8 min) o fija (verano, otoño, invierno, primavera).
 - **Momento**: raro automático o forzado (18 de septiembre, Leo Rey, Kung Leo).
@@ -101,6 +107,8 @@ infinite-andes/
 │   ├── noise.js          # ruido de valor 1D + fBm + ridged
 │   ├── pixel.js          # utilidades de dibujo pixel-art (sprites, discos)
 │   ├── loop.js           # control de fotogramas (FPS, delta) puro
+│   ├── clock.js          # hora local y estación real (hemisferio sur)
+│   ├── sun.js            # amanecer/atardecer y reasignación solar pura
 │   ├── viewport.js       # altura fija + relación de aspecto
 │   ├── palette.js        # paletas día/noche/estaciones + clima
 │   ├── sky.js            # gradiente, astros, estrellas, Vía Láctea, aurora, nubes

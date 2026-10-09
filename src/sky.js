@@ -48,17 +48,17 @@ export class Sky {
   }
 
   // Estado del astro para una hora dada. `depth` 0 = fondo (tras los Andes),
-  // 1 = frente (sobre el mar).
-  celestial(hour24, W, H) {
+  // 1 = frente (sobre el mar). `rise`/`set` permiten seguir el sol real.
+  celestial(hour24, W, H, rise = RISE, set = SET) {
     const h = ((hour24 % 24) + 24) % 24;
     let u, isSun;
-    if (h >= RISE && h < SET) {
+    if (h >= rise && h < set) {
       isSun = true;
-      u = (h - RISE) / (SET - RISE);
+      u = (h - rise) / (set - rise);
     } else {
       isSun = false;
-      const nh = h >= SET ? h - SET : h + 24 - SET; // 0..(24-SET+RISE)
-      u = nh / (24 - SET + RISE);
+      const nh = h >= set ? h - set : h + 24 - set; // 0..(24-SET+RISE)
+      u = nh / (24 - set + rise);
     }
     const horizonY = BACK_HORIZON + u * (FRONT_HORIZON - BACK_HORIZON);
     const A = 245;

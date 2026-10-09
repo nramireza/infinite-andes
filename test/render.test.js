@@ -168,3 +168,19 @@ test("los nuevos tipos de flora dibujan dentro del lienzo", () => {
     assert.deepEqual(collectOutOfBounds(ctx, W, H, 64), [], `${type} dibujó fuera`);
   }
 });
+
+test("el reloj real mapea la paleta al sol y setClock cambia de modo", () => {
+  const ctx = makeFakeCtx();
+  const canvas = { width: W, height: H, getContext: () => ctx };
+  const scene = new Scene(canvas, SEED);
+  scene.weatherAuto = false;
+  assert.equal(scene.clock, "real");
+  const s = scene.solar();
+  assert.ok(s && s.rise > 0 && s.set > s.rise, "sol del día inválido");
+  scene.hour = 12; // mediodía real → debe caer dentro del día de la paleta
+  const ph = scene.paletteHour();
+  assert.ok(ph >= 6 && ph <= 18.25, `mediodía fuera del día: ${ph}`);
+  scene.setClock("fast");
+  assert.equal(scene.paletteHour(), 12, "en rápido la hora se usa tal cual");
+  assert.doesNotThrow(() => scene.render());
+});

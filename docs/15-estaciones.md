@@ -20,8 +20,11 @@ El paisaje tiene un **ciclo estacional** que tiñe la paleta, mueve la **línea 
 
 ## Ciclo y mezcla
 
-- **Automático**: ciclo temporal lento, **`SEASON_DURATION = 120 s`** por estación (año ≈ 8 min). La
-  fase avanza con `seasonSpeed = 1/SEASON_DURATION` (estaciones por segundo) y envuelve cada 4.
+- **Real (por defecto)**: la fase sale de la **fecha del equipo** (`seasonPhaseForDate`,
+  `src/clock.js`), con el **hemisferio sur** como referencia (verano dic–feb, otoño mar–may, invierno
+  jun–ago, primavera sep–nov; [D-027](12-decisiones.md)). No avanza por tiempo de ejecución.
+- **Ciclo rápido** (`?clock=fast`): ciclo temporal lento, **`SEASON_DURATION = 120 s`** por estación
+  (año ≈ 8 min). La fase avanza con `seasonSpeed = 1/SEASON_DURATION` y envuelve cada 4.
 - **Fijo**: `?season=verano|otono|invierno|primavera` o el selector **Estación** del panel.
 - **Mezcla**: `seasonState(phase)` devuelve estación actual, siguiente y una mezcla `t` con
   **meseta + crossfade** (se sostiene ~60% y transiciona ~40%), de modo que hay estaciones claras y
@@ -51,11 +54,11 @@ Ver [04 · Clima](04-clima.md).
 
 | Parámetro | Valores | Descripción |
 |-----------|---------|-------------|
-| `season`  | `auto` (def.), `verano`, `otono`, `invierno`, `primavera` | Estación fija o ciclo automático |
+| `season`  | `auto` (def.), `verano`, `otono`, `invierno`, `primavera` | Estación fija o según reloj/ciclo |
+| `clock`   | `real` (def.), `fast` | Estación y hora reales, o ciclo rápido |
 
 ## Pendientes
 
-- TODO: duración del día por estación (invierno con noches más largas).
+- [x] duración del día por estación: el sol real mueve amanecer/atardecer ([D-027](12-decisiones.md), v0.12.0).
 - TODO: variantes de flora por estación (caída de hojas, brotes) además del tinte.
-- TODO: estaciones del hemisferio sur como referencia explícita en la UI (ya lo son: verano en
-  diciembre–marzo).
+- [x] estaciones del hemisferio sur como referencia explícita ([D-027](12-decisiones.md), v0.12.0).

@@ -362,6 +362,25 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Consecuencia:** nuevos `src/loop.js` (helpers puros) y `test/loop.test.js`; `main.js` controla el
   loop y el ajuste; `ui.js` los atajos; `style.css` limpia el kiosco.
 
+## D-027 · Sincronización con la hora, estación y sol reales de Chile
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** por defecto el paisaje sigue el **reloj real** del equipo (`clock=real`): la hora
+  local y la **estación del hemisferio sur** salen de la fecha (`src/clock.js`), y el
+  **amanecer/atardecer reales** de Chile central (lat −33.45, `src/sun.js`) reasignan la hora a la
+  curva de paleta/cielo (`solarClock`), de modo que las 20:00 de verano se ven de día y en invierno
+  oscuras. El clima automático conserva su sorteo procedural pero con el **sesgo de la estación
+  real**. `?clock=fast` recupera el ciclo rápido (día ≈3 min, año ≈8 min); `?lat=` ajusta la
+  latitud. `hour=`/`season=` siguen fijando manualmente (fijar la hora pasa a reloj rápido).
+- **Motivo:** que la pantalla sea coherente con el lugar donde está el equipo (Chile).
+- **Alternativas:** ciclo rápido por defecto (descartado: no refleja la realidad); fijar
+  `America/Santiago` o pedir geolocalización (descartadas: el equipo está en Chile); clima real
+  online (descartado: sin red ni dependencias, [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo)).
+- **Consecuencia:** nuevos `src/clock.js` y `src/sun.js` (+ tests); `scene.js` incorpora
+  `clock`/`lat` y `paletteHour()`; `sky.celestial` acepta `rise`/`set`. El paisaje (terreno, flora,
+  fauna) sigue **determinista por semilla**: solo varía el tiempo.
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

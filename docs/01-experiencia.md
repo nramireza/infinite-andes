@@ -45,6 +45,8 @@ El panel se oculta con el botón `∞`.
 - **Legibilidad**: las capas deben leerse como geografía, no como manchas.
 - **Vida sutil**: el movimiento (agua, clima, penachos, pasto) evita que se sienta estático.
 - **Coherencia**: hora y clima afectan todo (cielo, montañas, mar, agua, flora).
+- **Sincronía con Chile**: por defecto la hora, la estación y el amanecer/atardecer siguen la
+  realidad ([D-027](12-decisiones.md)); con `?clock=fast` vuelve el ciclo rápido de demostración.
 
 ## Pendiente
 

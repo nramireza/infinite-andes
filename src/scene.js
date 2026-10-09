@@ -9,6 +9,8 @@ import { placeFauna } from "./fauna.js";
 import { momentSky, momentGround } from "./moments.js";
 import { biomeAt, biomeGeometry, modeWeights, biomeFloraPool, biomeFaunaPool, resolveBloom, bloomChanceMul } from "./biomes.js";
 import { seasonState, seasonSnowShift, applySeason, pickSeasonWeather, SEASON_DURATION, SEASON_STRENGTH } from "./seasons.js";
+import { localHour, dayOfYear, seasonPhaseForDate } from "./clock.js";
+import { solarTimes, solarClock } from "./sun.js";
 
 export class Scene {
   constructor(canvas, seed) {
@@ -35,6 +37,13 @@ export class Scene {
     this.hour = 8;
     this.timeAuto = true;
     this.timeSpeed = 0.125; // horas por segundo (ciclo 0.5x)
+
+    // Reloj real: hora y estación del dispositivo; sol de Chile central.
+    this.clock = "real";
+    this.lat = -33.45;
+    this.longitude = -70.66;
+    this._solarDoy = null;
+    this._solar = null;
 
     this.weatherAuto = true;
     this.weatherTimer = 12;
@@ -92,6 +101,29 @@ export class Scene {
     this.season = mode || "auto";
   }
 
+  setClock(mode) {
+    this.clock = mode === "fast" ? "fast" : "real";
+  }
+
+  // Amanecer/atardecer del día (cacheado por día del año y parámetros solares).
+  solar() {
+    const doy = dayOfYear(new Date());
+    const key = `${doy}:${this.lat}:${this.longitude}`;
+    if (this._solarDoy !== key) {
+      this._solarDoy = key;
+      const tz = -new Date().getTimezoneOffset() / 60;
+      this._solar = solarTimes(doy, this.lat, this.longitude, tz);
+    }
+    return this._solar;
+  }
+
+  // Hora con la que se consulta la paleta/cielo (real: reasignada al sol de Chile).
+  paletteHour() {
+    if (this.clock !== "real") return this.hour;
+    const s = this.solar();
+    return s ? solarClock(this.hour, s.rise, s.set) : this.hour;
+  }
+
   // Estado de la estación actual (índice, siguiente y mezcla).
   seasonState() {
     return seasonState(this.seasonPhase, this.season);
@@ -125,13 +157,18 @@ export class Scene {
 
     if (this.autoScroll) this.camera.x += this.scrollSpeed * dt;
 
-    if (this.timeAuto) {
-      this.hour += this.timeSpeed * dt;
-      if (this.hour >= 24) this.hour -= 24;
-    }
-
-    if (this.season === "auto") {
-      this.seasonPhase = (this.seasonPhase + this.seasonSpeed * dt) % 4;
+    if (this.clock === "real") {
+      const now = new Date();
+      this.hour = localHour(now);
+      if (this.season === "auto") this.seasonPhase = seasonPhaseForDate(now);
+    } else {
+      if (this.timeAuto) {
+        this.hour += this.timeSpeed * dt;
+        if (this.hour >= 24) this.hour -= 24;
+      }
+      if (this.season === "auto") {
+        this.seasonPhase = (this.seasonPhase + this.seasonSpeed * dt) % 4;
+      }
     }
 
     if (this.weatherAuto) {
@@ -150,15 +187,17 @@ export class Scene {
   render() {
     const ctx = this.ctx;
     const { W, H } = this;
-    const nightAmt = nightAmount(this.hour);
+    const palHour = this.paletteHour();
+    const nightAmt = nightAmount(palHour);
     const season = this.seasonState();
     const biome = this.biomeAt(this.camera.x + W * 0.5);
     const bloom = this.bloomValue(biome);
     // Orden: hora → clima (en getPalette) → estación → bioma (manda en lo regional).
-    let pal = getPalette(this.hour, this.weather.type, this.weather.strength);
+    let pal = getPalette(palHour, this.weather.type, this.weather.strength);
     pal = applySeason(pal, season, SEASON_STRENGTH * (1 - 0.85 * nightAmt));
     pal = applyBiome(pal, biome.tint, biome.amount, bloom);
-    const cel = this.sky.celestial(this.hour, W, H);
+    const solar = this.clock === "real" ? this.solar() : null;
+    const cel = this.sky.celestial(this.hour, W, H, solar?.rise, solar?.set);
 
     ctx.clearRect(0, 0, W, H);
     this.sky.draw(ctx, W, H, pal, nightAmt, this.tSec, cel);

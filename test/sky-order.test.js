@@ -12,6 +12,7 @@ function fakeCanvas(ctx, W = 480, H = 270) {
 test("el astro se dibuja antes que las nubes, y las nubes antes del terreno", () => {
   const ctx = makeFakeCtx();
   const scene = new Scene(fakeCanvas(ctx), seedToInt("andes"));
+  scene.setClock("fast");
   scene.hour = 7; // sol bajo y visible
   scene.weatherAuto = false;
   scene.setBiome("centro"); // sin tinte, para comparar con getPalette directo

@@ -27,6 +27,8 @@ pantalla sin interacción ([D-025](12-decisiones.md), [D-026](12-decisiones.md))
 - Estética **pixel art** nítida, con paleta que responde a la hora y al clima.
 - Integrar **especies endémicas** de Chile (flora y, en fases siguientes, fauna animada).
 - Que se sienta vivo y tranquilo: día/noche, clima, agua y viento.
+- Que se coordine con la **realidad de Chile**: por defecto sigue la hora local y la estación del
+  año, con el amanecer/atardecer reales ([D-027](12-decisiones.md)).
 
 ## No-objetivos
 

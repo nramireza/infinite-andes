@@ -26,8 +26,10 @@ entonces entra el nuevo desde 0 (`transition = "in"`). Evita los cortes bruscos.
 
 Con el clima en **Automático**, cada **30–60 s** se elige un estado distinto del actual. El sorteo es
 **ponderado por la estación** (`pickSeasonWeather`, ver [15 · Estaciones](15-estaciones.md)):
-invierno favorece nieve/lluvia/niebla y verano el despejado. El usuario puede **forzar** un clima
-desde el panel (`weatherSel`), lo que desactiva el modo automático.
+invierno favorece nieve/lluvia/niebla y verano el despejado. Con el reloj real ([D-027](12-decisiones.md))
+la estación es la de la fecha actual, así que el clima acompaña la época real de Chile (por ejemplo,
+lluvia en invierno austral). El usuario puede **forzar** un clima desde el panel (`weatherSel`), lo
+que desactiva el modo automático.
 
 ## Interacción con la paleta
 

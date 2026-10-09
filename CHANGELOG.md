@@ -6,6 +6,19 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-10-08
+
+### Added
+- **Sincronía con la realidad de Chile** ([D-027](docs/12-decisiones.md)): por defecto el paisaje
+  sigue el **reloj real** (`?clock=real`): hora local y **estación del hemisferio sur** desde la
+  fecha (`src/clock.js`) y **amanecer/atardecer reales** de Chile central (`src/sun.js`, lat −33.45,
+  `?lat=`) que reasignan la luz y el astro. `?clock=fast` recupera el ciclo rápido. El clima
+  automático usa el sesgo de la estación real. Selector **Reloj** en el panel y `clock` en vistas/URL.
+  Tests `clock.test.js` y `sun.test.js`.
+
+### Changed
+- `sky.celestial` acepta `rise`/`set`; `scene.js` suma `clock`/`lat` y `paletteHour()`.
+
 ## [0.11.1] - 2026-10-08
 
 ### Added

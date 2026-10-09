@@ -31,6 +31,7 @@ export function setupUI(scene, hooks = {}) {
   const timeRange = $("timeRange");
   const chkTimeAuto = $("chkTimeAuto");
   const timeLabel = $("timeLabel");
+  const clockSel = $("clockSel");
   const weatherSel = $("weatherSel");
   const momentSel = $("momentSel");
   const seasonSel = $("seasonSel");
@@ -62,6 +63,7 @@ export function setupUI(scene, hooks = {}) {
       season: seasonSel.value,
       biome: biomeSel.value,
       bloom: bloomSel.value,
+      clock: clockSel.value,
     };
   }
 
@@ -145,12 +147,14 @@ export function setupUI(scene, hooks = {}) {
       scene.hour = view.hour;
       scene.timeAuto = false;
       chkTimeAuto.checked = false;
+      if (!view.clock) { scene.setClock("fast"); clockSel.value = "fast"; } // hora fija = reloj rápido
     }
     if (view.weather) { scene.setWeatherType(view.weather); weatherSel.value = view.weather; }
     if (view.moment) { scene.setMoment(view.moment); momentSel.value = view.moment; }
     if (view.season) { scene.setSeason(view.season); seasonSel.value = view.season; }
     if (view.biome) { scene.setBiome(view.biome); biomeSel.value = view.biome; }
     if (view.bloom) { scene.setBloom(view.bloom); bloomSel.value = view.bloom; }
+    if (view.clock) { scene.setClock(view.clock); clockSel.value = view.clock; }
     if (view.aspect) applyAspectParam(view.aspect);
     updateURL();
   }
@@ -200,10 +204,13 @@ export function setupUI(scene, hooks = {}) {
     draggingTime = true;
     scene.timeAuto = false;
     chkTimeAuto.checked = false;
+    scene.setClock("fast");
+    clockSel.value = "fast";
     scene.hour = Number(timeRange.value) / 60;
   });
   timeRange.addEventListener("change", () => { draggingTime = false; updateURL(); });
   chkTimeAuto.addEventListener("change", () => { scene.timeAuto = chkTimeAuto.checked; updateURL(); });
+  clockSel.addEventListener("change", () => { scene.setClock(clockSel.value); updateURL(); });
 
   weatherSel.addEventListener("change", () => { scene.setWeatherType(weatherSel.value); updateURL(); });
   momentSel.addEventListener("change", () => { scene.setMoment(momentSel.value); updateURL(); });
@@ -311,6 +318,7 @@ export function setupUI(scene, hooks = {}) {
 
   chkAuto.checked = scene.autoScroll;
   chkTimeAuto.checked = scene.timeAuto;
+  clockSel.value = scene.clock;
   speed.value = String(scene.scrollSpeed);
   populateViewSelect("");
 

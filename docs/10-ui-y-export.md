@@ -60,6 +60,8 @@ Pendiente: exportar una **tira larga** seleccionable.
 | `season` | Estación fija o `auto` | Sí (selector de estación) |
 | `biome` | Región fija o `auto` | Sí (selector de región) |
 | `bloom` | Floración (`auto`/`on`/`off`) | Sí (selector de floración) |
+| `clock` | Reloj `real` (def.) o `fast` | Sí (selector de reloj) |
+| `lat` | Latitud para el sol (def. −33.45) | No |
 | `ui` | `0` oculta el panel (modo kiosco) | No |
 | `fit` | `cover` (def., llena) o `contain` (encaja entero) | No |
 | `fps` | Límite de fotogramas (def. `30`; `0` = sin límite) | No |
@@ -74,6 +76,14 @@ El panel permite guardar el estado actual (semilla, `x`, hora, clima, relación,
 región y floración) con un nombre y recargarlo luego. Se guardan en `localStorage`
 (`infinite-andes:views`) como `{name, query}`; el selector **Vistas** carga y el botón `✕` elimina.
 Cargar una vista ancla la posición y **desactiva el auto-scroll**. Ver [D-020](12-decisiones.md).
+
+## Reloj real y sol
+
+Por defecto (`clock=real`) la escena sigue la **hora local del equipo** y la **estación del
+hemisferio sur** de la fecha; el amanecer/atardecer se calculan para Chile central (lat −33.45) y
+reasignan la curva de la paleta y la posición del astro, así las 20:00 de verano se ven de día y en
+invierno oscuras ([D-027](12-decisiones.md)). El selector **Reloj** alterna con el **ciclo rápido**
+(`clock=fast`, día ≈3 min, año ≈8 min). Al arrastrar la hora o fijar `?hour=` se pasa a reloj rápido.
 
 ## Modo fondo de pantalla
 

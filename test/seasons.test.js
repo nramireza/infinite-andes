@@ -100,6 +100,7 @@ test("el ciclo de estación avanza con el tiempo", () => {
   const ctx = makeFakeCtx();
   const canvas = { width: W, height: H, getContext: () => ctx };
   const scene = new Scene(canvas, SEED);
+  scene.setClock("fast");
   scene.season = "auto";
   const p0 = scene.seasonPhase;
   scene.update(SEASON_DURATION);

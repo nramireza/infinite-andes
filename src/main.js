@@ -37,6 +37,10 @@ window.addEventListener("resize", fit);
 const seed = seedToInt(params.get("seed") || "andes");
 const scene = new Scene(canvas, seed);
 
+// Latitud del sol (por defecto Chile central, ajustable con ?lat=).
+const latParam = parseFloat(params.get("lat"));
+if (Number.isFinite(latParam)) scene.lat = latParam;
+
 // Fondo de pantalla: menos potencia y respeto por "reduced motion".
 const fpsParam = params.get("fps");
 const targetFps = fpsParam === null ? 30 : Number(fpsParam);

@@ -6,13 +6,14 @@
 
 import { ratioFromString } from "./viewport.js";
 
-export const VIEW_KEYS = ["seed", "x", "hour", "weather", "aspect", "moment", "season", "biome", "bloom"];
+export const VIEW_KEYS = ["seed", "x", "hour", "weather", "aspect", "moment", "season", "biome", "bloom", "clock"];
 
 export const VIEW_WEATHERS = ["auto", "clear", "snow", "rain", "fog", "wind"];
 export const VIEW_MOMENTS = ["auto", "none", "18sep", "leorey", "kungleo"];
 export const VIEW_SEASONS = ["auto", "verano", "otono", "invierno", "primavera"];
 export const VIEW_BIOMES = ["auto", "norte", "centro", "sur"];
 export const VIEW_BLOOMS = ["auto", "on", "off"];
+export const VIEW_CLOCKS = ["real", "fast"];
 
 function clampHour(h) {
   return ((h % 24) + 24) % 24;
@@ -44,6 +45,7 @@ export function encodeView(state) {
   if (VIEW_SEASONS.includes(s.season)) p.set("season", s.season);
   if (VIEW_BIOMES.includes(s.biome)) p.set("biome", s.biome);
   if (VIEW_BLOOMS.includes(s.bloom)) p.set("bloom", s.bloom);
+  if (VIEW_CLOCKS.includes(s.clock)) p.set("clock", s.clock);
   return p.toString();
 }
 
@@ -72,6 +74,8 @@ export function decodeView(input) {
   if (VIEW_BIOMES.includes(biome)) view.biome = biome;
   const bloom = p.get("bloom");
   if (VIEW_BLOOMS.includes(bloom)) view.bloom = bloom;
+  const clock = p.get("clock");
+  if (VIEW_CLOCKS.includes(clock)) view.clock = clock;
   return view;
 }
 
