@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { frameBudget, shouldDraw, clampDt, effectiveFps, IDLE_FPS } from "../src/loop.js";
+import { frameBudget, shouldDraw, clampDt, effectiveFps, canRender, IDLE_FPS } from "../src/loop.js";
 
 test("frameBudget traduce fps a milisegundos y no limita con 0", () => {
   assert.equal(frameBudget(30), 1000 / 30);
@@ -34,4 +34,12 @@ test("effectiveFps baja en reposo y respeta el máximo", () => {
   assert.equal(effectiveFps(60), IDLE_FPS);
   assert.equal(effectiveFps(4), 4); // no sube por encima del configurado
   assert.equal(effectiveFps(0), 0); // sin límite se respeta
+});
+
+test("canRender garantiza el primer fotograma sin foco", () => {
+  assert.equal(canRender({ painted: false, focused: false }), true);
+  assert.equal(canRender({ painted: true, focused: false }), false);
+  assert.equal(canRender({ painted: true, focused: true }), true);
+  assert.equal(canRender({ painted: true, running: false, focused: true }), false);
+  assert.equal(canRender({ painted: false, running: false }), false);
 });

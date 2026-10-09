@@ -6,6 +6,18 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.13.1] - 2026-10-08
+
+### Added
+- **Servidor de desarrollo sin caché** (`scripts/serve.mjs`, `npm start`): sirve con
+  `Cache-Control: no-store`, evitando el problema de **pantalla en negro** por módulos ES
+  desincronizados (nuevos + cacheados). `npm run start:python` queda como alternativa.
+- Si el loop falla, el error se **muestra en pantalla** en vez de quedar en negro silencioso.
+
+### Fixed
+- El **primer fotograma se pinta siempre**, aunque la ventana no tenga foco al cargar
+  (`canRender` en `src/loop.js`); antes podía quedar el canvas vacío hasta recuperar el foco.
+
 ## [0.13.0] - 2026-10-08
 
 ### Changed

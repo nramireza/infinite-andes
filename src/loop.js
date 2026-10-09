@@ -30,3 +30,10 @@ export function effectiveFps(base, { scrolling = false, weather = false } = {}) 
   if (scrolling || weather) return n;
   return Math.min(n, IDLE_FPS);
 }
+
+// ¿Se puede dibujar este fotograma? El primero siempre, aunque la ventana no
+// tenga foco; después se respeta la pausa por foco/pestaña.
+export function canRender({ painted = false, running = true, focused = true } = {}) {
+  if (!running) return false;
+  return focused || !painted;
+}

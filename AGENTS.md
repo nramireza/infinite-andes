@@ -13,9 +13,13 @@ Toda la documentación de diseño vive en [`docs/`](docs/README.md).
 No hay build, bundler ni dependencias. Son **módulos ES** que deben servirse por HTTP:
 
 ```bash
-python3 -m http.server 8000   # o: npm start
+npm start                     # Node, sirve con Cache-Control: no-store (recomendado)
+python3 -m http.server 8000   # alternativa (OJO: cachea; usa Ctrl+Shift+R al editar)
 # abrir http://localhost:8000
 ```
+
+Usa `npm start` (servidor propio sin caché) mientras editas: con `python3 -m http.server` el
+navegador puede mezclar módulos nuevos con viejos, romper los `import` y dejar la pantalla en negro.
 
 - **Tests** (sin dependencias): `npm test` usa `node --test` + `node:assert`. Cubre lógica pura,
   *smoke* de render con contexto 2D falso y **snapshots dorados** en `test/golden.json`.

@@ -104,6 +104,10 @@ y paleta) y el **FPS baja a 8 en reposo** (helper `effectiveFps` en `src/loop.js
 - `npm run bench`: benchmark sin dependencias (`scripts/bench.mjs`) de `render()`, `update()` y por
   capa. Ver [D-028](12-decisiones.md).
 
+El **primer fotograma se pinta siempre** (aunque la ventana no tenga foco) y, si el render falla, se
+muestra el error en pantalla en lugar de un negro silencioso. Para desarrollo, `npm start` sirve con
+`Cache-Control: no-store` (evita mezclar módulos ES viejos y nuevos).
+
 ## Pendiente
 
 - TODO: exportar tira larga (rango de `x`) y/o GIF/secuencia (opcional).

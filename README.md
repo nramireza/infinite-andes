@@ -8,7 +8,7 @@ Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** en desarrollo · **Versión:** 0.13.0 · **Licencia:** MIT
+> **Estado:** en desarrollo · **Versión:** 0.13.1 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -21,14 +21,14 @@ El proyecto usa **módulos ES** (sin build, sin dependencias), así que necesita
 
 ```bash
 cd infinite-andes
-python3 -m http.server 8000
+npm start          # servidor Node sin caché (recomendado al editar)
 # abrir http://localhost:8000
 ```
 
-o con el script de npm:
+Alternativa con Python (ojo: cachea; recarga con `Ctrl+Shift+R` al editar):
 
 ```bash
-npm start
+npm run start:python
 ```
 
 ### Parámetros de URL
@@ -139,6 +139,7 @@ infinite-andes/
 │   ├── ui.js             # controles enlazados a la escena
 │   └── main.js           # arranque y loop
 ├── test/                 # tests sin dependencias (npm test; ver test/README.md)
+├── scripts/serve.mjs     # servidor de desarrollo sin caché (npm start)
 ├── scripts/capture.sh    # capturas versionadas (npm run shots)
 ├── scripts/bench.mjs     # benchmark de render/update (npm run bench)
 ├── screenshots/          # capturas por versión (ver screenshots/README.md)
