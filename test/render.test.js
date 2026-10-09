@@ -184,3 +184,15 @@ test("el reloj real mapea la paleta al sol y setClock cambia de modo", () => {
   assert.equal(scene.paletteHour(), 12, "en rápido la hora se usa tal cual");
   assert.doesNotThrow(() => scene.render());
 });
+
+test("el reloj rápido cuenta días y avanza la fase lunar", () => {
+  const ctx = makeFakeCtx();
+  const canvas = { width: W, height: H, getContext: () => ctx };
+  const scene = new Scene(canvas, SEED);
+  scene.weatherAuto = false;
+  scene.setClock("fast");
+  const p0 = scene.moonPhase();
+  scene.update(24 / 0.125); // un día completo a 0.125 h/s
+  assert.equal(scene.dayNum, 1);
+  assert.notEqual(scene.moonPhase(), p0, "la fase lunar debería avanzar");
+});

@@ -8,8 +8,8 @@ import { placeFlora } from "./flora.js";
 import { placeFauna } from "./fauna.js";
 import { momentSky, momentGround } from "./moments.js";
 import { biomeAt, biomeGeometry, modeWeights, biomeFloraPool, biomeFaunaPool, resolveBloom, bloomChanceMul } from "./biomes.js";
-import { seasonState, seasonSnowShift, applySeason, pickSeasonWeather, SEASON_DURATION, SEASON_STRENGTH } from "./seasons.js";
-import { localHour, dayOfYear, seasonPhaseForDate } from "./clock.js";
+import { seasonState, seasonSnowShift, applySeason, pickSeasonWeather, seasonGlowTint, SEASON_DURATION, SEASON_STRENGTH } from "./seasons.js";
+import { localHour, dayOfYear, seasonPhaseForDate, moonPhaseForDate, moonPhaseFromDays } from "./clock.js";
 import { solarTimes, solarClock } from "./sun.js";
 
 export class Scene {
@@ -54,6 +54,7 @@ export class Scene {
     this.season = "auto";
     this.seasonPhase = 0;
     this.seasonSpeed = 1 / SEASON_DURATION; // estaciones por segundo
+    this.dayNum = 0; // días simulados en reloj rápido (fase lunar)
     this.tSec = 0;
 
     // Memo de la paleta compuesta (cambia lento: hora/clima/estación/bioma).
@@ -134,6 +135,13 @@ export class Scene {
     return seasonState(this.seasonPhase, this.season);
   }
 
+  // Fase lunar (0 nueva, 0.5 llena): fecha real o días simulados en reloj rápido.
+  moonPhase() {
+    if (this.clock !== "real") return moonPhaseFromDays(this.dayNum);
+    const now = new Date();
+    return moonPhaseForDate(now.getFullYear(), dayOfYear(now));
+  }
+
   // Contexto de bioma en una posición de mundo (tinte, pools y floración).
   biomeAt(worldX) {
     return biomeAt(worldX, this.seed, this.biomeMode);
@@ -169,7 +177,7 @@ export class Scene {
     } else {
       if (this.timeAuto) {
         this.hour += this.timeSpeed * dt;
-        if (this.hour >= 24) this.hour -= 24;
+        if (this.hour >= 24) { this.hour -= 24; this.dayNum++; }
       }
       if (this.season === "auto") {
         this.seasonPhase = (this.seasonPhase + this.seasonSpeed * dt) % 4;
@@ -221,10 +229,13 @@ export class Scene {
       this._pal = { key: palKey, value: pal };
     }
     const solar = this.clock === "real" ? this.solar() : null;
-    const cel = this.sky.celestial(this.hour, W, H, solar?.rise, solar?.set);
+    const moon = this.moonPhase();
+    const cel = this.sky.celestial(this.hour, W, H, solar?.rise, solar?.set, moon);
+    const glowTint = seasonGlowTint(season);
+    const moonDim = cel && !cel.isSun && cel.visible ? cel.illum : 0;
 
     ctx.clearRect(0, 0, W, H);
-    this.sky.draw(ctx, W, H, pal, nightAmt, this.tSec, cel);
+    this.sky.draw(ctx, W, H, pal, nightAmt, this.tSec, cel, glowTint, moonDim);
 
     // Astro al fondo y nubes por delante de él (lo tapan); el terreno tapa a las nubes.
     this.sky.drawBody(ctx, cel, pal);

@@ -40,6 +40,8 @@ getPalette(hora, clima)  →  applySeason(estación)  →  applyBiome(bioma)
 
 - `applySeason(pal, state, strength)` interpola claves de atmósfera y terreno/flora
   (`floraL/D`, `costaL/D`, `valleyL/D`, `sand/D`, `skyHorizon`). No toca astros ni mar.
+- El **resplandor del astro** se tiñe aparte con `seasonGlowTint` (cálido en otoño/primavera, frío
+  en invierno), aplicado en el cielo sin pasar por la paleta global ([D-030](12-decisiones.md)).
 - La fuerza del tinte se **atenúa de noche** (`strength · (1 − 0.85·nightAmount)`), para no lavar el
   cielo nocturno.
 - El **bioma** se aplica al final: manda en lo regional ([D-016](12-decisiones.md)).

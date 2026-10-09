@@ -1,6 +1,6 @@
 # 03 · Cielo y astros
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 Implementado en `src/sky.js` y la paleta en `src/palette.js`.
 
@@ -30,10 +30,27 @@ y en el ocaso quedan **tras la cámara** (no se dibujan). Constantes en `src/sky
 - **Solo se dibuja al salir** (`u < 0.5`): al ocaso no hay disco solar ni lunar visible
   (queda tácitamente tras la cámara).
 
+### Fases de la luna
+
+La luna tiene **fase real** ([D-030](12-decisiones.md)): `moonPhaseForDate`/`moonPhaseFromDays`
+(`src/clock.js`, ciclo sinódico de 29.53 días) dan la fase en [0,1) — 0 nueva, 0.5 llena. Con el
+reloj real sale de la **fecha del equipo**; con `clock=fast`, de los **días simulados** (`dayNum` en
+`scene.js`, avanza al envolver la hora). En `drawBody`:
+
+- **Llena**: disco completo en `pal.sun` con cráteres (como siempre).
+- **Creciente/menguante**: disco oscuro (`shade(pal.sun, −0.55)`) con la porción iluminada según la
+  fase — el **terminador** recorta por fila; creciente ilumina la derecha, menguante la izquierda.
+  Los **cráteres** solo se dibujan sobre la cara iluminada.
+- El **resplandor lunar** se atenúa con la fase (`illum`), y la luna llena **apaga las estrellas
+  más débiles** (`drawStars` atenúa según `illum`).
+
 ### Resplandor
 
 `drawGlow` pinta un resplandor cálido/frío cuando el astro está cerca del horizonte, pero **solo
-al salir**. Al amanecer produce el efecto de sol detrás de la cordillera (backlight).
+al salir**. Al amanecer produce el efecto de sol detrás de la cordillera (backlight). El tono se
+**tiñe según la estación** (`seasonGlowTint`, [D-030](12-decisiones.md)): cálido en otoño y
+primavera, frío en invierno; el verano es la base sin tinte. El tinte se aplica solo al resplandor
+(no a la clave `sunGlow` global) para no arrastrar la flora cálida ni el reflejo del mar.
 
 ## Estrellas
 
@@ -72,5 +89,5 @@ y **por detrás del terreno**.
 
 ## Pendiente
 
-- TODO: fase lunar (luna creciente/menguante) y su relación con las estrellas.
-- TODO: ajustar el tono del resplandor según estación.
+- Ninguna pendiente: las fases lunares, su relación con las estrellas y el tinte estacional del
+  resplandor cerraron los TODOs anteriores ([D-030](12-decisiones.md)).

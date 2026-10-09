@@ -6,6 +6,23 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-10-09
+
+### Added
+- **Fases de la luna** ([D-030](docs/12-decisiones.md)): la luna ya no es siempre llena — con el
+  reloj real sigue la **fecha del equipo** (ciclo sinódico de 29.53 días, `moonPhaseForDate` en
+  `src/clock.js`) y con `clock=fast` los días simulados (`Scene.dayNum`). Creciente y menguante
+  se dibujan con **terminador por fila** y cráteres solo sobre la cara iluminada; la luna llena
+  **apaga las estrellas más débiles**.
+- **Resplandor según estación** ([D-030](docs/12-decisiones.md)): `seasonGlowTint` tiñe el
+  resplandor del astro — cálido en otoño/primavera, frío en invierno — sin tocar la clave
+  compartida `sunGlow` (flora cálida y reflejo del mar intactos).
+
+### Changed
+- `sky.celestial` acepta la fase lunar y devuelve `phase`/`illum`; `sky.draw` suma parámetros
+  opcionales (`glowTint`, `moonDim`), con el dibujo anterior intacto sin ellos.
+- El resplandor lunar se atenúa con la fase.
+
 ## [0.14.0] - 2026-10-09
 
 ### Added

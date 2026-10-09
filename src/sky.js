@@ -5,6 +5,7 @@
 
 import { mulberry32, hash1 } from "./rng.js";
 import { disc } from "./pixel.js";
+import { lerpColor, shade } from "./palette.js";
 
 const RISE = 6.5; // hora de salida
 const SET = 18.5; // hora de puesta
@@ -49,7 +50,8 @@ export class Sky {
 
   // Estado del astro para una hora dada. `depth` 0 = fondo (tras los Andes),
   // 1 = frente (sobre el mar). `rise`/`set` permiten seguir el sol real.
-  celestial(hour24, W, H, rise = RISE, set = SET) {
+  // `moonPhase` (0 nueva, 0.5 llena) añade `phase`/`illum` a la luna.
+  celestial(hour24, W, H, rise = RISE, set = SET, moonPhase = 0.5) {
     const h = ((hour24 % 24) + 24) % 24;
     let u, isSun;
     if (h >= rise && h < set) {
@@ -68,10 +70,16 @@ export class Sky {
     // Solo se ve al SALIR (u < 0.5). Al ponerse queda tras la cámara.
     const rising = u < 0.5;
     const visible = rising && y > -26 && y < H + 26;
-    return { isSun, u, x, y, r, depth: u, horizonY, rising, visible };
+    const cel = { isSun, u, x, y, r, depth: u, horizonY, rising, visible };
+    if (!isSun) {
+      const phase = ((moonPhase % 1) + 1) % 1;
+      cel.phase = phase;
+      cel.illum = 1 - 2 * Math.abs(phase - 0.5); // 0 nueva, 1 llena
+    }
+    return cel;
   }
 
-  draw(ctx, W, H, pal, nightAmt, tSec, cel) {
+  draw(ctx, W, H, pal, nightAmt, tSec, cel, glowTint = null, moonDim = 0) {
     const horizon = Math.round(H * 0.56);
     const top = ctx.createLinearGradient(0, 0, 0, horizon);
     top.addColorStop(0, pal.skyTop);
@@ -83,11 +91,11 @@ export class Sky {
     ctx.fillRect(0, horizon, W, H - horizon);
 
     if (nightAmt > 0.15) this.drawMilkyWay(ctx, W, H, pal, nightAmt);
-    if (nightAmt > 0.02) this.drawStars(ctx, W, H, pal, nightAmt, tSec);
+    if (nightAmt > 0.02) this.drawStars(ctx, W, H, pal, nightAmt, tSec, moonDim);
     if (nightAmt > 0.35) this.drawAurora(ctx, W, nightAmt, tSec);
     this.drawShootingStars(ctx, W, H, pal, nightAmt, tSec);
 
-    this.drawGlow(ctx, pal, cel, W, H);
+    this.drawGlow(ctx, pal, cel, W, H, glowTint);
   }
 
   // Estrella fugaz ocasional: cabeza brillante con cola que se desvanece.
@@ -114,13 +122,19 @@ export class Sky {
   }
 
   // Resplandor cálido/frío cerca del horizonte según el astro esté bajo.
-  drawGlow(ctx, pal, cel, W, H) {
+  // `tint` (opcional) tiñe el resplandor según la estación; la luna mengua su
+  // resplandor con la fase.
+  drawGlow(ctx, pal, cel, W, H, tint = null) {
     if (!cel || !cel.rising) return;
     const dy = Math.abs(cel.y - cel.horizonY);
     const low = Math.max(0, 1 - dy / 90);
     if (low <= 0.02) return;
     const gy = Math.max(-10, Math.min(H, cel.y));
-    const base = cel.isSun ? 0.9 : 0.42;
+    const moonDim = cel.isSun ? 1 : 0.35 + 0.65 * (cel.illum ?? 1);
+    const base = (cel.isSun ? 0.9 : 0.42) * moonDim;
+    const glowCol = tint && tint.amount > 0
+      ? lerpColor(pal.sunGlow, tint.color, tint.amount)
+      : pal.sunGlow;
     const layers = [
       [64, base * 0.05],
       [38, base * 0.1],
@@ -129,7 +143,7 @@ export class Sky {
     ];
     for (const [r, a] of layers) {
       ctx.globalAlpha = a * low;
-      disc(ctx, cel.x, gy, r, pal.sunGlow);
+      disc(ctx, cel.x, gy, r, glowCol);
     }
     ctx.globalAlpha = 1;
   }
@@ -141,21 +155,52 @@ export class Sky {
     ctx.globalAlpha = 0.22;
     disc(ctx, cel.x, cel.y, r + 4, pal.sunGlow);
     ctx.globalAlpha = 1;
-    disc(ctx, cel.x, cel.y, r, pal.sun);
 
     if (!cel.isSun) {
-      ctx.fillStyle = pal.sunGlow;
+      const phase = Number.isFinite(cel.phase) ? cel.phase : 0.5;
+      const illum = 1 - 2 * Math.abs(phase - 0.5);
       const cx = Math.round(cel.x);
       const cy = Math.round(cel.y);
-      ctx.fillRect(cx - 2, cy - 1, 1, 1);
-      ctx.fillRect(cx + 1, cy + 2, 2, 1);
-      ctx.fillRect(cx - 1, cy + 3, 1, 1);
+      if (illum > 0.97) {
+        disc(ctx, cx, cy, r, pal.sun);
+      } else {
+        const moonDark = shade(pal.sun, -0.55);
+        disc(ctx, cx, cy, r, moonDark);
+        const waxing = phase < 0.5;
+        const litRange = (dy) => {
+          const half = Math.floor(Math.sqrt(Math.max(0, r * r - dy * dy)));
+          const width = Math.round(2 * illum * half);
+          if (width <= 0) return null;
+          const x0 = waxing ? half - width + 1 : -half;
+          return [x0, x0 + width];
+        };
+        for (let dy = -r; dy <= r; dy++) {
+          const range = litRange(dy);
+          if (!range) continue;
+          ctx.fillStyle = pal.sun;
+          ctx.fillRect(cx + range[0], cy + dy, range[1] - range[0], 1);
+        }
+        if (illum > 0.25) this.moonCraters(ctx, cx, cy, pal, litRange);
+      }
     } else {
-      ctx.fillStyle = pal.sunGlow;
       const cx = Math.round(cel.x);
       const cy = Math.round(cel.y);
+      disc(ctx, cx, cy, r, pal.sun);
+      ctx.fillStyle = pal.sunGlow;
       ctx.fillRect(cx - 2, cy - 2, 4, 4);
     }
+  }
+
+  // Cráteres de la luna, solo sobre la porción iluminada.
+  moonCraters(ctx, cx, cy, pal, litRange) {
+    ctx.fillStyle = pal.sunGlow;
+    const inside = (dy, x0, w) => {
+      const range = litRange(dy);
+      return range && x0 >= range[0] && x0 + w <= range[1];
+    };
+    if (inside(-1, -2, 1)) ctx.fillRect(cx - 2, cy - 1, 1, 1);
+    if (inside(2, 1, 2)) ctx.fillRect(cx + 1, cy + 2, 2, 1);
+    if (inside(3, -1, 1)) ctx.fillRect(cx - 1, cy + 3, 1, 1);
   }
 
   // Vía Láctea: banda de polvo estelar inclinada y determinista, visible de noche.
@@ -195,11 +240,13 @@ export class Sky {
     ctx.globalAlpha = 1;
   }
 
-  drawStars(ctx, W, H, pal, nightAmt, tSec) {
+  drawStars(ctx, W, H, pal, nightAmt, tSec, moonDim = 0) {
     const span = H * 0.56;
+    // La luna llena apaga las estrellas más débiles.
+    const dim = 1 - 0.5 * Math.min(1, moonDim);
     for (const s of this.stars) {
       const tw = 0.55 + 0.45 * Math.sin(tSec * 1.6 + s.p);
-      const a = s.b * tw * nightAmt;
+      const a = s.b * tw * nightAmt * dim;
       if (a <= 0.04) continue;
       ctx.globalAlpha = a;
       ctx.fillStyle = pal.star;

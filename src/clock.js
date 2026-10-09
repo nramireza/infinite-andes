@@ -47,3 +47,29 @@ export function seasonPhaseForDate(date) {
   const progress = (date - start) / (nextStart - start);
   return index + Math.min(1, Math.max(0, progress));
 }
+
+// Fase lunar: 0 = luna nueva, 0.5 = llena, 1 = de vuelta a nueva.
+// Ciclo sinódico aproximado (29.53 días) desde una época fija de luna nueva.
+
+export const MOON_CYCLE = 29.530588;
+
+function leapYearsBefore(y) {
+  return Math.floor((y - 1) / 4) - Math.floor((y - 1) / 100) + Math.floor((y - 1) / 400);
+}
+
+// Días transcurridos desde el 1 de enero de 2000 (0 = ese día).
+export function daysSince2000(year, dayOfYear) {
+  const y = Number(year);
+  return (y - 2000) * 365 + (leapYearsBefore(y) - leapYearsBefore(2000)) + Number(dayOfYear);
+}
+
+// Fase [0,1) para una cantidad de días desde la época de luna nueva (2000-01-06).
+export function moonPhaseFromDays(days) {
+  const d = ((Number(days) - 5) % MOON_CYCLE + MOON_CYCLE) % MOON_CYCLE;
+  return d / MOON_CYCLE;
+}
+
+// Fase lunar para una fecha (año + día del año, 0 = 1 de enero).
+export function moonPhaseForDate(year, dayOfYear) {
+  return moonPhaseFromDays(daysSince2000(year, dayOfYear));
+}

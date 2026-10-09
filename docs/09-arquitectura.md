@@ -34,7 +34,8 @@
 1. Calcular la paleta clima a clima: `getPalette(hour, tipo, fuerza)` y, si hay crossfade,
    mezclarla con la del clima saliente (`lerpPalettes`); luego `applySeason` y `applyBiome`.
    Calcular `cel = sky.celestial(...)`.
-2. `sky.draw(...)`: gradiente + Vía Láctea + estrellas + aurora + resplandor.
+2. `sky.draw(...)`: gradiente + Vía Láctea + estrellas + aurora + resplandor (con tinte estacional
+   y fase lunar).
 3. `sky.drawBody(...)`: el astro **al fondo** (lo tapan nubes y terreno).
 4. `sky.drawClouds(...)`: nubes por delante del astro y por detrás del terreno.
 5. `momentSky(...)`: ambiente de momento sobre el cielo (p. ej. 18-sep).

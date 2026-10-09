@@ -434,6 +434,34 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   paletas y dibuja el rayo; `terrain.js drawSea` acepta `wind` (def. 0). Nuevo `test/weather.test.js`.
   `main.js` considera el clima saliente para el FPS. Sin cambios en los dorados (`clear` intacto).
 
+## D-030 · Fases lunares y resplandor estacional
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** cerrar los pendientes de [03 · Cielo y astros](03-cielo-astros.md):
+  - **Fase lunar**: funciones puras en `clock.js` (`MOON_CYCLE = 29.53` días,
+    `moonPhaseForDate(year, doy)` y `moonPhaseFromDays(days)`, época de luna nueva 2000-01-06).
+    Con el reloj real la fase sale de la **fecha del equipo**; con `clock=fast`, de los **días
+    simulados** (`Scene.dayNum`, avanza al envolver la hora en `update`). La luna se dibuja con
+    **terminador por fila** (`drawBody`): creciente ilumina la derecha, menguante la izquierda,
+    con cráteres solo sobre la cara iluminada; sin fase (cel fabricado) se dibuja llena como antes.
+    La luna llena **apaga las estrellas más débiles** (`drawStars` recibe `moonDim`).
+  - **Resplandor según estación**: `seasonGlowTint(state)` (`seasons.js`) da un tinte del
+    resplandor del astro (cálido en otoño/primavera, frío en invierno; verano = base) que `drawGlow`
+    aplica **solo al resplandor**, sin tocar la clave `sunGlow` de la paleta global (la usa la flora
+    cálida y el reflejo del mar).
+- **Motivo:** la luna era siempre llena e ignoraba la realidad (que el proyecto ya sincroniza con la
+  hora/estación, [D-027](#d-027--sincronización-con-la-hora-estación-y-sol-reales-de-chile)); y el
+  resplandor no acompañaba la estación.
+- **Alternativas:** fase por semilla (descartado: se desincroniza de la fecha real); tinte estacional
+  vía `applySeason` (descartado: la atenuación nocturna y la clave compartida `sunGlow` arrastrarían
+  otros dibujos); recorte con `globalCompositeOperation` (descartado: no testeable con el contexto
+  falso).
+- **Consecuencia:** `sky.celestial` acepta `moonPhase` y devuelve `phase`/`illum`; `sky.draw` suma
+  `glowTint`/`moonDim` (opcionales); `scene.render` calcula la fase y el tinte. Tests nuevos en
+  `clock.test.js`, `sky.test.js` (creciente/menguante, estrellas) y `seasons.test.js`
+  (`seasonGlowTint`). Sin cambios en dorados.
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

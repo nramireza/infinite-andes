@@ -54,8 +54,9 @@ Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (am
 `?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
 `?ui=0&fit=cover` (fondo de pantalla a pantalla completa) · `?clock=fast` (ciclo día/noche rápido).
 
-Por defecto la pantalla sigue el **reloj real**: hora local, estación del hemisferio sur y el
-amanecer/atardecer de Chile, así lo que se ve coincide con el momento y la época del lugar.
+Por defecto la pantalla sigue el **reloj real**: hora local, estación del hemisferio sur, el
+amanecer/atardecer de Chile y la **fase de la luna**, así lo que se ve coincide con el momento y la
+época del lugar.
 
 ---
 
@@ -123,11 +124,11 @@ infinite-andes/
 │   ├── noise.js          # ruido de valor 1D + fBm + ridged
 │   ├── pixel.js          # utilidades de dibujo pixel-art (sprites, discos)
 │   ├── loop.js           # control de fotogramas (FPS, delta) puro
-│   ├── clock.js          # hora local y estación real (hemisferio sur)
+│   ├── clock.js          # hora local, estación y fase lunar reales (hemisferio sur)
 │   ├── sun.js            # amanecer/atardecer y reasignación solar pura
 │   ├── viewport.js       # altura fija + relación de aspecto
 │   ├── palette.js        # paletas día/noche/estaciones + clima
-│   ├── sky.js            # gradiente, astros, estrellas, Vía Láctea, aurora, nubes
+│   ├── sky.js            # gradiente, astros (luna con fases), estrellas, Vía Láctea, aurora, nubes
 │   ├── weather.js        # partículas, niebla, crossfade de clima y relámpagos
 │   ├── terrain.js        # capas de montaña, nieve, rocas, playa, mar, ríos
 │   ├── flora.js          # araucaria, lenga, cultivos, arbustos, rocas

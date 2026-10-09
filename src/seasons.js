@@ -107,6 +107,28 @@ function seasonTint(state) {
   return out;
 }
 
+// Tinte del resplandor del astro por estación (se aplica en el cielo, no en la
+// paleta global, para no arrastrar la flora cálida ni el reflejo del mar).
+const SEASON_GLOW = {
+  verano: null,
+  otono: { color: "#ff9a4a", amount: 0.45 },
+  invierno: { color: "#b8c8f0", amount: 0.4 },
+  primavera: { color: "#ffe6b0", amount: 0.35 },
+};
+
+// Resplandor estacional mezclado entre estación actual y siguiente; null = base.
+export function seasonGlowTint(state) {
+  const a = SEASON_GLOW[SEASON_IDS[state.index]];
+  const b = SEASON_GLOW[SEASON_IDS[state.next]];
+  if (!a && !b) return null;
+  if (!a) return { color: b.color, amount: b.amount * state.t };
+  if (!b) return { color: a.color, amount: a.amount * (1 - state.t) };
+  return {
+    color: state.t > 0 ? lerpColor(a.color, b.color, state.t) : a.color,
+    amount: a.amount + (b.amount - a.amount) * state.t,
+  };
+}
+
 // Aplica el tinte de estación a una paleta (devuelve una copia). `strength` en 0..1.
 export function applySeason(pal, state, strength = SEASON_STRENGTH) {
   const s = clamp01(strength);

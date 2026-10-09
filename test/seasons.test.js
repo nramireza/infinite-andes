@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   SEASON_IDS, SEASONS, seasonState, seasonSnowShift, seasonWeatherBias,
-  applySeason, pickSeasonWeather, SEASON_DURATION,
+  applySeason, pickSeasonWeather, seasonGlowTint, SEASON_DURATION,
 } from "../src/seasons.js";
 import { getPalette } from "../src/palette.js";
 import { Scene } from "../src/scene.js";
@@ -89,6 +89,17 @@ test("applySeason con fuerza 0 o verano no cambia la paleta", () => {
   const base = getPalette(12, "clear");
   assert.deepEqual(applySeason(base, seasonState(0, "otono"), 0), base);
   assert.deepEqual(applySeason(base, seasonState(0, "verano"), 0.5), base);
+});
+
+test("seasonGlowTint es nulo en verano y tiñe en las demás estaciones", () => {
+  assert.equal(seasonGlowTint(seasonState(0, "verano")), null);
+  const otono = seasonGlowTint(seasonState(0, "otono"));
+  assert.ok(otono.color.startsWith("#") && otono.amount > 0);
+  const invierno = seasonGlowTint(seasonState(0, "invierno"));
+  assert.ok(invierno.amount > 0);
+  // transición verano→otoño: el tinte aparece gradualmente
+  const mezcla = seasonGlowTint(seasonState(0.9));
+  assert.ok(mezcla.amount > 0 && mezcla.amount < otono.amount);
 });
 
 test("el pipeline de estaciones no lanza y dibuja", () => {
