@@ -16,5 +16,6 @@ Generadas con `npm run shots`. Cada carpeta es una versión (versión + hash de 
 | v0.7.0-4597386 | 2026-10-08 | 16 | 4597386 | `v0.7.0-4597386/` |
 | v0.8.0-dcd08f8 | 2026-10-08 | 19 | dcd08f8 | `v0.8.0-dcd08f8/` |
 | v0.9.0-94b6b61 | 2026-10-08 | 19 | 94b6b61 | `v0.9.0-94b6b61/` |
+| v1.0.0-850034c | 2026-10-09 | 20 | 850034c | `v1.0.0-850034c/` |
 
 Cada carpeta incluye `manifest.json` (metadatos) y `contact-sheet.png` (todas juntas).
