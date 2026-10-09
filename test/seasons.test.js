@@ -56,6 +56,13 @@ test("el sesgo de clima favorece la nieve en invierno", () => {
   assert.ok(ver.clear > inv.clear, "el verano debería tener más despejado");
 });
 
+test("la tormenta participa del sesgo de clima de todas las estaciones", () => {
+  for (const id of SEASON_IDS) {
+    const bias = seasonWeatherBias(seasonState(0, id));
+    assert.ok(bias.storm > 0, `${id} sin peso de tormenta`);
+  }
+});
+
 test("pickSeasonWeather es determinista y respeta el sesgo", () => {
   const st = seasonState(0, "invierno");
   assert.equal(pickSeasonWeather(st, () => 0.1), pickSeasonWeather(st, () => 0.1));

@@ -71,7 +71,7 @@ test("placeFlora no falla y dibuja", () => {
 test("el pipeline con contexto falso no lanza en varias horas y climas", () => {
   seedLayers(SEED);
   for (const hour of [3, 7, 12, 18, 22]) {
-    for (const weather of ["clear", "snow", "rain", "fog", "wind"]) {
+    for (const weather of ["clear", "snow", "rain", "fog", "wind", "storm"]) {
       const pal = getPalette(hour, weather);
       const ctx = makeFakeCtx();
       for (const layer of LAYERS) {

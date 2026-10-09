@@ -6,6 +6,25 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-10-09
+
+### Added
+- **Crossfade real de clima** ([D-029](docs/12-decisiones.md)): el clima saliente se desvanece
+  **en paralelo** al entrante (misma tasa, suma ≈ 1, ≈ 2 s). La paleta se mezcla clima a clima
+  (`lerpPalettes`) y las partículas de ambos estados se dibujan a la vez.
+- **Tormenta eléctrica** (`storm`): lluvia densa y rápida, cielo muy oscuro y **relámpagos**
+  deterministas (temporizador sembrado 1.5–6.5 s) dibujados entre el cielo y el terreno, con un
+  flash que ilumina la escena. Expuesta en URL (`?weather=storm`), panel y vistas; sesgo por
+  estación (invierno máximo).
+
+### Changed
+- **Viento que inclina la precipitación**: la lluvia (y la tormenta) se dibuja como trazo
+  escalonado cuyo sesgo crece con el viento.
+- **El mar responde al viento**: `drawSea` recibe `wind` (`Weather.effectiveWind()`, cuenta el
+  crossfade) que sube el oleaje, acelera las crestas y añade salpicadura. Sin viento el dibujo es
+  idéntico al anterior.
+- `main.js` considera también el clima saliente para el FPS adaptativo.
+
 ## [0.13.1] - 2026-10-08
 
 ### Added

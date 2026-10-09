@@ -12,7 +12,7 @@ El paisaje tiene un **ciclo estacional** que tiñe la paleta, mueve la **línea 
 |----------|----------|-------------|------------------|
 | **verano** | base actual, cálido y despejado | −0.18 (nieve más alta) | despejado |
 | **otoño** | ámbar/rojo en flora y Costa, horizonte cálido | +0.12 | viento, lluvia |
-| **invierno** | frío y desaturado | +0.32 (nieve más baja) | nieve, lluvia, niebla |
+| **invierno** | frío y desaturado | +0.32 (nieve más baja) | nieve, lluvia, niebla, tormenta |
 | **primavera** | verdes frescos | −0.05 | despejado |
 
 - `snowShift` se **suma** al desplazamiento del bioma ([02 · Mundo](02-mundo.md)); solo actúa en
@@ -47,8 +47,8 @@ getPalette(hora, clima)  →  applySeason(estación)  →  applyBiome(bioma)
 ## Clima por estación
 
 `pickSeasonWeather(state, rnd)` sortea el clima automático con los pesos `weatherBias` de la
-estación mezclados entre actual y siguiente (invierno favorece nieve/lluvia; verano, despejado).
-Ver [04 · Clima](04-clima.md).
+estación mezclados entre actual y siguiente (invierno favorece nieve/lluvia/tormenta; verano,
+despejado). Ver [04 · Clima](04-clima.md).
 
 ## Parámetros de URL
 

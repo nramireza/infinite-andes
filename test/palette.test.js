@@ -35,6 +35,8 @@ test("el clima modifica la paleta", () => {
   const clear = getPalette(12, "clear");
   assert.equal(getPalette(12, "snow").snow, "#ffffff");
   assert.notEqual(getPalette(12, "rain").sea, clear.sea);
+  assert.notEqual(getPalette(12, "storm").sea, clear.sea, "la tormenta debe oscurecer");
+  assert.notEqual(getPalette(12, "storm").skyTop, getPalette(12, "rain").skyTop);
 });
 
 test("nightAmount va de 0 (día) a 1 (noche)", () => {

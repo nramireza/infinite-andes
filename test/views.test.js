@@ -34,6 +34,7 @@ test("encodeView redondea x y normaliza la hora", () => {
 test("encodeView omite campos ausentes", () => {
   assert.equal(encodeView({ seed: "andes" }), "seed=andes");
   assert.equal(encodeView({ weather: "clear" }), "weather=clear");
+  assert.equal(encodeView({ weather: "storm" }), "weather=storm");
 });
 
 test("decodeView acepta URLSearchParams y objeto", () => {

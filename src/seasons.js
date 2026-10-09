@@ -13,7 +13,7 @@ export const SEASONS = {
   verano: {
     tint: {},
     snowShift: -0.18,
-    weatherBias: { clear: 2.2, snow: 0.2, rain: 0.5, fog: 0.6, wind: 1.0 },
+    weatherBias: { clear: 2.2, snow: 0.2, rain: 0.5, fog: 0.6, wind: 1.0, storm: 0.15 },
   },
   otono: {
     tint: {
@@ -22,7 +22,7 @@ export const SEASONS = {
       skyHorizon: "#e6c08a",
     },
     snowShift: 0.12,
-    weatherBias: { clear: 1.0, snow: 0.6, rain: 0.9, fog: 1.0, wind: 1.8 },
+    weatherBias: { clear: 1.0, snow: 0.6, rain: 0.9, fog: 1.0, wind: 1.8, storm: 0.6 },
   },
   invierno: {
     tint: {
@@ -31,7 +31,7 @@ export const SEASONS = {
       skyHorizon: "#cfd8e0",
     },
     snowShift: 0.32,
-    weatherBias: { clear: 0.8, snow: 2.2, rain: 1.4, fog: 1.2, wind: 1.2 },
+    weatherBias: { clear: 0.8, snow: 2.2, rain: 1.4, fog: 1.2, wind: 1.2, storm: 1.0 },
   },
   primavera: {
     tint: {
@@ -40,7 +40,7 @@ export const SEASONS = {
       skyHorizon: "#d6ecf2",
     },
     snowShift: -0.05,
-    weatherBias: { clear: 1.6, snow: 0.3, rain: 0.8, fog: 0.7, wind: 1.2 },
+    weatherBias: { clear: 1.6, snow: 0.3, rain: 0.8, fog: 0.7, wind: 1.2, storm: 0.3 },
   },
 };
 

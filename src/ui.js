@@ -7,7 +7,7 @@ import { addView, decodeView, encodeView, parseViews, removeView } from "./views
 const VIEWS_STORAGE_KEY = "infinite-andes:views";
 
 const WEATHER_LABEL = {
-  clear: "despejado", snow: "nieve", rain: "lluvia", fog: "niebla", wind: "viento",
+  clear: "despejado", snow: "nieve", rain: "lluvia", fog: "niebla", wind: "viento", storm: "tormenta",
 };
 
 const BIOME_LABEL = {

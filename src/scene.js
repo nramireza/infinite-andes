@@ -1,6 +1,6 @@
 // Composición de la escena: cámara, parallax, ciclo día/noche y clima.
 
-import { getPalette, nightAmount, applyBiome } from "./palette.js";
+import { getPalette, lerpPalettes, nightAmount, applyBiome } from "./palette.js";
 import { Sky } from "./sky.js";
 import { Weather } from "./weather.js";
 import { LAYERS, drawLayer, drawSea, seedLayers, setBiomeGeometry, clearColumnCaches } from "./terrain.js";
@@ -199,14 +199,23 @@ export class Scene {
     const biome = this.biomeAt(centerX);
     const bloom = this.bloomValue(biome);
     // Paleta compuesta memoizada: se rehace solo cuando cambian sus entradas.
-    const palKey = `${Math.round(palHour * 256)}|${this.weather.type}|${Math.round(this.weather.strength * 16)}` +
+    // Con crossfade entran en la clave también el clima saliente y su fuerza.
+    const w = this.weather;
+    const palKey = `${Math.round(palHour * 256)}|${w.type}|${Math.round(w.strength * 16)}` +
+      `|${w.prevType || ""}|${Math.round(w.prevStrength * 16)}` +
       `|${season.index}|${season.next}|${Math.round(season.t * 16)}|${this.biomeMode}|${Math.round(centerX)}`;
     let pal;
     if (this._pal.key === palKey) {
       pal = this._pal.value;
     } else {
       // Orden: hora → clima (en getPalette) → estación → bioma (manda en lo regional).
-      pal = getPalette(palHour, this.weather.type, this.weather.strength);
+      pal = getPalette(palHour, w.type, w.strength);
+      if (w.prevType) {
+        const prevPal = getPalette(palHour, w.prevType, w.prevStrength);
+        const total = w.strength + w.prevStrength;
+        const k = total < 0.001 ? 1 : w.strength / total;
+        pal = lerpPalettes(prevPal, pal, k);
+      }
       pal = applySeason(pal, season, SEASON_STRENGTH * (1 - 0.85 * nightAmt));
       pal = applyBiome(pal, biome.tint, biome.amount, bloom);
       this._pal = { key: palKey, value: pal };
@@ -222,10 +231,13 @@ export class Scene {
     this.sky.drawClouds(ctx, W, pal, this.camera, this.tSec);
     momentSky(ctx, pal, this.camera, W, H, this.seed, this.tSec, this.moment);
 
+    // Rayo de tormenta por delante del cielo y detrás del terreno.
+    this.weather.drawLightning(ctx, W, H, pal);
+
     // Capas de atrás hacia adelante.
     for (const layer of LAYERS) {
       if (layer.sea) {
-        drawSea(ctx, pal, this.camera, W, H, this.tSec, cel);
+        drawSea(ctx, pal, this.camera, W, H, this.tSec, cel, this.weather.effectiveWind());
       } else {
         drawLayer(ctx, layer, pal, this.camera, W, H);
         placeFlora(ctx, layer, pal, this.camera, W, H, this.seed, this.tSec,

@@ -31,17 +31,20 @@
 
 ## Pipeline de render (`scene.render`)
 
-1. Calcular `pal = getPalette(hour, weather.type, weather.strength)` y `cel = sky.celestial(...)`.
+1. Calcular la paleta clima a clima: `getPalette(hour, tipo, fuerza)` y, si hay crossfade,
+   mezclarla con la del clima saliente (`lerpPalettes`); luego `applySeason` y `applyBiome`.
+   Calcular `cel = sky.celestial(...)`.
 2. `sky.draw(...)`: gradiente + Vía Láctea + estrellas + aurora + resplandor.
 3. `sky.drawBody(...)`: el astro **al fondo** (lo tapan nubes y terreno).
 4. `sky.drawClouds(...)`: nubes por delante del astro y por detrás del terreno.
 5. `momentSky(...)`: ambiente de momento sobre el cielo (p. ej. 18-sep).
-6. **Capas de atrás hacia adelante** (`LAYERS`):
-   - Si la capa es `mar`: `drawSea`.
+6. `weather.drawLightning(...)`: rayo de tormenta, por delante del cielo y detrás del terreno.
+7. **Capas de atrás hacia adelante** (`LAYERS`):
+   - Si la capa es `mar`: `drawSea` (con `effectiveWind` del clima).
    - Si no: `drawLayer` (incluye canales de río) + `placeFlora`.
    - `placeFauna` en todas (incluido el mar, para aves y mamíferos marinos).
-7. `momentGround(...)`: personajes de momento (Leo Rey / Kung Leo) en primer plano.
-8. `weather.draw(...)`: partículas y niebla.
+8. `momentGround(...)`: personajes de momento (Leo Rey / Kung Leo) en primer plano.
+9. `weather.draw(...)`: partículas y niebla (de ambos climas durante el crossfade).
 
 ## Determinismo y semilla
 
@@ -85,7 +88,10 @@ dibujan después y ocultan a las traseras.
 
 - **Nueva capa**: agregar un objeto a `LAYERS` en el orden de atrás hacia adelante.
 - **Nueva especie vegetal**: `drawPlant` en `flora.js` + entrar en `LAYERS[*].flora.types`.
-- **Nuevo clima**: agregar estado en `weather.js` (`COUNTS`, `spawn`, `draw`) y tintes en `palette.js`.
+- **Nuevo clima**: agregar estado en `weather.js` (`COUNTS`, `spawn`, `draw`, `windLevelFor`), tintes
+  en `palette.js` (`WEATHER_TARGETS`), el peso en las cuatro estaciones (`seasons.js`), la clave en
+  `VIEW_WEATHERS` (`views.js`), la etiqueta en `ui.js` y la opción en `index.html` (caso de
+  referencia: `storm`).
 - **Nueva fauna**: añadir la especie a `SPECIES` en `fauna.js` (sprites, movimiento
   `fly`/`walk`/`hop`/`swim`/`flock`, actividad) y listarla en `LAYERS[*].fauna.species`.
 - **Nuevo momento**: añadir el tipo en `moments.js` (`MOMENT_IDS` + dibujo) y, si aplica,

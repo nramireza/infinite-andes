@@ -418,24 +418,26 @@ function drawReflection(ctx, pal, W, H, tSec, cel) {
 }
 
 // El mar: oleaje, espuma y gradiente de profundidad. `cel` (opcional) añade el
-// reflejo del astro.
-export function drawSea(ctx, pal, camera, W, H, tSec, cel) {
+// reflejo del astro; `wind` (0..1) agita la superficie.
+export function drawSea(ctx, pal, camera, W, H, tSec, cel, wind = 0) {
   const p = LAYERS[5].parallax;
+  const amp = 1 + wind * 0.45;
+  const speed = 1 + wind * 0.8;
   for (let sx = 0; sx < W; sx++) {
     const wx = camera.x * p + sx;
     const w = fbm1(wx * 0.035, 4321, 3);
-    const top = Math.round(SEA_Y + (w - 0.5) * 8);
+    const top = Math.round(SEA_Y + (w - 0.5) * 8 * amp);
 
     ctx.fillStyle = pal.seaD;
     ctx.fillRect(sx, top, 1, H - top);
     ctx.fillStyle = pal.sea;
     ctx.fillRect(sx, top, 1, 9);
 
-    const crest = Math.sin(wx * 0.11 + tSec * 1.4) + Math.sin(wx * 0.05 - tSec * 0.9);
-    if (crest > 0.9) {
+    const crest = Math.sin(wx * 0.11 + tSec * 1.4 * speed) + Math.sin(wx * 0.05 - tSec * 0.9 * speed);
+    if (crest > 0.9 - wind * 0.3) {
       ctx.fillStyle = pal.seaHi;
       ctx.fillRect(sx, top, 1, 2);
-      if (crest > 1.5) {
+      if (crest > 1.5 - wind * 0.45) {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(sx, top, 1, 1);
       }
@@ -443,6 +445,10 @@ export function drawSea(ctx, pal, camera, W, H, tSec, cel) {
     if (w > 0.72 && crest > 0.2) {
       ctx.fillStyle = pal.seaHi;
       ctx.fillRect(sx, top + 3 + Math.floor(w * 4), 1, 1);
+    }
+    if (wind > 0.55 && crest > 1.1) {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(sx, top - 1, 1, 1);
     }
   }
 

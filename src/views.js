@@ -8,7 +8,7 @@ import { ratioFromString } from "./viewport.js";
 
 export const VIEW_KEYS = ["seed", "x", "hour", "weather", "aspect", "moment", "season", "biome", "bloom", "clock"];
 
-export const VIEW_WEATHERS = ["auto", "clear", "snow", "rain", "fog", "wind"];
+export const VIEW_WEATHERS = ["auto", "clear", "snow", "rain", "fog", "wind", "storm"];
 export const VIEW_MOMENTS = ["auto", "none", "18sep", "leorey", "kungleo"];
 export const VIEW_SEASONS = ["auto", "verano", "otono", "invierno", "primavera"];
 export const VIEW_BIOMES = ["auto", "norte", "centro", "sur"];

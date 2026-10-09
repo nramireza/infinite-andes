@@ -37,7 +37,7 @@ npm run start:python
 |-----------|---------|-------------|
 | `seed`    | `?seed=pewen` | Semilla del paisaje (texto o número) |
 | `hour`    | `?hour=6.7`   | Hora del día (0–24); desactiva el paso del tiempo |
-| `weather` | `?weather=snow` | Clima fijo: `clear`, `snow`, `rain`, `fog`, `wind` |
+| `weather` | `?weather=storm` | Clima fijo: `clear`, `snow`, `rain`, `fog`, `wind`, `storm` |
 | `season`  | `?season=otono` | Estación: `auto` (ciclo), `verano`, `otono`, `invierno`, `primavera` |
 | `aspect`  | `?aspect=21:9` | Relación de aspecto: `16:9`, `21:9`, `32:9` (def.) o decimal (`2.4`) |
 | `moment`  | `?moment=kungleo` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo` |
@@ -95,7 +95,8 @@ Panel superior izquierdo (se oculta con el botón `∞`):
 - **Relación**: 16:9, 21:9, 32:9 o personalizada (por defecto 32:9).
 - **Hora**: deslizador + paso del tiempo automático.
 - **Reloj**: real (hora local, estación y sol de Chile) o ciclo rápido.
-- **Clima**: automático o forzado a uno de los cinco.
+- **Clima**: automático o forzado a uno de los seis (despejado, nieve, lluvia, niebla, viento,
+  tormenta).
 - **Estación**: automática (ciclo de ~8 min) o fija (verano, otoño, invierno, primavera).
 - **Momento**: raro automático o forzado (18 de septiembre, Leo Rey, Kung Leo).
 - **Región**: procedural (automático), Norte árido, Centro o Sur boscoso.
@@ -127,7 +128,7 @@ infinite-andes/
 │   ├── viewport.js       # altura fija + relación de aspecto
 │   ├── palette.js        # paletas día/noche/estaciones + clima
 │   ├── sky.js            # gradiente, astros, estrellas, Vía Láctea, aurora, nubes
-│   ├── weather.js        # partículas (nieve/lluvia/viento) y niebla
+│   ├── weather.js        # partículas, niebla, crossfade de clima y relámpagos
 │   ├── terrain.js        # capas de montaña, nieve, rocas, playa, mar, ríos
 │   ├── flora.js          # araucaria, lenga, cultivos, arbustos, rocas
 │   ├── fauna.js          # especies endémicas (sprites + spawn)

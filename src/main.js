@@ -101,7 +101,9 @@ let perfFrames = 0;
 function frame(now) {
   requestAnimationFrame(frame);
   if (!canRender({ painted, running, focused })) return;
-  const weatherActive = scene.weather.type !== "clear" && scene.weather.strength > 0.01;
+  const w = scene.weather;
+  const weatherActive = (w.type !== "clear" && w.strength > 0.01) ||
+    (w.prevType != null && w.prevStrength > 0.01);
   const fps = effectiveFps(baseFps, { scrolling: scene.autoScroll, weather: weatherActive });
   if (!shouldDraw(now, lastDraw, fps)) return;
   const dt = clampDt((now - lastDraw) / 1000);

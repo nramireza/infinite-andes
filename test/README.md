@@ -15,6 +15,7 @@ npm run check     # verifica sintaxis de src/*.js
 | `noise.test.js` | ruido de valor, fBm y ridged |
 | `viewport.test.js` | relación de aspecto y derivación del ancho |
 | `palette.test.js` | interpolación de color y clima |
+| `weather.test.js` | crossfade de clima, viento que inclina la lluvia, tormenta y relámpagos |
 | `terrain.test.js` | alturas, muesca del río y semillas |
 | `spawn.test.js` | spawn por capa con parallax: ríos y flora |
 | `fauna.test.js` | fauna: actividad, determinismo, parallax, cauce, mar, huillín y validez de sprites |

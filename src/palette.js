@@ -195,7 +195,21 @@ const WEATHER_TARGETS = {
     sand: "#c4cbd1", sandD: "#b8bfc5", sea: "#bcc5cd", seaD: "#b2bbc3", seaHi: "#cdd5db",
   },
   wind: { skyTop: "#3c8fca", skyMid: "#8ec0da", skyHorizon: "#e2dcc4" },
+  storm: {
+    skyTop: "#2c3642", skyMid: "#3c4854", skyHorizon: "#6a7480",
+    farL: "#3c4754", farD: "#303a45", midL: "#38424c", midD: "#2b343d", nearL: "#313a42", nearD: "#262e35",
+    valleyL: "#3a443c", valleyD: "#2e3630", costaL: "#3a443c", costaD: "#2e3630",
+    sand: "#4a4640", sandD: "#3a3632", sea: "#2c3a44", seaD: "#233038", seaHi: "#4a5a66",
+  },
 };
+
+// Mezcla dos paletas clima a clima (crossfade): `k` interpola de `from` a `to`.
+export function lerpPalettes(from, to, k) {
+  const t = Math.max(0, Math.min(1, k));
+  const out = { ...to };
+  for (const key in to) out[key] = lerpColor(from[key] ?? to[key], to[key], t);
+  return out;
+}
 
 export function applyWeather(pal, weather, strength = 1) {
   const s = Math.max(0, Math.min(1, strength));

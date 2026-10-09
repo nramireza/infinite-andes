@@ -40,6 +40,7 @@ MATRIX=(
   "andes|12|rain"
   "andes|12|fog"
   "andes|12|wind"
+  "andes|12|storm"
   "andes|12|clear|norte"
   "andes|12|clear|sur"
   "andes|12|clear|norte|on"

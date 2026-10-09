@@ -405,6 +405,35 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   idéntico** a cámara fija (verificado píxel a píxel). Tests de memo, caché de columna y
   `effectiveFps`. Complementa [D-026](#d-026--modo-fondo-de-pantalla-y-rendimiento).
 
+## D-029 · Clima: crossfade, viento que inclina y tormenta eléctrica
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** cerrar los tres pendientes de [04 · Clima](04-clima.md):
+  - **Crossfade real**: `Weather` guarda el clima saliente (`prevType`/`prevStrength`/`prevParticles`)
+    y lo desvanece **en paralelo** al entrante, a la misma tasa (la suma de intensidades se mantiene
+    ≈ 1 durante ≈ 2 s). La paleta se mezcla clima a clima con `lerpPalettes` (`palette.js`) y las
+    partículas de ambos estados se dibujan a la vez. El `palKey` del memo incluye ambos climas.
+  - **Viento que inclina la precipitación**: la lluvia se dibuja como trazo escalonado cuyo sesgo
+    crece con `windLevel` (también en la tormenta); la deriva horizontal ya existente se mantiene.
+    El mar recibe un parámetro `wind` en `drawSea` (`effectiveWind()` de `Weather`, cuenta el
+    crossfade) que sube la amplitud del oleaje, acelera las crestas y añade salpicadura con viento
+    fuerte. Sin viento el dibujo es **idéntico** al anterior (los tests de `drawSea` no cambian).
+  - **Tormenta eléctrica**: nuevo clima `storm` (lluvia densa y rápida, tinte propio en
+    `WEATHER_TARGETS`, sesgo en las cuatro estaciones con invierno máximo) con **relámpagos**
+    deterministas: temporizador sembrado (1.5–6.5 s) + rayo dibujado entre el cielo y el terreno
+    (`drawLightning`, llamado desde `scene.render`) y un flash breve que ilumina la escena.
+    Expuesto en URL (`?weather=storm`), panel y vistas.
+- **Motivo:** el clima encadenado (out→in) dejaba un "bache" de paleta a mitad de transición; el
+  viento no se sentía en la precipitación ni en el mar; y faltaba un evento puntual con tensión.
+- **Alternativas:** crossfade solo de paleta sin partículas dobles (descartado: la lluvia vieja
+  desaparecía de golpe); viento como clima nuevo "tormenta" sin relámpagos (descartado: el rayo es
+  el carácter del evento); relámpagos por `Math.random()` (descartado: rompe el determinismo).
+- **Consecuencia:** `src/weather.js` reescrito (máquina de crossfade, `stepParticles` por tipo,
+  `updateLightning`); `palette.js` suma `WEATHER_TARGETS.storm` y `lerpPalettes`; `scene.js` mezcla
+  paletas y dibuja el rayo; `terrain.js drawSea` acepta `wind` (def. 0). Nuevo `test/weather.test.js`.
+  `main.js` considera el clima saliente para el FPS. Sin cambios en los dorados (`clear` intacto).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))
