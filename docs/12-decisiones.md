@@ -553,6 +553,27 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Consecuencia:** versión 1.0.0, changelog [1.0.0], `git tag v1.0.0` y capturas finales
   versionadas. El roadmap deja de enumerar TODOs sueltos y concentra el backlog en una sección.
 
+## D-036 · Tintes de bioma y floración atenuados de noche
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** corregir que el bioma norte no se oscurecía de noche:
+  - **Tinte de bioma**: en `scene.render`, `applyBiome` recibe `amount` y `bloom` multiplicados por
+    `1 − 0.85·nightAmt` (el mismo factor que ya usa la estación). De noche queda un 15% del tinte
+    (un matiz oliva oscuro sobre la base nocturna) en vez del color de día completo.
+  - **Corolas del desierto florido**: `drawFlower` recibe `night` (0..1) y mezcla cada color de
+    `FLOWER_COLORS` hacia `pal.skyTop` nocturno con `0.85·night`; de día (0) el dibujo es idéntico.
+    `placeFlora`/`drawPlant` ganan el parámetro opcional `night` (def. 0).
+- **Motivo:** el tinte del bioma se aplicaba a fuerza completa de noche: el valle del norte quedaba
+  en arena clara (`#a8a05a`/`#7a7440`) sobre un paisaje nocturno, y las corolas rosadas/amarillas
+  seguían encendidas.
+- **Alternativas:** oscurecer los targets del norte en la paleta (descartado: rompe el día y la
+  mezcla procedural); claves nuevas de paleta para flores (descartado: cambia los dorados de
+  paleta); atenuar solo `amount` y no `bloom` (descartado: las flores brillarían igual de noche).
+- **Consecuencia:** composición de paleta en `scene.js` con `nightBiome`; `nightAmt` llega a
+  `placeFlora`. Tests nuevos en `render.test.js` (valle norte y corolas, día vs noche). Sin cambios
+  de dorados (día intacto). Versión 1.0.1.
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

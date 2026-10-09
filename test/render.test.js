@@ -147,6 +147,9 @@ test("la floración del norte dibuja flores (tipo flower)", () => {
   const canvas = { width: W, height: H, getContext: () => ctx };
   const scene = new Scene(canvas, SEED);
   scene.weatherAuto = false;
+  scene.setClock("fast");
+  scene.hour = 12;
+  scene.timeAuto = false;
   scene.setBiome("norte");
   scene.setBloom("on");
   scene.render();
@@ -154,6 +157,39 @@ test("la floración del norte dibuja flores (tipo flower)", () => {
   const flowerColors = new Set(["#e05a9a", "#f2c14e", "#f4f0e6", "#9a6ad0"]);
   const drew = ctx.calls.fillRect.some((c) => flowerColors.has(c[4]));
   assert.ok(drew, "no se dibujaron flores en el norte con floración");
+});
+
+test("el tinte del bioma y las flores se atenúan de noche", () => {
+  const ctxNoche = makeFakeCtx();
+  const noche = new Scene({ width: W, height: H, getContext: () => ctxNoche }, SEED);
+  noche.weatherAuto = false;
+  noche.setClock("fast");
+  noche.hour = 23;
+  noche.timeAuto = false;
+  noche.setBiome("norte");
+  noche.setBloom("on");
+  noche.render();
+  const colorsNoche = new Set(ctxNoche.calls.fillRect.map((c) => c[4]));
+  // El valle del norte no puede quedar con sus colores de día (con y sin floración).
+  for (const c of ["#7a7440", "#907d4a", "#a8a05a"]) {
+    assert.ok(!colorsNoche.has(c), `el valle norte quedó claro de noche (${c})`);
+  }
+  const flowerColors = new Set(["#e05a9a", "#f2c14e", "#f4f0e6", "#9a6ad0"]);
+  assert.ok(![...flowerColors].some((c) => colorsNoche.has(c)), "las corolas quedaron encendidas de noche");
+
+  const ctxDia = makeFakeCtx();
+  const dia = new Scene({ width: W, height: H, getContext: () => ctxDia }, SEED);
+  dia.weatherAuto = false;
+  dia.setClock("fast");
+  dia.hour = 12;
+  dia.timeAuto = false;
+  dia.setBiome("norte");
+  dia.setBloom("on");
+  dia.render();
+  const colorsDia = new Set(ctxDia.calls.fillRect.map((c) => c[4]));
+  // De día con floración, el valle queda teñido de flor (#907d4a = tinte + rubor).
+  assert.ok(colorsDia.has("#907d4a"), "de día el valle norte usa su tinte");
+  assert.ok([...flowerColors].some((c) => colorsDia.has(c)), "de día florecen las corolas");
 });
 
 test("los nuevos tipos de flora dibujan dentro del lienzo", () => {

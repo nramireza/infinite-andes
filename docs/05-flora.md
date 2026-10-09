@@ -17,7 +17,7 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 | Cultivos / campos | — | — | `crop` | Valle | Hileras; refuerza el valle como zona agrícola |
 | Pasto / duna | — | — | `grass` | Playa, Valle, Costa | Matas pequeñas |
 | Rocas | — | — | `rock` | Andes, Playa, Costa | Pedreros sueltos |
-| Flor del desierto | — | — | `flower` | Valle, Costa, Playa (norte) | Parches de flores del **desierto florido** |
+| Flor del desierto | — | — | `flower` | Valle, Costa, Playa (norte) | Parches de flores del **desierto florido**; las corolas se apagan de noche |
 | Copao / Cactus columnar | *Eulychnia* spp. | No | `cactus` | Norte (precordillera, valle, costa) | Columna con brazos y espinas |
 | Alerce / Lahual | *Fitzroya cupressoides* | Sí (Chile/Arg) | `alerce` | Sur (precordillera, costa) | Conífera alta y estrecha; en peligro |
 | Nalca / Pangue | *Gunnera tinctoria* | Sí (Chile/Arg) | `nalca` | Sur (valle, costa) | Hojas gigantes junto al agua |

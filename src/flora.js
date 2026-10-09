@@ -2,7 +2,7 @@
 
 import { mulberry32, hashInt, hash1 } from "./rng.js";
 import { bankHeight, riverInfluence } from "./terrain.js";
-import { shade } from "./palette.js";
+import { shade, lerpColor } from "./palette.js";
 
 const FLOWER_COLORS = ["#e05a9a", "#f2c14e", "#f4f0e6", "#9a6ad0"];
 
@@ -178,14 +178,14 @@ function drawRock(ctx, x, baseY, size, pal) {
   }
 }
 
-function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0) {
+function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0, night = 0) {
   switch (type) {
     case "araucaria": return drawAraucaria(ctx, x, baseY, size, pal, sway);
     case "lenga": return drawLenga(ctx, x, baseY, size, pal, warm, season);
     case "bush": return drawBush(ctx, x, baseY, size, pal);
     case "crop": return drawCrop(ctx, x, baseY, size, pal);
     case "rock": return drawRock(ctx, x, baseY, size, pal);
-    case "flower": return drawFlower(ctx, x, baseY, size, pal, sway);
+    case "flower": return drawFlower(ctx, x, baseY, size, pal, sway, night);
     case "cactus": return drawCactus(ctx, x, baseY, size, pal);
     case "alerce": return drawAlerce(ctx, x, baseY, size, pal);
     case "nalca": return drawNalca(ctx, x, baseY, size, pal);
@@ -470,17 +470,20 @@ function drawChaura(ctx, x, baseY, size, pal) {
 
 // Parche de flores del desierto florido: manto amplio (~10x el área del racimo
 // original) de tallos cortos con corola de 3 px, en dos filas de profundidad.
-function drawFlower(ctx, x, baseY, size, pal, sway) {
+// De noche (`night` 0..1) las corolas se apagan hacia el cielo nocturno.
+function drawFlower(ctx, x, baseY, size, pal, sway, night = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
   const w = size * 2.6;
   const n = 6 + Math.floor(size * 0.7);
+  const dim = Math.min(1, Math.max(0, night)) * 0.85;
   for (let i = 0; i < n; i++) {
     const h = hash1(i * 31 + x, 0xf10e);
     const back = hash1(i * 53 + x, 0xf10f) < 0.45 ? 1 : 0; // fila de fondo
     const fx = x + Math.round((h - 0.5) * w + sway) - back;
     const stemH = 1 + Math.floor(h * 4);
-    const col = FLOWER_COLORS[Math.floor(hash1(i * 7 + x, 0xf1a) * FLOWER_COLORS.length)];
+    const base = FLOWER_COLORS[Math.floor(hash1(i * 7 + x, 0xf1a) * FLOWER_COLORS.length)];
+    const col = dim > 0 ? lerpColor(base, pal.skyTop, dim) : base;
     const yy = baseY - back;
     ctx.fillStyle = pal.floraD;
     ctx.fillRect(fx, yy - stemH, 1, stemH);
@@ -545,9 +548,10 @@ export function floraSpawns(layer, camera, W, H, seed, poolAt) {
   return out;
 }
 
-// `season` (opcional) = índice de estación para las variantes (hojas, brotes, flores).
+// `season` (opcional) = índice de estación para las variantes (hojas, brotes, flores);
+// `night` (opcional) = 0..1 para apagar las corolas del desierto de noche.
 // El spawn no cambia: solo varía el dibujo, así los dorados de flora quedan intactos.
-export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt, season) {
+export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt, season, night) {
   if (!layer.flora) return;
   if (layer.darken) {
     pal = {
@@ -562,9 +566,10 @@ export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt, se
     };
   }
   const seasonIdx = Number.isInteger(season) ? season : 0;
+  const nightAmt = Number.isFinite(night) ? Math.min(1, Math.max(0, night)) : 0;
   for (const s of floraSpawns(layer, camera, W, H, seed, poolAt)) {
     const sway = Math.sin(tSec * 0.9 + s.wx * 0.05);
     const gy = s.depth ? Math.min(H - 2, s.gy + s.depth) : s.gy;
-    drawPlant(ctx, s.sx, gy, s.size, s.type, pal, sway, s.warm, seasonIdx);
+    drawPlant(ctx, s.sx, gy, s.size, s.type, pal, sway, s.warm, seasonIdx, nightAmt);
   }
 }

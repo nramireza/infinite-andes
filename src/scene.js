@@ -225,7 +225,10 @@ export class Scene {
         pal = lerpPalettes(prevPal, pal, k);
       }
       pal = applySeason(pal, season, SEASON_STRENGTH * (1 - 0.85 * nightAmt));
-      pal = applyBiome(pal, biome.tint, biome.amount, bloom);
+      // El tinte del bioma y el rubor de la floración también se atenúan de
+      // noche (mismo factor que la estación): si no, el norte queda "de día".
+      const nightBiome = 1 - 0.85 * nightAmt;
+      pal = applyBiome(pal, biome.tint, biome.amount * nightBiome, bloom * nightBiome);
       this._pal = { key: palKey, value: pal };
     }
     const solar = this.clock === "real" ? this.solar() : null;
@@ -252,7 +255,7 @@ export class Scene {
       } else {
         drawLayer(ctx, layer, pal, this.camera, W, H);
         placeFlora(ctx, layer, pal, this.camera, W, H, this.seed, this.tSec,
-          (wx) => this.floraPoolAt(layer, wx), season.index);
+          (wx) => this.floraPoolAt(layer, wx), season.index, nightAmt);
       }
       placeFauna(ctx, layer, pal, this.camera, W, H, this.seed, this.hour, this.tSec,
         (wx) => this.faunaPoolAt(layer, wx), (wx) => this.faunaChanceAt(wx));

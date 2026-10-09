@@ -6,6 +6,16 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-09
+
+### Fixed
+- **El bioma norte no se oscurecía de noche** ([D-036](docs/12-decisiones.md)): el tinte de bioma
+  (y el rubor de la floración) ahora se atenúa con la noche igual que el de estación
+  (`1 − 0.85·nightAmt`), en vez de aplicarse a fuerza completa.
+- **Corolas del desierto florido encendidas de noche**: `drawFlower` mezcla los colores de flor
+  hacia el cielo nocturno según la noche (`0.85·nightAmt`), así el desierto florido se apaga con
+  el día.
+
 ## [1.0.0] - 2026-10-09
 
 ### Added
