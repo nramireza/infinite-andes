@@ -6,8 +6,12 @@ import {
   bankHeight,
   ridgeHeight,
   riverInfluence,
+  drawLayer,
+  clearColumnCaches,
 } from "../src/terrain.js";
 import { seedToInt } from "../src/rng.js";
+import { getPalette } from "../src/palette.js";
+import { makeFakeCtx } from "./helpers/fakeCtx.js";
 
 test("seedLayers mezcla la semilla en cada capa", () => {
   seedLayers(seedToInt("andes"));
@@ -63,4 +67,23 @@ test("no hay ríos en playa ni mar", () => {
   const mar = LAYERS.find((l) => l.name === "mar");
   assert.equal(playa.rivers, undefined);
   assert.equal(mar.rivers, undefined);
+});
+
+test("el caché de columnas no altera el dibujo", () => {
+  seedLayers(seedToInt("andes"));
+  const pal = getPalette(12, "clear");
+  const layer = LAYERS.find((l) => l.name === "andes");
+  const cam = { x: 12345 };
+  const draw = () => {
+    const ctx = makeFakeCtx();
+    drawLayer(ctx, layer, pal, cam, 480, 270);
+    return ctx.calls.fillRect.map((c) => c.join(","));
+  };
+  const first = draw(); // todo falla de caché
+  const cached = draw(); // todo acierta
+  assert.deepEqual(cached, first);
+  clearColumnCaches();
+  assert.deepEqual(draw(), first); // recomputar da lo mismo
+  cam.x += 0.3; // la tolerancia de ≤1 px no debe romper
+  assert.doesNotThrow(() => draw());
 });

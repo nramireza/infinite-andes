@@ -73,6 +73,7 @@ function snowShiftAt(wx) {
 export function seedLayers(seed) {
   const s = seed >>> 0;
   for (const l of LAYERS) l._seed = (l.seed + Math.imul(s, 0x9e3779b1)) >>> 0;
+  clearColumnCaches();
 }
 
 function baseNoise(layer, wx) {
@@ -199,6 +200,63 @@ function drawChannel(ctx, layer, pal, camera, W, H) {
   }
 }
 
+// --- Caché de geometría por columna -----------------------------------------
+// `ridgeHeight`, la nieve de detalle y las vetas de roca son funciones puras de
+// (capa, semilla, wx). Cada fotograma muestrea ~W píxeles de mundo consecutivos
+// y los siguientes se solapan, así que al hacer scroll las columnas se repiten:
+// se memoizan por píxel de mundo (tolerancia ≤1 px). La nieve por estación se
+// compone aparte para que el cache valga aunque cambie la estación.
+const COL_CAP = 4096;
+
+export function clearColumnCaches() {
+  for (const l of LAYERS) {
+    delete l._col;
+    delete l._field;
+  }
+}
+
+function rockVein(wx, s, vi, depth) {
+  const path = fbm1(wx * 0.02 + vi * 37, s + 41 + vi * 13, 2);
+  return { off: Math.floor(path * depth), two: path > 0.62 };
+}
+
+function columnAt(layer, wx, s) {
+  let cache = layer._col;
+  if (!cache) cache = layer._col = new Map();
+  const key = Math.round(wx);
+  const hit = cache.get(key);
+  if (hit) return hit;
+
+  const A = layer.amp * ampMulAt(wx);
+  const y = Math.round(ridgeHeight(layer, wx));
+  const jitter = layer.snowFrac < 1.4 ? Math.floor(fbm1(wx * 0.22, s + 7, 2) * 6) : 0;
+  let rock = null;
+  if (layer.rocky) {
+    const depth = A * 0.72;
+    rock = [rockVein(wx, s, 0, depth), rockVein(wx, s, 1, depth)];
+  }
+  const col = { A, y, jitter, rock };
+  if (cache.size >= COL_CAP) {
+    let drop = COL_CAP >> 2;
+    for (const k of cache.keys()) {
+      cache.delete(k);
+      if (--drop <= 0) break;
+    }
+  }
+  cache.set(key, col);
+  return col;
+}
+
+// Máscara de campos por fila (no depende de wx): se calcula una vez por capa.
+function fieldMask(layer, s, H) {
+  let m = layer._field;
+  if (!m || m.length !== H) {
+    m = layer._field = new Float32Array(H);
+    for (let row = 0; row < H; row++) m[row] = fbm1(Math.floor(row * 0.14), s + 71, 2);
+  }
+  return m;
+}
+
 export function drawLayer(ctx, layer, pal, camera, W, H) {
   const p = layer.parallax;
   let light = pal[layer.lightKey];
@@ -217,14 +275,17 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
 
   ctx.globalAlpha = layer.alpha;
 
+  const fields = layer.fields ? fieldMask(layer, s, H) : null;
+
   for (let sx = 0; sx < W; sx++) {
     const wx = camera.x * p + sx;
-    const A = layer.amp * ampMulAt(wx);
+    const col = columnAt(layer, wx, s);
+    const A = col.A;
     // la nieve solo se desplaza en capas que ya la tienen
     const sf = layer.snowFrac < 1.4 ? layer.snowFrac + snowShiftAt(wx) : layer.snowFrac;
     const snowThr = A * sf;
     const band = Math.max(2, A * 0.22);
-    let y = Math.round(ridgeHeight(layer, wx));
+    let y = col.y;
     if (y > H) y = H;
 
     ctx.fillStyle = dark;
@@ -246,7 +307,7 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
       const hgt = layer.baseY - y;
       if (hgt > snowThr) {
         const depth = Math.min(A * 0.36, (hgt - snowThr) * 0.9 + 2);
-        const jitter = Math.floor(fbm1(wx * 0.22, s + 7, 2) * 6);
+        const jitter = col.jitter;
         const d = Math.max(1, Math.round(depth - jitter));
         ctx.fillStyle = snow;
         ctx.fillRect(sx, y, 1, d);
@@ -259,21 +320,19 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
     // estratos de roca: vetas continuas bajo la nieve (capas marcadas rocky)
     if (layer.rocky) {
       const base = y + snowBottom;
-      const depth = A * 0.72;
       for (let vi = 0; vi < 2; vi++) {
-        const path = fbm1(wx * 0.02 + vi * 37, s + 41 + vi * 13, 2);
-        const off = Math.floor(path * depth);
+        const vein = col.rock[vi];
         ctx.globalAlpha = layer.alpha * 0.75;
         ctx.fillStyle = vi === 0 ? rockA : rockB;
-        ctx.fillRect(sx, base + off, 1, path > 0.62 ? 2 : 1);
+        ctx.fillRect(sx, base + vein.off, 1, vein.two ? 2 : 1);
         ctx.globalAlpha = layer.alpha;
       }
     }
 
     // textura de campos en el valle central
-    if (layer.fields) {
+    if (fields) {
       for (let row = y + 7; row < H; row += 7) {
-        const m = fbm1(Math.floor(row * 0.14), s + 71, 2);
+        const m = fields[row];
         if (m > 0.58) {
           ctx.globalAlpha = 0.35;
           ctx.fillStyle = m > 0.74 ? pal.costaL : pal.valleyL;

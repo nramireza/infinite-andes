@@ -8,7 +8,7 @@ Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** en desarrollo · **Versión:** 0.12.0 · **Licencia:** MIT
+> **Estado:** en desarrollo · **Versión:** 0.13.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -48,6 +48,7 @@ npm start
 | `ui`      | `?ui=0`       | Oculta el panel, HUD y cursor (modo kiosco/fondo de pantalla) |
 | `fit`     | `?fit=contain` | Ajuste a pantalla: `cover` (def., llena) o `contain` (encaja entero) |
 | `fps`     | `?fps=60`     | Límite de fotogramas (def. `30`; `0` = sin límite) |
+| `perf`    | `?perf=1`     | Overlay con ms/frame y fps objetivo |
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
 `?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
@@ -68,6 +69,20 @@ npm run shots   # -> screenshots/v<versión>-<hash|fecha>/
 
 Cada carpeta incluye la matriz de semillas/horas/climas, un `manifest.json` con metadatos y una
 `contact-sheet.png` con todas juntas. El índice está en [`screenshots/README.md`](screenshots/README.md).
+
+---
+
+## Rendimiento
+
+El paisaje está pensado para quedar encendido como fondo: memoiza el terreno/bioma/paleta por píxel
+de mundo y baja a 8 fps en reposo, además de pausarse al ocultar la pestaña o perder foco
+([D-026](docs/12-decisiones.md), [D-028](docs/12-decisiones.md)). Para medir:
+
+```bash
+npm run bench           # rendimiento de render()/update() por capa (Node, sin navegador)
+```
+
+o añade `?perf=1` a la URL para un overlay con ms/frame y fps.
 
 ---
 
@@ -125,6 +140,7 @@ infinite-andes/
 │   └── main.js           # arranque y loop
 ├── test/                 # tests sin dependencias (npm test; ver test/README.md)
 ├── scripts/capture.sh    # capturas versionadas (npm run shots)
+├── scripts/bench.mjs     # benchmark de render/update (npm run bench)
 ├── screenshots/          # capturas por versión (ver screenshots/README.md)
 └── docs/                 # documentación del proyecto (ver docs/README.md)
 ```

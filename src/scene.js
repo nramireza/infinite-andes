@@ -3,7 +3,7 @@
 import { getPalette, nightAmount, applyBiome } from "./palette.js";
 import { Sky } from "./sky.js";
 import { Weather } from "./weather.js";
-import { LAYERS, drawLayer, drawSea, seedLayers, setBiomeGeometry } from "./terrain.js";
+import { LAYERS, drawLayer, drawSea, seedLayers, setBiomeGeometry, clearColumnCaches } from "./terrain.js";
 import { placeFlora } from "./flora.js";
 import { placeFauna } from "./fauna.js";
 import { momentSky, momentGround } from "./moments.js";
@@ -55,6 +55,9 @@ export class Scene {
     this.seasonPhase = 0;
     this.seasonSpeed = 1 / SEASON_DURATION; // estaciones por segundo
     this.tSec = 0;
+
+    // Memo de la paleta compuesta (cambia lento: hora/clima/estación/bioma).
+    this._pal = { key: "", value: null };
   }
 
   regenerate(seed) {
@@ -90,7 +93,9 @@ export class Scene {
   }
 
   setBiome(mode) {
-    this.biomeMode = mode || "auto";
+    const m = mode || "auto";
+    if (m !== this.biomeMode) clearColumnCaches(); // la geometría por bioma entra en el cache
+    this.biomeMode = m;
   }
 
   setBloom(mode) {
@@ -190,12 +195,22 @@ export class Scene {
     const palHour = this.paletteHour();
     const nightAmt = nightAmount(palHour);
     const season = this.seasonState();
-    const biome = this.biomeAt(this.camera.x + W * 0.5);
+    const centerX = this.camera.x + W * 0.5;
+    const biome = this.biomeAt(centerX);
     const bloom = this.bloomValue(biome);
-    // Orden: hora → clima (en getPalette) → estación → bioma (manda en lo regional).
-    let pal = getPalette(palHour, this.weather.type, this.weather.strength);
-    pal = applySeason(pal, season, SEASON_STRENGTH * (1 - 0.85 * nightAmt));
-    pal = applyBiome(pal, biome.tint, biome.amount, bloom);
+    // Paleta compuesta memoizada: se rehace solo cuando cambian sus entradas.
+    const palKey = `${Math.round(palHour * 256)}|${this.weather.type}|${Math.round(this.weather.strength * 16)}` +
+      `|${season.index}|${season.next}|${Math.round(season.t * 16)}|${this.biomeMode}|${Math.round(centerX)}`;
+    let pal;
+    if (this._pal.key === palKey) {
+      pal = this._pal.value;
+    } else {
+      // Orden: hora → clima (en getPalette) → estación → bioma (manda en lo regional).
+      pal = getPalette(palHour, this.weather.type, this.weather.strength);
+      pal = applySeason(pal, season, SEASON_STRENGTH * (1 - 0.85 * nightAmt));
+      pal = applyBiome(pal, biome.tint, biome.amount, bloom);
+      this._pal = { key: palKey, value: pal };
+    }
     const solar = this.clock === "real" ? this.solar() : null;
     const cel = this.sky.celestial(this.hour, W, H, solar?.rise, solar?.set);
 

@@ -18,3 +18,15 @@ export function clampDt(dtSec, max = 0.05) {
   if (!Number.isFinite(d) || d < 0) return 0;
   return Math.min(d, max);
 }
+
+// FPS de reposo: con la escena casi quieta (sin scroll ni clima) no hace falta
+// redibujar a tasa completa.
+export const IDLE_FPS = 8;
+
+// FPS efectivo según el movimiento. `base` 0 = sin límite (se respeta).
+export function effectiveFps(base, { scrolling = false, weather = false } = {}) {
+  const n = Number(base);
+  if (!Number.isFinite(n) || n <= 0) return n > 0 ? n : 0;
+  if (scrolling || weather) return n;
+  return Math.min(n, IDLE_FPS);
+}

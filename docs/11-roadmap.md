@@ -49,6 +49,8 @@
       ([D-020](12-decisiones.md), v0.9.0).
 - [x] **Modo fondo de pantalla**: kiosco sin HUD/cursor/marco, `fit=cover`, pantalla completa,
       atajos de teclado y rendimiento (FPS, pausa) ([D-026](12-decisiones.md), v0.11.1).
+- [x] **Optimización de recursos**: caché de columnas/bioma/paleta, FPS adaptativo y medición
+      (`?perf=1`, `npm run bench`) ([D-028](12-decisiones.md), v0.13.0).
 
 ## Pendientes transversales
 

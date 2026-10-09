@@ -65,6 +65,7 @@ Pendiente: exportar una **tira larga** seleccionable.
 | `ui` | `0` oculta el panel (modo kiosco) | No |
 | `fit` | `cover` (def., llena) o `contain` (encaja entero) | No |
 | `fps` | Límite de fotogramas (def. `30`; `0` = sin límite) | No |
+| `perf` | `1` muestra un overlay con ms/frame y fps | No |
 
 Al cargar, se leen `seed` (por defecto `andes`), `x`, `hour`, `weather`, `aspect`, `moment`,
 `season`, `biome` y `bloom`. La carga inicial y las **vistas favoritas** comparten
@@ -92,7 +93,16 @@ invierno oscuras ([D-027](12-decisiones.md)). El selector **Reloj** alterna con 
 **pantalla completa**. Atajos de teclado: `Espacio` auto-scroll, `←`/`→` desplazan, `H`/`P` muestran
 u ocultan el panel, `F` pantalla completa. El loop limita a **30 fps** por defecto (`?fps=`), se
 **pausa** al ocultar la pestaña y arranca quieto con `prefers-reduced-motion`. Ver
-[D-026](12-decisiones.md).
+[D-026](12-decisiones.md) y [D-028](12-decisiones.md).
+
+## Rendimiento
+
+`render()` es el grueso del gasto, así que se memoiza por píxel de mundo (columnas de terreno, bioma
+y paleta) y el **FPS baja a 8 en reposo** (helper `effectiveFps` en `src/loop.js`). Para medir:
+
+- `?perf=1`: overlay con ms/frame y fps objetivo.
+- `npm run bench`: benchmark sin dependencias (`scripts/bench.mjs`) de `render()`, `update()` y por
+  capa. Ver [D-028](12-decisiones.md).
 
 ## Pendiente
 

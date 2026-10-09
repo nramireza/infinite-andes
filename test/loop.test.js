@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { frameBudget, shouldDraw, clampDt } from "../src/loop.js";
+import { frameBudget, shouldDraw, clampDt, effectiveFps, IDLE_FPS } from "../src/loop.js";
 
 test("frameBudget traduce fps a milisegundos y no limita con 0", () => {
   assert.equal(frameBudget(30), 1000 / 30);
@@ -25,4 +25,13 @@ test("clampDt acota y sanea el delta", () => {
   assert.equal(clampDt(-1), 0);
   assert.equal(clampDt(NaN), 0);
   assert.equal(clampDt(0.2, 0.1), 0.1);
+});
+
+test("effectiveFps baja en reposo y respeta el máximo", () => {
+  assert.equal(effectiveFps(30, { scrolling: true }), 30);
+  assert.equal(effectiveFps(30, { weather: true }), 30);
+  assert.equal(effectiveFps(30), IDLE_FPS);
+  assert.equal(effectiveFps(60), IDLE_FPS);
+  assert.equal(effectiveFps(4), 4); // no sube por encima del configurado
+  assert.equal(effectiveFps(0), 0); // sin límite se respeta
 });

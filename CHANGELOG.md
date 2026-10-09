@@ -6,6 +6,20 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-10-08
+
+### Changed
+- **Optimización de recursos** ([D-028](docs/12-decisiones.md)): caché de columnas de terreno por
+  píxel de mundo (tolerancia ≤1 px), geometría de bioma una vez por columna, máscara de campos por
+  fila, memo acotado de `modeWeights`/`biomeAt` y de la paleta compuesta. `render()` ≈ **7.6 → 3.4
+  ms/frame** (−56%) con **dibujo idéntico** a cámara fija.
+- **FPS adaptativo**: baja a 8 fps en reposo (sin scroll ni clima) y pausa al ocultar la pestaña o
+  perder el foco de la ventana (`effectiveFps` en `src/loop.js`).
+
+### Added
+- Instrumentación: `scripts/bench.mjs` (`npm run bench`) y overlay `?perf=1` (ms/frame y fps).
+- Tests de memo, caché de columnas y `effectiveFps`.
+
 ## [0.12.0] - 2026-10-08
 
 ### Added

@@ -92,14 +92,25 @@ export function biomeWeights(worldX, seed = 0) {
   return { norte: norte / total, centro: centro / total, sur: sur / total };
 }
 
-// Pesos según el modo: región fija o procedural (`auto`).
+// Pesos según el modo: región fija o procedural (`auto`). Memo acotado por
+// píxel de mundo (el ruido de bioma varía en miles de px, así que redondear es
+// imperceptible) para no recalcular el fBm en cada columna y cada spawn.
+const WEIGHTS_CACHE = new Map();
+const WEIGHTS_CAP = 4096;
+
 export function modeWeights(mode, worldX, seed = 0) {
   if (BIOME_IDS.includes(mode)) {
     const w = { norte: 0, centro: 0, sur: 0 };
     w[mode] = 1;
     return w;
   }
-  return biomeWeights(worldX, seed);
+  const key = ((seed >>> 0) + ":" + Math.round(worldX));
+  const hit = WEIGHTS_CACHE.get(key);
+  if (hit) return hit;
+  const w = biomeWeights(worldX, seed);
+  if (WEIGHTS_CACHE.size >= WEIGHTS_CAP) WEIGHTS_CACHE.clear();
+  WEIGHTS_CACHE.set(key, w);
+  return w;
 }
 
 // Tinte mezclado por pesos. Solo norte y sur declaran paleta; centro no tiñe.
@@ -170,13 +181,24 @@ export function resolveBloom(mode, biome) {
 
 // Contexto de bioma en una posición de mundo. La floración usa la puerta de
 // norte del centro del bloque para que el parche no lo recorte la región norte.
+// Memo acotado por (modo, semilla, píxel de mundo): el resultado es puro y de
+// solo lectura, así que se reutiliza entre columnas y fotogramas.
+const BIOME_CACHE = new Map();
+const BIOME_CAP = 4096;
+
 export function biomeAt(worldX, seed = 0, mode = "auto") {
+  const key = mode + "|" + (seed >>> 0) + "|" + Math.round(worldX);
+  const hit = BIOME_CACHE.get(key);
+  if (hit) return hit;
   const weights = modeWeights(mode, worldX, seed);
   const tint = tintFor(weights);
   const amount = 1 - (weights.centro || 0);
   const block = Math.floor(worldX / BLOOM_BLOCK);
   const bloom = bloomAt(worldX, seed, bloomCenterWeights(block, seed, mode));
-  return { weights, tint, amount, bloom };
+  const out = { weights, tint, amount, bloom };
+  if (BIOME_CACHE.size >= BIOME_CAP) BIOME_CACHE.clear();
+  BIOME_CACHE.set(key, out);
+  return out;
 }
 
 // Pool de flora ponderado por bioma. `fallback` son los `types` de LAYERS (centro).

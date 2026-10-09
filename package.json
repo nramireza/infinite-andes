@@ -1,6 +1,6 @@
 {
   "name": "infinite-andes",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "private": true,
   "type": "module",
   "description": "Paisaje procedural infinito de los Andes chilenos en pixel art.",
@@ -9,6 +9,7 @@
     "test": "node --test test/",
     "check": "for f in src/*.js; do node --check \"$f\" || exit 1; done",
     "palette": "node scripts/palette-table.mjs > docs/14-paleta-maestra.md",
+    "bench": "node scripts/bench.mjs",
     "shots": "bash scripts/capture.sh"
   }
 }

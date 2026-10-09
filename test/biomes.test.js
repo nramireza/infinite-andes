@@ -192,3 +192,15 @@ test("dorado de los pools de bioma", (t) => {
     golden(t, `biome.${id}`, digest(vals));
   }
 });
+
+test("modeWeights y biomeAt memoizan por píxel de mundo", () => {
+  const a = modeWeights("auto", 1000.2, SEED);
+  assert.equal(modeWeights("auto", 1000.4, SEED), a); // mismo píxel redondeado
+  assert.notEqual(modeWeights("auto", 1000.9, SEED), a); // otro píxel
+  const ba = biomeAt(1000.2, SEED, "auto");
+  assert.equal(biomeAt(1000.4, SEED, "auto"), ba);
+  assert.ok(ba.bloom >= 0 && ba.bloom <= 1);
+  // Los modos fijos no dependen del píxel y siguen siendo válidos.
+  const centro = biomeAt(1234, SEED, "centro");
+  assert.equal(centro.weights.centro, 1);
+});

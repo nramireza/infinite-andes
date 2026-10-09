@@ -381,6 +381,30 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   `clock`/`lat` y `paletteHour()`; `sky.celestial` acepta `rise`/`set`. El paisaje (terreno, flora,
   fauna) sigue **determinista por semilla**: solo varía el tiempo.
 
+## D-028 · Optimización de recursos (caché y FPS adaptativo)
+
+- **Fecha:** 2026-10-08
+- **Estado:** aceptada
+- **Decisión:** recortar el costo por fotograma sin cambiar el dibujo:
+  - **Caché de columna** de terreno por capa (`columnAt`, `src/terrain.js`), memoizado por píxel de
+    mundo (tolerancia ≤1 px, imperceptible). Guarda lo caro e independiente de la estación
+    (`ridgeHeight`, jitter de nieve, vetas de roca); la nieve por estación se compone aparte.
+    `clearColumnCaches()` al cambiar semilla o bioma.
+  - **Máscara de campos por fila** (antes se recalculaba por columna y por fila).
+  - **Geometría de bioma una vez por columna** (antes dos: amplitud y nieve).
+  - **Memo acotado** de `modeWeights`/`biomeAt` y de la **paleta compuesta** (cambia lento).
+  - **FPS adaptativo** (`effectiveFps`, `src/loop.js`): baja a **8 fps** en reposo (sin scroll ni
+    clima); pausa al ocultar la pestaña y al perder el foco de la ventana.
+  - **Instrumentación**: `scripts/bench.mjs` (`npm run bench`) y overlay `?perf=1`.
+- **Motivo:** el uso previsto es un **fondo de pantalla** encendido por horas; el `render()` era el
+  grueso del gasto (≈7.6 ms/frame medidos).
+- **Alternativas:** bajar la resolución interna (descartado: rompe el pixel art nítido); redibujado
+  por regiones *dirty-rect* (descartado: reescritura grande para poco más); 60 fps por defecto
+  (descartado, [D-026](#d-026--modo-fondo-de-pantalla-y-rendimiento)).
+- **Consecuencia:** `render()` ≈ **7.6 → 3.4 ms/frame** (−56%) en `npm run bench`, con **dibujo
+  idéntico** a cámara fija (verificado píxel a píxel). Tests de memo, caché de columna y
+  `effectiveFps`. Complementa [D-026](#d-026--modo-fondo-de-pantalla-y-rendimiento).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))
