@@ -6,6 +6,25 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-10-09
+
+### Added
+- **Variantes estacionales de flora** ([D-031](docs/12-decisiones.md)): además del tinte, la lenga
+  y el roble pierden hojas en otoño (huecos deterministas), quedan desnudos en invierno y muestran
+  brotes en primavera; el copihue y el michay solo florecen en primavera/verano. El spawn no
+  cambia (dorados de flora intactos).
+- **Chaura** (*Gaultheria mucronata*): arbusto del sotobosque con bayas blanco-rosadas, en la costa
+  y en el bioma sur.
+- **Nacimiento orgánico de los ríos** ([D-032](docs/12-decisiones.md)): el canal nace como un punto
+  (conicidad potencia 0.8) unas filas más abajo de la muesca, con un pequeño salto brillante.
+- **Sprites icónicos refinados** ([D-033](docs/12-decisiones.md)): cóndor, huemul, pudú, güiña,
+  puma, flamenco, pingüino y chungungo con más detalle y dithering manual (damero en la matriz).
+
+### Fixed
+- **Pantalla en negro tras redimensionar** ([D-034](docs/12-decisiones.md)): `setAspect` repinta
+  de inmediato después de cambiar el tamaño del canvas, que lo limpia; antes podía quedar negro si
+  el loop estaba pausado (sin foco o pestaña oculta, p. ej. capturas headless).
+
 ## [0.15.0] - 2026-10-09
 
 ### Added

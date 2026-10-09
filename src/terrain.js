@@ -33,7 +33,7 @@ export const LAYERS = [
     name: "costa", parallax: 0.52, baseY: 226, amp: 12, freq: 0.010, seed: 419,
     rugged: 0.05, snowFrac: 1.4, lightKey: "costaL", darkKey: "costaD", alpha: 1,
     rivers: { spacing: 1500, chance: 0.4, width: 2.1, depth: 5, wfreq: 4.5 },
-    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma", "coihue", "roble", "copihue", "michay"] },
+    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma", "coihue", "roble", "copihue", "michay", "chaura"] },
     fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana", "rana", "huillin"] },
   },
   {
@@ -137,12 +137,13 @@ export function ridgeHeight(layer, wx) {
 }
 
 // Ancho del agua según la profundidad `u` (0 nacimiento, 1 desembocadura).
-// Conicidad: angosto arriba, más ancho abajo, con una ondulación leve.
+// Conicidad: nace como un punto (potencia 0.8) y se ensancha al bajar, con una
+// ondulación leve. El máximo (1.52·width) respeta la muesca (media 2.2·width).
 function channelHalf(layer, seed, u) {
   const R = layer.rivers;
-  const taper = 0.45 + 0.95 * u;
+  const taper = Math.pow(Math.max(0, u), 0.8) * 1.4;
   const wobble = 0.12 * Math.sin(u * R.wfreq + seed * 5);
-  return Math.max(0.6, R.width * (taper + wobble));
+  return Math.max(0.4, R.width * (taper + wobble));
 }
 
 // Eventos de río visibles para una cámara: centro en x y semilla del meandro.
@@ -178,19 +179,27 @@ function drawChannel(ctx, layer, pal, camera, W, H) {
     const botRef = layer.baseY + A;
     const y0 = Math.max(0, Math.round(topRef));
     const y1 = Math.min(H, Math.round(botRef));
+    const span = botRef - topRef;
+    // Nacimiento orgánico: el agua brota unas filas más abajo de la punta de la
+    // muesca (determinista por evento) con un pequeño salto brillante.
+    const headU = 0.05 + hash1(ev.seed, 0x51e) * 0.12;
+    const headY = topRef + span * headU;
     for (let y = y0; y < y1; y++) {
-      const u = (y - topRef) / (botRef - topRef);
+      if (y < headY - 1) continue;
+      const u = Math.max(0, (y - headY) / (botRef - headY));
       const hw = channelHalf(layer, ev.seed, u);
       const left = Math.round(cx - hw);
       const right = Math.round(cx + hw);
       if (right < -2 || left > W + 2) continue;
       const rim = Math.sin(y * 0.5 + ev.seed * 8) > 0.55;
+      const isHead = y < Math.ceil(headY);
       for (let sx = left - 1; sx <= right + 1; sx++) {
         if (sx < 0 || sx >= W) continue;
         const wx = camera.x * p + sx;
         if (y < ridgeHeight(layer, wx)) continue; // no flota sobre el valle/cielo
         let col;
-        if (sx <= left || sx >= right) col = bank;
+        if (isHead) col = pal.seaHi;
+        else if (sx <= left || sx >= right) col = bank;
         else if (rim && (sx === left + 1 || sx === right - 1)) col = pal.seaHi;
         else col = water;
         ctx.fillStyle = col;

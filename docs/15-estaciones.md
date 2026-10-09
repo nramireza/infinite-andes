@@ -62,5 +62,6 @@ despejado). Ver [04 · Clima](04-clima.md).
 ## Pendientes
 
 - [x] duración del día por estación: el sol real mueve amanecer/atardecer ([D-027](12-decisiones.md), v0.12.0).
-- TODO: variantes de flora por estación (caída de hojas, brotes) además del tinte.
+- [x] variantes de flora por estación (caída de hojas, brotes, flores) además del tinte
+      ([D-031](12-decisiones.md), v0.16.0; ver [05 · Flora](05-flora.md)).
 - [x] estaciones del hemisferio sur como referencia explícita ([D-027](12-decisiones.md), v0.12.0).

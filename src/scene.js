@@ -252,7 +252,7 @@ export class Scene {
       } else {
         drawLayer(ctx, layer, pal, this.camera, W, H);
         placeFlora(ctx, layer, pal, this.camera, W, H, this.seed, this.tSec,
-          (wx) => this.floraPoolAt(layer, wx));
+          (wx) => this.floraPoolAt(layer, wx), season.index);
       }
       placeFauna(ctx, layer, pal, this.camera, W, H, this.seed, this.hour, this.tSec,
         (wx) => this.faunaPoolAt(layer, wx), (wx) => this.faunaChanceAt(wx));

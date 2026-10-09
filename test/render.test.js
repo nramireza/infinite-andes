@@ -160,13 +160,36 @@ test("los nuevos tipos de flora dibujan dentro del lienzo", () => {
   seedLayers(SEED);
   const pal = getPalette(12, "clear");
   const base = layerByName("valle");
-  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower", "coihue", "roble", "copihue", "michay"]) {
+  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower", "coihue", "roble", "copihue", "michay", "chaura"]) {
     const layer = { ...base, flora: { ...base.flora, types: [type] } };
     const ctx = makeFakeCtx();
     placeFlora(ctx, layer, pal, { x: 100 }, W, H, SEED, 0);
     assert.ok(ctx.calls.fillRect.length > 0, `${type} no dibujó`);
     assert.deepEqual(collectOutOfBounds(ctx, W, H, 64), [], `${type} dibujó fuera`);
   }
+});
+
+test("la flora responde a la estación (hojas, flores)", () => {
+  seedLayers(SEED);
+  const pal = getPalette(12, "clear");
+  const base = layerByName("costa");
+
+  const roble = { ...base, flora: { ...base.flora, types: ["roble"] } };
+  const verano = makeFakeCtx();
+  placeFlora(verano, roble, pal, { x: 100 }, W, H, SEED, 0, null, 0);
+  const invierno = makeFakeCtx();
+  placeFlora(invierno, roble, pal, { x: 100 }, W, H, SEED, 0, null, 2);
+  assert.ok(verano.calls.fillRect.length > invierno.calls.fillRect.length,
+    "el roble en invierno pierde la copa");
+
+  const copihue = { ...base, flora: { ...base.flora, types: ["copihue"] } };
+  const flor = makeFakeCtx();
+  placeFlora(flor, copihue, pal, { x: 100 }, W, H, SEED, 0, null, 3);
+  const sinFlor = makeFakeCtx();
+  placeFlora(sinFlor, copihue, pal, { x: 100 }, W, H, SEED, 0, null, 2);
+  const campanas = (ctx) => ctx.calls.fillRect.filter((c) => c[4] === "#d94f6a").length;
+  assert.ok(campanas(flor) > 0, "en primavera el copihue florece");
+  assert.equal(campanas(sinFlor), 0, "en invierno el copihue no tiene campanas");
 });
 
 test("el reloj real mapea la paleta al sol y setClock cambia de modo", () => {

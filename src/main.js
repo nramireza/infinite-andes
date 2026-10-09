@@ -65,6 +65,9 @@ function setAspect(ratio) {
   scene.resize(canvas.width, canvas.height);
   canvas.getContext("2d").imageSmoothingEnabled = false;
   fit();
+  // El redimensionado limpia el canvas; repinta de inmediato para no quedar en
+  // negro si el loop está pausado (sin foco / pestaña oculta).
+  scene.render();
 }
 
 const ui = setupUI(scene, { setAspect });

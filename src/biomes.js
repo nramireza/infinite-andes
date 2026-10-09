@@ -49,7 +49,7 @@ export const BIOMES = {
     flora: {
       precordillera: ["araucaria", "alerce", "lenga", "coihue", "michay", "bush"],
       valle: ["lenga", "nalca", "colihue", "coihue", "roble", "michay", "copihue", "araucaria", "bush"],
-      costa: ["lenga", "coihue", "roble", "alerce", "nalca", "colihue", "copihue", "michay", "araucaria", "bush"],
+      costa: ["lenga", "coihue", "roble", "alerce", "nalca", "colihue", "copihue", "michay", "chaura", "araucaria", "bush"],
       playa: ["grass", "rock"],
     },
     fauna: {

@@ -56,7 +56,22 @@ function drawAraucaria(ctx, x, baseY, size, pal, sway) {
   ctx.fillRect(x - 1, crownTop - 1, 2, 1);
 }
 
-function drawLenga(ctx, x, baseY, size, pal, warm) {
+// Ramas desnudas (invierno): tallos diagonales desde la punta del tronco.
+function drawBareBranches(ctx, x, top, h, pal) {
+  ctx.fillStyle = pal.trunk;
+  for (const [dir, len, wave] of [[-1, 0.8, 0.5], [0, 1.0, 0], [1, 0.7, -0.5]]) {
+    const steps = Math.max(2, Math.round(h * len));
+    let bx = x;
+    for (let i = 0; i < steps; i++) {
+      const yy = top + steps - i;
+      bx = x + Math.round(dir * (i * 0.35 + (i % 2) * wave));
+      ctx.fillRect(bx, yy, 1, 1);
+    }
+    if (dir !== 0 && steps > 3) ctx.fillRect(bx + dir, top + Math.round(steps * 0.4), 1, 1);
+  }
+}
+
+function drawLenga(ctx, x, baseY, size, pal, warm, season = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
   const h = Math.max(4, Math.round(size * 0.9));
@@ -74,7 +89,15 @@ function drawLenga(ctx, x, baseY, size, pal, warm) {
   const light = warm ? pal.sun : pal.floraL;
   const dark = warm ? pal.sunGlow : pal.floraD;
 
+  if (season === 2) {
+    // Invierno: copa desnuda, solo ramas.
+    drawBareBranches(ctx, x, top, h - trunkH, pal);
+    return;
+  }
+
   for (let dy = -ry; dy <= ry; dy++) {
+    // Otoño: hojas que se caen (huecos deterministas en la copa).
+    if (season === 1 && hash1(Math.floor(x) * 7 + Math.round(dy) + 0x1e, 0xa7e) < 0.32) continue;
     const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
     if (span <= 0) continue;
     ctx.fillStyle = dark;
@@ -83,6 +106,13 @@ function drawLenga(ctx, x, baseY, size, pal, warm) {
     ctx.fillRect(cx - span, Math.round(cy + dy), span * 2 + 1, 1);
     ctx.fillStyle = dark;
     ctx.fillRect(cx - span + Math.max(1, span >> 1), Math.round(cy + dy), Math.max(1, span), 1);
+  }
+
+  if (season === 3) {
+    // Primavera: brotes claros en la punta de la copa.
+    ctx.fillStyle = light;
+    ctx.fillRect(cx - 2, Math.round(cy - ry), 1, 1);
+    ctx.fillRect(cx + 1, Math.round(cy - ry) + 1, 1, 1);
   }
 }
 
@@ -148,10 +178,10 @@ function drawRock(ctx, x, baseY, size, pal) {
   }
 }
 
-function drawPlant(ctx, x, baseY, size, type, pal, sway, warm) {
+function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0) {
   switch (type) {
     case "araucaria": return drawAraucaria(ctx, x, baseY, size, pal, sway);
-    case "lenga": return drawLenga(ctx, x, baseY, size, pal, warm);
+    case "lenga": return drawLenga(ctx, x, baseY, size, pal, warm, season);
     case "bush": return drawBush(ctx, x, baseY, size, pal);
     case "crop": return drawCrop(ctx, x, baseY, size, pal);
     case "rock": return drawRock(ctx, x, baseY, size, pal);
@@ -162,9 +192,10 @@ function drawPlant(ctx, x, baseY, size, type, pal, sway, warm) {
     case "colihue": return drawColihue(ctx, x, baseY, size, pal);
     case "palma": return drawPalma(ctx, x, baseY, size, pal);
     case "coihue": return drawCoihue(ctx, x, baseY, size, pal);
-    case "roble": return drawRoble(ctx, x, baseY, size, pal);
-    case "copihue": return drawCopihue(ctx, x, baseY, size, pal);
-    case "michay": return drawMichay(ctx, x, baseY, size, pal);
+    case "roble": return drawRoble(ctx, x, baseY, size, pal, season);
+    case "copihue": return drawCopihue(ctx, x, baseY, size, pal, season);
+    case "michay": return drawMichay(ctx, x, baseY, size, pal, season);
+    case "chaura": return drawChaura(ctx, x, baseY, size, pal);
     default: return drawGrass(ctx, x, baseY, size, pal);
   }
 }
@@ -308,8 +339,9 @@ function drawCoihue(ctx, x, baseY, size, pal) {
   }
 }
 
-// Roble: copa más estrecha y erguida.
-function drawRoble(ctx, x, baseY, size, pal) {
+// Roble: copa más estrecha y erguida. Caducifolio: en invierno queda desnudo y
+// en otoño pierde hojas (huecos deterministas).
+function drawRoble(ctx, x, baseY, size, pal, season = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
   const h = Math.max(6, Math.round(size * 1.15));
@@ -319,8 +351,13 @@ function drawRoble(ctx, x, baseY, size, pal) {
   ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
 
   const crownH = h - trunkH;
+  if (season === 2) {
+    drawBareBranches(ctx, x, top, crownH, pal);
+    return;
+  }
   const halfMax = Math.max(2, Math.round(size * 0.3));
   for (let i = 0; i < crownH; i++) {
+    if (season === 1 && hash1(Math.floor(x) * 11 + i + 0x2f, 0xb3e) < 0.3) continue;
     const t = i / crownH;
     const half = Math.max(1, Math.round(halfMax * Math.sin((0.25 + 0.75 * t) * Math.PI)));
     const yy = top + i;
@@ -331,10 +368,16 @@ function drawRoble(ctx, x, baseY, size, pal) {
     ctx.fillStyle = pal.floraD;
     ctx.fillRect(x + 1, yy, half, 1);
   }
+  if (season === 3) {
+    ctx.fillStyle = pal.floraL;
+    ctx.fillRect(x - 2, top - 1, 1, 1);
+    ctx.fillRect(x + 1, top - 2, 1, 1);
+  }
 }
 
 // Copihue: enredadera con tallo ondulado y campanas rojas colgantes.
-function drawCopihue(ctx, x, baseY, size, pal) {
+// Las campanas florecen en verano y primavera; en otoño/invierno solo queda la enredadera.
+function drawCopihue(ctx, x, baseY, size, pal, season = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
   const h = Math.max(5, Math.round(size * 0.95));
@@ -349,6 +392,7 @@ function drawCopihue(ctx, x, baseY, size, pal) {
       ctx.fillRect(x + off + (i % 2 ? 1 : -1), yy, 1, 1);
     }
   }
+  if (season !== 0 && season !== 3) return;
   const n = 2 + Math.floor(size * 0.12);
   for (let i = 0; i < n; i++) {
     const yy = top + Math.round(((i + 1) / (n + 1)) * h);
@@ -362,8 +406,8 @@ function drawCopihue(ctx, x, baseY, size, pal) {
   }
 }
 
-// Michay: arbusto espinoso con flores naranjas.
-function drawMichay(ctx, x, baseY, size, pal) {
+// Michay: arbusto espinoso con flores naranjas en primavera y verano.
+function drawMichay(ctx, x, baseY, size, pal, season = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
   const w = Math.max(3, Math.round(size * 0.7));
@@ -381,6 +425,7 @@ function drawMichay(ctx, x, baseY, size, pal) {
   }
   ctx.fillStyle = pal.floraD;
   ctx.fillRect(x - (w >> 1) - 1, baseY - h + 1, 1, 1);
+  if (season !== 0 && season !== 3) return;
   const n = 1 + Math.floor(size * 0.12);
   for (let i = 0; i < n; i++) {
     const hh = hash1(i * 23 + x, 0xb011);
@@ -390,6 +435,36 @@ function drawMichay(ctx, x, baseY, size, pal) {
     ctx.fillRect(fx, fy, 1, 1);
     ctx.fillStyle = pal.floraL;
     ctx.fillRect(fx, fy + 1, 1, 1);
+  }
+}
+
+// Chaura (Gaultheria mucronata): arbusto achaparrado del sotobosque con bayas
+// blanco-rosadas, perenne todo el año.
+function drawChaura(ctx, x, baseY, size, pal) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const w = Math.max(3, Math.round(size * 0.6));
+  const h = Math.max(2, Math.round(size * 0.42));
+  for (let r = 0; r < h; r++) {
+    const t = (r + 1) / (h + 1);
+    const half = Math.max(1, Math.round((w / 2) * Math.sin(t * Math.PI * 0.9) + w * 0.08));
+    const yy = baseY - h + r;
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - half, yy, half * 2, 1);
+    if (r === 0) {
+      ctx.fillStyle = pal.floraL;
+      ctx.fillRect(x - half, yy, half * 2, 1);
+    }
+  }
+  const n = 1 + Math.floor(size * 0.14);
+  for (let i = 0; i < n; i++) {
+    const hh = hash1(i * 29 + x, 0x0c4);
+    const fx = x + Math.round((hh - 0.5) * w * 0.9);
+    const fy = baseY - h - 1 - (i % 2);
+    ctx.fillStyle = "#f2d8e8";
+    ctx.fillRect(fx, fy, 1, 1);
+    ctx.fillStyle = "#d97a9a";
+    ctx.fillRect(fx, fy - 1, 1, 1);
   }
 }
 
@@ -470,7 +545,9 @@ export function floraSpawns(layer, camera, W, H, seed, poolAt) {
   return out;
 }
 
-export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt) {
+// `season` (opcional) = índice de estación para las variantes (hojas, brotes, flores).
+// El spawn no cambia: solo varía el dibujo, así los dorados de flora quedan intactos.
+export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt, season) {
   if (!layer.flora) return;
   if (layer.darken) {
     pal = {
@@ -484,9 +561,10 @@ export function placeFlora(ctx, layer, pal, camera, W, H, seed, tSec, poolAt) {
       sunGlow: shade(pal.sunGlow, -layer.darken * 0.5),
     };
   }
+  const seasonIdx = Number.isInteger(season) ? season : 0;
   for (const s of floraSpawns(layer, camera, W, H, seed, poolAt)) {
     const sway = Math.sin(tSec * 0.9 + s.wx * 0.05);
     const gy = s.depth ? Math.min(H - 2, s.gy + s.depth) : s.gy;
-    drawPlant(ctx, s.sx, gy, s.size, s.type, pal, sway, s.warm);
+    drawPlant(ctx, s.sx, gy, s.size, s.type, pal, sway, s.warm, seasonIdx);
   }
 }

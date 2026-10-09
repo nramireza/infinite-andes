@@ -1,6 +1,6 @@
 # 07 · Ríos
 
-> Estado: en progreso (enfoque estable) · Actualizado: 2026-10-08
+> Estado: en progreso (enfoque estable) · Actualizado: 2026-10-09
 
 Implementado en `src/terrain.js` (`riverInfluence`, `riverCarve`, `channelHalf`, `riverEvents`,
 `drawChannel`) y verificado con tests de spawn (`test/spawn.test.js`).
@@ -27,7 +27,11 @@ desde la cordillera hacia el nivel de la capa siguiente:
 - **Canal centrado en la muesca**: `drawChannel` dibuja el agua **centrada en `ev.xc`** (el mismo
   punto que talla la muesca), **sin meandro en profundidad**. Así el agua no se sale del tallado.
 - **Conicidad**: `channelHalf(layer, seed, u)` define el ancho por profundidad `u` (0 nacimiento,
-  1 desembocadura): angosto arriba y más ancho abajo, con una ondulación leve (`wfreq`).
+  1 desembocadura): **nace como un punto** (potencia 0.8, piso de 0.4 px) y se ensancha al bajar,
+  con una ondulación leve (`wfreq`). El máximo (1.52·width) queda dentro de la muesca (2.2·width).
+- **Nacimiento orgánico**: el agua brota unas filas **más abajo de la punta de la muesca**
+  (desfase determinista por evento, `hash1(ev.seed)`) con un **pequeño salto** brillante
+  (`pal.seaHi`) en la primera fila, como una cascada de 1–2 px ([D-032](12-decisiones.md)).
 - **Integración**: el agua se recorta a `ridgeHeight` (no flota sobre el valle/cielo), lleva
   **bancos** oscuros a los lados y un brillo de borde. Color derivado de la paleta
   (`lerp(sea, seaHi, 0.3)`).
@@ -40,10 +44,13 @@ desde la cordillera hacia el nivel de la capa siguiente:
 ## Estado
 
 Resuelto el problema principal (el agua ya no "flota" como cinta): al fijar el centro del canal a
-la muesca, la silueta tallada y el agua coinciden. Pendientes menores:
+la muesca, la silueta tallada y el agua coinciden. El ancho/profundidad se revisó con varias
+semillas y capas ([D-032](12-decisiones.md)): el nacimiento ahora es punzante y con salto, sin
+desalinear de la muesca. Pendiente menor:
 
-- TODO: revisar el ancho/profundidad final con más semillas y capas.
-- TODO: valorar un nacimiento más orgánico (pequeño salto/desnivel) sin desalinear de la muesca.
+- Valorar un meandro sutil dentro de la holgura (≈2.5 px por lado) y un cauce que siga la pendiente
+  real derivando `u` de `ridgeHeight` en el centro; ambos quedan post-1.0 (riesgo de romper el
+  "agua dentro del tallado" que costó fijar).
 
 ## Opciones evaluadas
 
@@ -56,6 +63,5 @@ la muesca, la silueta tallada y el agua coinciden. Pendientes menores:
 
 ## Próximos pasos
 
-- TODO: prototipar variantes de conicidad y profundidad y comparar visualmente.
-- TODO: considerar que el cauce siga la pendiente real (bajar hacia el mar) dentro de la capa.
+- Post-1.0: meandro sutil y pendiente real (ver Estado); el resto queda cerrado.
 - Ver [`12-decisiones.md`](12-decisiones.md) para el registro de decisiones.

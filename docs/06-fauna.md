@@ -1,6 +1,6 @@
 # 06 · Fauna
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 **Set implementado** (Fase 2) en [`src/fauna.js`](../src/fauna.js): el grueso de la tabla objetivo,
 con sprites de **matrices de píxeles en código**, spawn determinista por *chunk* y actividad según
@@ -160,6 +160,8 @@ especie con detalle (UICN, nombre científico, referencia), usa
 - [x] Rana de Darwin (*Rhinoderma darwinii*): borde del cauce, estática (`sit`).
 - [x] Choique (*Rhea pennata*), chucao (*Scelorchilus rubecula*) y huillín (*Lontra provocax*)
       ([D-022](12-decisiones.md)); huellas tras la fauna que camina ([D-021](12-decisiones.md)).
-- [ ] Decidir si el cóndor pasa a ser un "momento" destacado (vuelo largo ocasional).
-- [ ] Completar cada especie con la plantilla [`templates/especimen.md`](templates/especimen.md)
-      (estado UICN, nombre científico, referencia visual) y refinar los sprites.
+- [x] Refinar los sprites icónicos (cóndor, huemul, pudú, güiña, puma, flamenco, pingüino,
+      chungungo) con dithering manual ([D-033](12-decisiones.md), v0.16.0).
+- [ ] Post-1.0: decidir si el cóndor pasa a ser un "momento" destacado (vuelo largo ocasional).
+- [ ] Post-1.0: refinar los sprites restantes y completar la plantilla
+      [`templates/especimen.md`](templates/especimen.md) de cada especie.

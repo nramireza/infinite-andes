@@ -1,6 +1,6 @@
 # 05 · Flora
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 Implementado en `src/flora.js` (dibujo y colocación) usando las paletas de `src/palette.js`.
 La flora se dibuja por capa con `placeFlora(ctx, layer, ...)`; cada capa define en `LAYERS`
@@ -26,9 +26,23 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 | Coihue | *Nothofagus dombeyi* | No (Patagonia) | `coihue` | Costa, Valle (sur) | Copa ancha y redondeada; tronco recto |
 | Roble | *Nothofagus obliqua* | Sí (Chile/Arg) | `roble` | Costa, Valle (sur) | Copa estrecha y erguida |
 | Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Precordillera, Valle, Costa (sur) | Arbusto espinoso con flores naranjas |
+| Chaura | *Gaultheria mucronata* | No (Patagonia) | `chaura` | Costa (sur) | Arbusto achaparrado con bayas blanco-rosadas |
 
 > La vegetación no crece dentro del cauce: `placeFlora` omite las columnas con `riverInfluence > 0.25`
 > y usa `bankHeight` para sentarse en el banco.
+
+## Estaciones
+
+Además del tinte de `applySeason`, las especies caducifolias tienen **variantes estructurales por
+estación** ([D-031](12-decisiones.md), [15 · Estaciones](15-estaciones.md)); `placeFlora` recibe el
+índice de estación y solo cambia el **dibujo** (el spawn es idéntico, los dorados quedan intactos):
+
+- **Lenga y roble** (caducifolios): en **otoño** pierden hojas (huecos deterministas en la copa,
+  `hash1` por planta); en **invierno** quedan **desnudos** (solo ramas, `drawBareBranches`); en
+  **primavera** muestran **brotes** claros en la punta.
+- **Copihue y michay**: las campanas/flores aparecen en **primavera y verano**; en otoño e invierno
+  solo se ve el follaje/enredadera.
+- La **chaura** es perenne y conserva sus bayas todo el año.
 
 ## Biomas
 
@@ -61,12 +75,12 @@ Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante)
 | Roble | 6–? | 1 | — |
 | Copihue | 5–? | 1 | — |
 | Michay | 3–? | 1 | — |
+| Chaura | 3–? | 1 | — |
 | Flor | 4–? | 1 | Bamboleo por seno (sway) |
 
 ## Especies por añadir (propuestas)
 
-- TODO: Chaura (*Gaultheria*) y otros arbustos del sotobosque.
-- TODO: variantes estacionales de flora (caída de hojas, brotes), ver [15 · Estaciones](15-estaciones.md).
+- Quillay (*Quillaja saponaria*), mañío (*Podocarpus*) y otros arbustos del sotobosque (post-1.0).
 
 ## Cómo añadir una especie
 

@@ -122,7 +122,7 @@ test("los pools de bioma incluyen la flora y fauna nuevas", () => {
 
   const sur = modeWeights("sur", 0, SEED);
   const surCosta = biomeFloraPool("costa", sur, 0, layerByName("costa").flora.types);
-  for (const t of ["alerce", "nalca", "colihue"]) {
+  for (const t of ["alerce", "nalca", "colihue", "chaura"]) {
     assert.ok(surCosta.some((e) => e.type === t), `el sur no tiene ${t}`);
   }
   const surValle = biomeFaunaPool("valle", sur, 0, layerByName("valle").fauna.species);

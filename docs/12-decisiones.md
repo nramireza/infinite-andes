@@ -462,6 +462,76 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   `clock.test.js`, `sky.test.js` (creciente/menguante, estrellas) y `seasons.test.js`
   (`seasonGlowTint`). Sin cambios en dorados.
 
+## D-031 · Variantes estacionales de flora y chaura
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** cerrar los pendientes de [05 · Flora](05-flora.md) y [15 · Estaciones](15-estaciones.md):
+  - **Variantes estructurales por estación** además del tinte: `placeFlora`/`drawPlant` reciben el
+    índice de estación (opcional, 0 = comportamiento actual). Lenga y roble (caducifolios) pierden
+    hojas en otoño (huecos deterministas con `hash1`), quedan desnudos en invierno
+    (`drawBareBranches`) y muestran brotes en primavera; copihue y michay solo florecen en
+    primavera/verano. El **spawn no cambia**: solo varía el dibujo, así los dorados `flora.*`
+    quedan intactos.
+  - **Chaura** (*Gaultheria mucronata*): arbusto nuevo (`drawChaura`) con bayas blanco-rosadas,
+    en `LAYERS[*].flora.types` de costa y en el pool sur.
+- **Motivo:** el ciclo estacional solo teñía; las hojas caídas, los brotes y las flores dan la
+  sensación de estación real.
+- **Alternativas:** variantes por spawn (descartado: cambiaba los dorados y el determinismo del
+  chunk); colores por estación en la paleta global (ya existía el tinte; no alcanzaba).
+- **Consecuencia:** regenerados los dorados `flora.costa`, `biome.centro` y `biome.sur` (la chaura
+  cambia el sorteo de tipos en costa). Tests de variantes estacionales en `render.test.js`.
+
+## D-032 · Ríos: nacimiento punzante con salto
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** cerrar los pendientes de [07 · Ríos](07-rios.md) con cambios **solo de dibujo**
+  (dentro de `drawChannel`/`channelHalf`, sin tocar la muesca ni los spawns):
+  - **Conicidad** con potencia 0.8: el canal nace como un punto (piso 0.4 px) y mantiene el máximo
+    anterior (1.52·width), dentro de la holgura de la muesca (2.2·width).
+  - **Nacimiento orgánico**: el agua brota unas filas más abajo de la punta de la muesca (desfase
+    determinista por evento) con un **salto** de 1–2 px en `pal.seaHi` en la primera fila.
+  - El **meandro sutil** y el cauce que siga la pendiente real (`u` derivado de `ridgeHeight`)
+    quedan **post-1.0**: reabrir el "agua dentro del tallado" no compensa el riesgo.
+- **Motivo:** el río nacía con un grosor mínimo uniforme y sin desnivel; parecía cortado, no brotado.
+- **Alternativas:** meandro en profundidad (descartado de nuevo: el agua se sale de la muesca);
+  salto con partículas (descartado: rompe el estilo fillRect estático).
+- **Consecuencia:** `drawChannel` suma `headU`/`headY` y el brillo del salto; el test de agua del
+  canal sigue pasando (el color base no cambió). Dorados de terreno/ríos intactos.
+
+## D-033 · Sprites de fauna refinados y dithering manual
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** cerrar los pendientes de [08 · Arte pixel](08-arte-pixel.md) y [06 · Fauna](06-fauna.md):
+  - **Dithering ordenado manual: sí.** Se admite alternar caracteres en damero dentro de la matriz
+    (degradados sutiles, p. ej. plumas del cóndor con un hex oscuro adicional). `radixDither`
+    automático en sprites queda **descartado** (rompería la lectura carácter a carácter y la
+    prueba de caracteres mapeados).
+  - **Refinar los sprites icónicos**: cóndor (plumas con dithering), huemul y pudú (ojos/vientre
+    claro), güiña (manchas y vientre), puma (cola y cuerpo completo), flamenco (pico), pingüino
+    (pico) y chungungo (cuerpo alargado). Solo cambian `frames`/`palette` de `SPECIES`: los dorados
+    `fauna.*` (que digieren solo el spawn) quedan intactos.
+- **Motivo:** los sprites eran funcionales; con la guía de estilo ya fijada era el momento de darles
+  el acabado.
+- **Alternativas:** migrar a `bakeSprite`/`drawSprite` (descartado, [D-010](#d-010--fauna-determinista-con-actividad-horaria):
+  dependen de `document`); sprites PNG externos (descartado: rompe la edición en código).
+- **Consecuencia:** 8 especies refinadas; el resto queda post-1.0. Los tests de matriz (ancho de
+  filas, caracteres mapeados, paleta válida) siguen pasando.
+
+## D-034 · Repintado inmediato tras redimensionar el lienzo
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** en `setAspect` (`main.js`), tras cambiar `canvas.width/height` (que **limpia** el
+  lienzo) y rehacer la escena, se llama `scene.render()` de inmediato. Así el lienzo nunca queda en
+  negro aunque el loop esté pausado (sin foco o pestaña oculta; p. ej. capturas headless).
+- **Motivo:** el primer fotograma podía pintarse antes del redimensionado del URL `aspect`, el
+  resize borraba el canvas y, sin foco, ningún fotograma lo repintaba (pantalla en negro).
+- **Consecuencia:** render síncrono extra solo al cambiar la relación de aspecto (un evento, no por
+  fotograma). Sin impacto en rendimiento.
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

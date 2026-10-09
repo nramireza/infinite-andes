@@ -72,5 +72,9 @@
 
 ## Pendiente
 
-- TODO: decidir si se admite dithering ordenado manual en sprites.
-- TODO: refinar los sprites de fauna (hoy son funcionales, no definitivos).
+- [x] **Dithering ordenado manual en sprites: sí** ([D-033](12-decisiones.md)). Se admite alternar
+  caracteres en damero dentro de la matriz para degradados sutiles (p. ej. las plumas del cóndor);
+  `radixDither` automático en sprites queda descartado.
+- [x] **Sprites de fauna refinados** (v0.16.0): cóndor, huemul, pudú, güiña, puma, flamenco,
+  pingüino y chungungo ganaron detalle (ojos/pico, vientre claro, cola) y dithering manual
+  ([D-033](12-decisiones.md)). El resto de las especies queda para post-1.0.

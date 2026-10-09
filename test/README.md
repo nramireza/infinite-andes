@@ -25,7 +25,7 @@ npm run check     # verifica sintaxis de src/*.js
 | `biomes.test.js` | biomas: pesos, floración del norte, pools ponderados y tinte |
 | `seasons.test.js` | estaciones: ciclo, línea de nieve, sesgo de clima y tinte |
 | `views.test.js` | vistas: serialización URL/estado, favoritos (alta/baja/parseo) |
-| `render.test.js` | *smoke* de dibujo con `helpers/fakeCtx.js` (incluye reflejo del astro) |
+| `render.test.js` | *smoke* de dibujo con `helpers/fakeCtx.js` (reflejo del astro, flora estacional) |
 | `golden.test.js` | snapshots dorados (terreno, ríos, flora, fauna, paleta) |
 
 ## Snapshots dorados
