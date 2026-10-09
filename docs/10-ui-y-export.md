@@ -110,6 +110,7 @@ muestra el error en pantalla en lugar de un negro silencioso. Para desarrollo, `
 
 ## Pendiente
 
-- TODO: exportar tira larga (rango de `x`) y/o GIF/secuencia (opcional).
+- Exportar tira larga (rango de `x`) y/o GIF/secuencia: **post-1.0** (ver
+  [11 · Roadmap](11-roadmap.md)).
 - [x] Modos de kiosco adicionales: HUD y cursor ocultos en kiosco ([D-026](12-decisiones.md), v0.11.1).
 - [x] Accesibilidad y atajos de teclado (flechas, espacio, pantalla completa) ([D-026](12-decisiones.md), v0.11.1).

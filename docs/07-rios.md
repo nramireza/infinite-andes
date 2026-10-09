@@ -1,6 +1,6 @@
 # 07 · Ríos
 
-> Estado: en progreso (enfoque estable) · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-09
 
 Implementado en `src/terrain.js` (`riverInfluence`, `riverCarve`, `channelHalf`, `riverEvents`,
 `drawChannel`) y verificado con tests de spawn (`test/spawn.test.js`).

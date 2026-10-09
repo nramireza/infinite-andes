@@ -1,6 +1,6 @@
 # 02 · Mundo y geografía
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 ## Punto de vista
 
@@ -11,20 +11,46 @@ El mar queda al frente (parallax mayor) y los Andes al fondo (parallax menor).
 
 De atrás hacia adelante (todas definidas en `src/terrain.js`, arreglo `LAYERS`):
 
-| # | Capa | Parallax | `baseY` | `amp` | Rugosidad | Nieve | Rasgos |
-|---|------|----------|---------|-------|-----------|-------|--------|
-| 1 | Cordillera de los Andes | 0.07 | 128 | 92 | alta (ridged) | **siempre** | cumbres escarpadas, **volcanes** con penacho, vetas de roca |
-| 2 | Precordillera | 0.16 | 158 | 50 | alta | poca | rocosa, más baja |
-| 3 | Valle central | 0.32 | 200 | 20 | baja | no | verde, campos, **río**; protagonista |
-| 4 | Cordillera de la Costa | 0.52 | 226 | 12 | **muy baja** | no | muy verde y redondeada, **portezuelo** |
-| 5 | Playa | 0.78 | 232 | 7 | muy baja | no | banda de arena, línea de marea |
-| 6 | Mar | 1.0 | `SEA_Y`=242 | 6 | oleaje | no | olas, espuma, horizonte |
+| # | Capa | Parallax | `baseY` | `amp` | Rugosidad | Nieve | Rasgos | Altitud aprox. |
+|---|------|----------|---------|-------|-----------|-------|--------|----------------|
+| 1 | Cordillera de los Andes | 0.07 | 128 | 92 | alta (ridged) | **siempre** | cumbres escarpadas, **volcanes** con penacho, vetas de roca | 3 000–5 500 m |
+| 2 | Precordillera | 0.16 | 158 | 50 | alta | poca | rocosa, más baja | 1 500–2 500 m |
+| 3 | Valle central | 0.32 | 200 | 20 | baja | no | verde, campos, **río**; protagonista | 400–600 m |
+| 4 | Cordillera de la Costa | 0.52 | 226 | 12 | **muy baja** | no | muy verde y redondeada, **portezuelo** | 800–1 500 m |
+| 5 | Playa | 0.78 | 232 | 7 | muy baja | no | banda de arena, línea de marea | 0–5 m |
+| 6 | Mar | 1.0 | `SEA_Y`=242 | 6 | oleaje | no | olas, espuma, horizonte | 0 m |
 
 - Resolución interna: **altura 270 px** y ancho por relación de aspecto (**960×270** a 32:9, por
   defecto). Ver [08 · Arte pixel](08-arte-pixel.md).
 - Cada capa es una silueta rellenada hasta el fondo; las capas delanteras ocultan a las traseras.
 - `parallax` = cuánto se mueve la capa respecto a la cámara (1.0 = pegado al frente).
 - `rugged` = peso del ruido *ridged* (alto = crestas afiladas; bajo = colinas suaves).
+
+## Escala "real" (nomenclatura aproximada)
+
+La **altitud aproximada** por capa (columna derecha de la tabla) es una convención artística para
+dar escala, inspirada en Chile central: cordillera sobre los 3 000 m con nieve permanente, valle
+central bajo y fértil, cordillera de la Costa redondeada. **No es cartografía**: es una
+interpretación estética (ver [00 · Visión](00-vision.md)). El relieve interno sigue siendo
+`baseY ± amp` en píxeles; la altitud solo se usa para nombrar y comparar (línea de nieve,
+biomas) en la documentación.
+
+## Frecuencia y longitud de onda
+
+Cada capa genera su silueta con ruido de valor + fBm de frecuencia `freq` (`src/noise.js`), en
+ciclos por píxel de mundo. La **longitud de onda** (1/`freq`) da la sensación de escala:
+
+| Capa | `freq` | Longitud de onda | Lectura |
+|------|--------|------------------|---------|
+| Andes | 0.0032 | ≈ 312 px | montañas anchas y lentas: lejanía |
+| Precordillera | 0.0060 | ≈ 167 px | media |
+| Valle | 0.012 | ≈ 83 px | colinas medias |
+| Costa | 0.010 | ≈ 100 px | lomajes redondeados |
+| Playa | 0.020 | ≈ 50 px | detalle fino |
+| Mar | 0.05 | ≈ 20 px | oleaje corto |
+
+La regla: **a más lejos, longitud de onda más larga** (montañas que cambian lento) y **a más cerca,
+más corta** (textura rápida); combinada con el `parallax` y la amplitud, produce la profundidad.
 
 ## Suelo y agua
 
@@ -72,5 +98,5 @@ según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay tres:
 
 ## Pendiente
 
-- TODO: fijar una nomenclatura/altitud "real" aproximada por capa (m s. n. m.) para dar escala.
-- TODO: documentar el largo de onda y la frecuencia de cada capa y por qué (sensación de escala).
+- Ninguna pendiente: la altitud aproximada y la frecuencia/longitud de onda quedaron documentadas
+  arriba (cierre v1.0, [D-035](12-decisiones.md)).

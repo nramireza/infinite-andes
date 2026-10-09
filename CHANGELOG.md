@@ -6,6 +6,18 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-09
+
+### Added
+- **Cierre de v1.0** ([D-035](docs/12-decisiones.md)): todos los documentos pasan a *estable*; se
+  documentan la **altitud aproximada por capa** y la **frecuencia/longitud de onda** del relieve
+  ([02 · Mundo](docs/02-mundo.md)). El backlog queda consolidado en
+  [11 · Roadmap](docs/11-roadmap.md) (post-1.0: export de tira larga, más momentos raros, más
+  biomas, meandro/pendiente real de los ríos, sprites restantes, más flora).
+
+### Changed
+- Roadmap: Fase 3 cerrada ✅ y nueva sección **Post-1.0** con el backlog.
+
 ## [0.16.0] - 2026-10-09
 
 ### Added

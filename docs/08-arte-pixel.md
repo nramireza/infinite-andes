@@ -1,6 +1,6 @@
 # 08 · Arte pixel
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 ## Resolución y escalado
 

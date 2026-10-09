@@ -1,6 +1,6 @@
 # 15 · Estaciones del año
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 El paisaje tiene un **ciclo estacional** que tiñe la paleta, mueve la **línea de nieve** y sesga el
 **clima**. Implementado en [`src/seasons.js`](../src/seasons.js) y compuesto en `src/scene.js`

@@ -1,6 +1,6 @@
 # 12 · Decisiones
 
-> Estado: en progreso · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 Registro de decisiones de diseño y técnica. Para añadir una, copia
 [`templates/decision.md`](templates/decision.md) y agrega una entrada con el siguiente número.
@@ -531,6 +531,27 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   resize borraba el canvas y, sin foco, ningún fotograma lo repintaba (pantalla en negro).
 - **Consecuencia:** render síncrono extra solo al cambiar la relación de aspecto (un evento, no por
   fotograma). Sin impacto en rendimiento.
+
+## D-035 · Cierre v1.0: alcance y post-1.0
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** declarar **v1.0.0** con el alcance actual y fijar lo que queda para después:
+  - **Entra en 1.0**: todo lo de las Fases 1–3 (ver [11 · Roadmap](11-roadmap.md)), incluidos los
+    cierres recientes: clima completo ([D-029](#d-029--clima-crossfade-viento-que-inclina-y-tormenta-eléctrica)),
+    fases lunares y resplandor estacional ([D-030](#d-030--fases-lunares-y-resplandor-estacional)),
+    flora estacional y chaura ([D-031](#d-031--variantes-estacionales-de-flora-y-chaura)), ríos
+    ([D-032](#d-032--ríos-nacimiento-punzante-con-salto)), sprites icónicos
+    ([D-033](#d-033--sprites-de-fauna-refinados-y-dithering-manual)) y el repintado tras redimensionar
+    ([D-034](#d-034--repintado-inmediato-tras-redimensionar-el-lienzo)). Todos los documentos pasan
+    a **estable**; la altitud y la frecuencia por capa quedan documentadas en [02 · Mundo](02-mundo.md).
+  - **Queda post-1.0** (consolidado en el roadmap): export de tira larga, más momentos raros, más
+    biomas (altiplano/Patagonia/austral/fiordos), meandro y pendiente real de los ríos, refinar los
+    sprites restantes y completar las plantillas de especies, y más flora de sotobosque.
+- **Motivo:** el proyecto cumple su visión (fondo de pantalla vivo, determinista, sincronizado con
+  Chile) y conviene un punto estable etiquetado antes de seguir creciendo.
+- **Consecuencia:** versión 1.0.0, changelog [1.0.0], `git tag v1.0.0` y capturas finales
+  versionadas. El roadmap deja de enumerar TODOs sueltos y concentra el backlog en una sección.
 
 ## Decisiones abiertas
 

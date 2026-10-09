@@ -13,7 +13,7 @@
 | 04 | [Clima](04-clima.md) | Estados, transiciones, duración, intensidad |
 | 05 | [Flora](05-flora.md) | Especies vegetales y su especificación |
 | 06 | [Fauna](06-fauna.md) | Especies endémicas, comportamiento y sprites |
-| 07 | [Ríos](07-rios.md) | Diseño e integración de los ríos (abierto) |
+| 07 | [Ríos](07-rios.md) | Diseño e integración de los ríos (estable) |
 | 08 | [Arte pixel](08-arte-pixel.md) | Resolución, paleta, sprites, animación |
 | 09 | [Arquitectura](09-arquitectura.md) | Módulos, pipeline de render, determinismo |
 | 10 | [UI y exportación](10-ui-y-export.md) | Panel, export PNG, URLs |
