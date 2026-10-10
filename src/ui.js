@@ -11,7 +11,7 @@ const WEATHER_LABEL = {
 };
 
 const BIOME_LABEL = {
-  auto: "procedural", norte: "norte", centro: "centro", sur: "sur",
+  auto: "procedural", altiplano: "altiplano", norte: "norte", centro: "centro", sur: "sur", patagonia: "patagonia",
 };
 
 const SEASON_LABEL = {

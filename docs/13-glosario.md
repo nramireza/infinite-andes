@@ -1,6 +1,6 @@
 # 13 · Glosario
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 ## Términos técnicos
 
@@ -32,6 +32,8 @@
 | Alerce / Lahual | *Fitzroya cupressoides* | Longevo |
 | Copao | *Eulychnia* spp. | Cactus columnar |
 | Colihue / Quila | *Chusquea* spp. | Cañaveral (bambú nativo) |
+| Quillay | *Quillaja saponaria* | Esclerófilo endémico de Chile central |
+| Mañío | *Podocarpus* spp. | Conífera austral de bosque húmedo |
 
 ## Fauna (nombres comunes y científicos)
 

@@ -8,7 +8,7 @@ Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** estable (v1.0) · **Versión:** 1.0.1 · **Licencia:** MIT
+> **Estado:** estable (v1.1) · **Versión:** 1.1.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -41,7 +41,7 @@ npm run start:python
 | `season`  | `?season=otono` | Estación: `auto` (ciclo), `verano`, `otono`, `invierno`, `primavera` |
 | `aspect`  | `?aspect=21:9` | Relación de aspecto: `16:9`, `21:9`, `32:9` (def.) o decimal (`2.4`) |
 | `moment`  | `?moment=kungleo` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo` |
-| `biome`   | `?biome=norte` | Región: `auto` (procedural), `norte` (árido), `centro`, `sur` (boscoso) |
+| `biome`   | `?biome=patagonia` | Región: `auto` (procedural), `altiplano`, `norte` (árido), `centro`, `sur` (boscoso), `patagonia` |
 | `bloom`   | `?bloom=on`   | Desierto florido (norte): `auto`, `on`, `off` |
 | `clock`   | `?clock=fast` | Reloj: `real` (def., hora/estación y sol de Chile) o `fast` (ciclo) |
 | `lat`     | `?lat=-53`    | Latitud para el cálculo solar (por defecto −33.45, Santiago) |
@@ -52,6 +52,7 @@ npm run start:python
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
 `?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
+`?biome=patagonia&season=invierno` (estepa nevada) ·
 `?ui=0&fit=cover` (fondo de pantalla a pantalla completa) · `?clock=fast` (ciclo día/noche rápido).
 
 Por defecto la pantalla sigue el **reloj real**: hora local, estación del hemisferio sur, el
@@ -100,7 +101,8 @@ Panel superior izquierdo (se oculta con el botón `∞`):
   tormenta).
 - **Estación**: automática (ciclo de ~8 min) o fija (verano, otoño, invierno, primavera).
 - **Momento**: raro automático o forzado (18 de septiembre, Leo Rey, Kung Leo).
-- **Región**: procedural (automático), Norte árido, Centro o Sur boscoso.
+- **Región**: procedural (automático), Altiplano, Norte árido, Centro, Sur boscoso o Patagonia
+  esteparia.
 - **Floración**: desierto florido automático, forzado o desactivado (solo en el norte).
 - **Exportar PNG**: descarga la vista actual. **Copiar enlace**: comparte la vista.
 - **HUD**: semilla, posición, hora y clima.
@@ -131,10 +133,10 @@ infinite-andes/
 │   ├── sky.js            # gradiente, astros (luna con fases), estrellas, Vía Láctea, aurora, nubes
 │   ├── weather.js        # partículas, niebla, crossfade de clima y relámpagos
 │   ├── terrain.js        # capas de montaña, nieve, rocas, playa, mar, ríos
-│   ├── flora.js          # araucaria, lenga, cultivos, arbustos, rocas
+│   ├── flora.js          # araucaria, lenga, cultivos, arbustos, quillay, mañío, rocas
 │   ├── fauna.js          # especies endémicas (sprites + spawn)
 │   ├── moments.js        # momentos raros (18-sep, Leo Rey, Kung Leo)
-│   ├── biomes.js         # biomas norte/centro/sur y desierto florido
+│   ├── biomes.js         # biomas (altiplano…patagonia) y desierto florido
 │   ├── seasons.js        # ciclo estacional (tinte, nieve, clima)
 │   ├── views.js          # serialización del estado (enlaces y favoritos)
 │   ├── scene.js          # composición, cámara/parallax, día/noche, export

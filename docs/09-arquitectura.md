@@ -1,6 +1,6 @@
 # 09 · Arquitectura
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 ## Principios técnicos
 
@@ -88,7 +88,10 @@ dibujan después y ocultan a las traseras.
 ## Cómo extender
 
 - **Nueva capa**: agregar un objeto a `LAYERS` en el orden de atrás hacia adelante.
-- **Nueva especie vegetal**: `drawPlant` en `flora.js` + entrar en `LAYERS[*].flora.types`.
+- **Nueva especie vegetal**: `drawPlant` en `flora.js` + entrar en `LAYERS[*].flora.types` (centro)
+  y/o en `BIOMES[*].flora` (norte, altiplano, sur, Patagonia).
+- **Nuevo bioma**: preset en `BIOMES` (paleta, geometría y pools), añadirlo a `BIOME_IDS` y al
+  selector `biomeSel`/`VIEW_BIOMES` (caso de referencia: `patagonia`).
 - **Nuevo clima**: agregar estado en `weather.js` (`COUNTS`, `spawn`, `draw`, `windLevelFor`), tintes
   en `palette.js` (`WEATHER_TARGETS`), el peso en las cuatro estaciones (`seasons.js`), la clave en
   `VIEW_WEATHERS` (`views.js`), la etiqueta en `ui.js` y la opción en `index.html` (caso de

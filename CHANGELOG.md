@@ -6,6 +6,27 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-09
+
+### Added
+- **Biomas altiplano y Patagonia** ([D-038](docs/12-decisiones.md)): `BIOME_IDS` pasa a **cinco**
+  (`altiplano → norte → centro → sur → patagonia`) y `biomeWeights` se generaliza (meseta con
+  mezcla al vecino). El **altiplano** eleva el relieve y añade puna sin árboles (vicuña, guanaco,
+  chinchilla, flamenco); la **Patagonia** baja la línea de nieve y trae estepa fría (guanaco,
+  choique, puma, huemul). Selector **Región**, `?biome=` y las vistas aceptan los cinco.
+- **Flora de sotobosque** ([D-037](docs/12-decisiones.md)): **quillay** (*Quillaja saponaria*,
+  esclerófilo endémico con flores blancas en primavera/verano) en centro y sur, y **mañío**
+  (*Podocarpus* spp., conífera austral oscura) en sur y Patagonia.
+- **Ríos: meandro sutil y pendiente real** ([D-039](docs/12-decisiones.md)): `channelOffset`
+  desplaza el canal dentro de la holgura de la muesca (≤0.55·`width`, rampa al nacimiento) y el
+  nacimiento/`u` se derivan de `ridgeHeight` en el centro. El agua sigue recortada al tallado.
+
+### Changed
+- **Documentación al día**: enlaces reales del CHANGELOG a GitHub (y versiones 0.10–1.0), fauna sin
+  la fila y nota obsoletas, estado de `Scene` y tabla de controles completos, roadmap con la
+  Fase 4 y el backlog podado.
+- Dorados regenerados (`flora.*`, `biome.*`); `channelOffset` exportado para test.
+
 ## [1.0.1] - 2026-10-09
 
 ### Fixed
@@ -338,13 +359,25 @@ Primera versión funcional (Fase 1: paisaje, cielo y clima).
 - Ríos tallados en el valle y la Costa con curso meándrico sinusoidal.
 - Panel de control (semilla, scroll, hora, clima), export PNG y parámetros de URL.
 
-[Unreleased]: https://example.com/infinite-andes/compare/v0.9.0...HEAD
-[0.9.0]: https://example.com/infinite-andes/compare/v0.8.0...v0.9.0
-[0.8.0]: https://example.com/infinite-andes/compare/v0.7.0...v0.8.0
-[0.7.0]: https://example.com/infinite-andes/compare/v0.6.0...v0.7.0
-[0.6.0]: https://example.com/infinite-andes/compare/v0.5.0...v0.6.0
-[0.5.0]: https://example.com/infinite-andes/compare/v0.4.0...v0.5.0
-[0.4.0]: https://example.com/infinite-andes/compare/v0.3.0...v0.4.0
-[0.3.0]: https://example.com/infinite-andes/compare/v0.2.0...v0.3.0
-[0.2.0]: https://example.com/infinite-andes/compare/v0.1.0...v0.2.0
-[0.1.0]: https://example.com/infinite-andes/releases/tag/v0.1.0
+[Unreleased]: https://github.com/nramireza/infinite-andes/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/nramireza/infinite-andes/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/nramireza/infinite-andes/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/nramireza/infinite-andes/compare/v0.16.0...v1.0.0
+[0.16.0]: https://github.com/nramireza/infinite-andes/compare/v0.15.0...v0.16.0
+[0.15.0]: https://github.com/nramireza/infinite-andes/compare/v0.14.0...v0.15.0
+[0.14.0]: https://github.com/nramireza/infinite-andes/compare/v0.13.1...v0.14.0
+[0.13.1]: https://github.com/nramireza/infinite-andes/compare/v0.13.0...v0.13.1
+[0.13.0]: https://github.com/nramireza/infinite-andes/compare/v0.12.0...v0.13.0
+[0.12.0]: https://github.com/nramireza/infinite-andes/compare/v0.11.1...v0.12.0
+[0.11.1]: https://github.com/nramireza/infinite-andes/compare/v0.11.0...v0.11.1
+[0.11.0]: https://github.com/nramireza/infinite-andes/compare/v0.10.0...v0.11.0
+[0.10.0]: https://github.com/nramireza/infinite-andes/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/nramireza/infinite-andes/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/nramireza/infinite-andes/compare/v0.7.0...v0.8.0
+[0.7.0]: https://github.com/nramireza/infinite-andes/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/nramireza/infinite-andes/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/nramireza/infinite-andes/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/nramireza/infinite-andes/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/nramireza/infinite-andes/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/nramireza/infinite-andes/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/nramireza/infinite-andes/releases/tag/v0.1.0

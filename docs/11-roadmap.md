@@ -71,18 +71,24 @@
 - [x] Publicación: workflow de GitHub Pages (`.github/workflows/pages.yml`), botón "copiar enlace" y
       demo en vivo ([README](../README.md)).
 
+## Fase 4 — Ampliación ✅ (hecha, v1.1.0)
+
+- [x] **Flora de sotobosque**: quillay (centro y sur) y mañío (sur y Patagonia)
+      ([D-037](12-decisiones.md), [05 · Flora](05-flora.md)).
+- [x] **Biomas altiplano y Patagonia** ([D-038](12-decisiones.md), [02 · Mundo](02-mundo.md)).
+- [x] **Ríos**: meandro sutil dentro de la holgura y cauce con pendiente real
+      ([D-039](12-decisiones.md), [07 · Ríos](07-rios.md)).
+
 ## Post-1.0 (backlog)
 
 - **Export de tira larga**: rango de `x` en PNG y/o GIF/secuencia ([00 · Visión](00-vision.md),
   [10 · UI y exportación](10-ui-y-export.md)). Opcional, no prioritario para wallpaper.
 - **Más momentos raros**: vuelo largo de cóndor como evento, bandada, manada
   ([06 · Fauna](06-fauna.md)).
-- **Más biomas**: altiplano, Patagonia, austral/fiordos.
-- **Ríos**: meandro sutil dentro de la holgura de la muesca y cauce que siga la pendiente real
-  ([07 · Ríos](07-rios.md)).
+- **Más biomas**: austral/fiordos (requiere geometría de agua/canales, no solo pools).
 - **Fauna**: refinar los sprites restantes y completar la plantilla
   [`templates/especimen.md`](templates/especimen.md) de cada especie ([06 · Fauna](06-fauna.md)).
-- **Flora**: quillay, mañío y otros arbustos del sotobosque ([05 · Flora](05-flora.md)).
+- **Flora**: otros arbustos del sotobosque ([05 · Flora](05-flora.md)).
 
 ## Backlog / ideas
 

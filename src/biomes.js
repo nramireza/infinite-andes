@@ -7,10 +7,32 @@ import { fbm1 } from "./noise.js";
 import { hash1, hashInt } from "./rng.js";
 import { lerpColor } from "./palette.js";
 
-export const BIOME_IDS = ["norte", "centro", "sur"];
+export const BIOME_IDS = ["altiplano", "norte", "centro", "sur", "patagonia"];
 
 // Tintes por bioma: solo claves de terreno/flora/suelo (nunca cielo ni astros).
 export const BIOMES = {
+  altiplano: {
+    palette: {
+      valleyL: "#9a9668", valleyD: "#6e6c4a", costaL: "#8e8a60", costaD: "#646044",
+      floraL: "#7e8654", floraD: "#565c38", sand: "#e2d6ae", sandD: "#b8ac84",
+      rock: "#8f8378", rockD: "#6b6058", snow: "#ffffff", snowD: "#e4eaf0",
+    },
+    geometry: { ampMul: 1.12, snowShift: -0.1 },
+    // Puna: paja brava, matorral bajo y roca; sin árboles.
+    flora: {
+      precordillera: ["cactus", "bush", "rock", "grass"],
+      valle: ["grass", "grass", "bush", "rock", "cactus"],
+      costa: ["cactus", "bush", "rock", "grass"],
+      playa: ["rock", "grass"],
+    },
+    fauna: {
+      andes: ["condor", "chinchilla"],
+      precordillera: ["guanaco", "vicuna", "culpeo", "chinchilla"],
+      valle: ["vicuna", "guanaco", "culpeo", "chingue"],
+      costa: ["chilla", "culpeo", "chingue"],
+      playa: ["flamenco", "chilla"],
+    },
+  },
   norte: {
     palette: {
       valleyL: "#a8a05a", valleyD: "#7a7440", costaL: "#9a9450", costaD: "#6e6a38",
@@ -48,8 +70,8 @@ export const BIOMES = {
     geometry: { ampMul: 1.06, snowShift: -0.3 },
     flora: {
       precordillera: ["araucaria", "alerce", "lenga", "coihue", "michay", "bush"],
-      valle: ["lenga", "nalca", "colihue", "coihue", "roble", "michay", "copihue", "araucaria", "bush"],
-      costa: ["lenga", "coihue", "roble", "alerce", "nalca", "colihue", "copihue", "michay", "chaura", "araucaria", "bush"],
+      valle: ["lenga", "nalca", "colihue", "coihue", "roble", "michay", "copihue", "araucaria", "bush", "quillay", "manio"],
+      costa: ["lenga", "coihue", "roble", "alerce", "nalca", "colihue", "copihue", "michay", "chaura", "araucaria", "bush", "quillay", "manio"],
       playa: ["grass", "rock"],
     },
     fauna: {
@@ -57,6 +79,28 @@ export const BIOMES = {
       precordillera: ["huemul", "pudu", "puma", "choique"],
       valle: ["pudu", "guina", "huemul", "chingue", "culpeo", "choique", "huillin", "rana"],
       costa: ["monito", "choroy", "cachana", "pudu", "guina", "chucao", "huillin", "rana"],
+      playa: ["chilla", "flamenco"],
+    },
+  },
+  patagonia: {
+    palette: {
+      valleyL: "#8a8a5e", valleyD: "#62623e", costaL: "#727a52", costaD: "#525a3a",
+      floraL: "#6a7a48", floraD: "#485838", sand: "#d8cba0", sandD: "#b0a37c",
+      rock: "#6b7078", rockD: "#4e545c", snow: "#ffffff", snowD: "#dbe8f2",
+    },
+    geometry: { ampMul: 1.02, snowShift: -0.45 },
+    // Estepa fría: lenga y ñire bajos, coirón y matorral; mucha nieve.
+    flora: {
+      precordillera: ["lenga", "coihue", "michay", "bush", "rock"],
+      valle: ["lenga", "colihue", "michay", "chaura", "bush", "grass", "manio"],
+      costa: ["lenga", "coihue", "michay", "chaura", "colihue", "bush", "manio"],
+      playa: ["grass", "rock"],
+    },
+    fauna: {
+      andes: ["condor", "chinchilla"],
+      precordillera: ["guanaco", "choique", "puma", "huemul"],
+      valle: ["guanaco", "choique", "culpeo", "puma", "huemul"],
+      costa: ["chucao", "pudu", "guina", "culpeo", "huillin", "rana"],
       playa: ["chilla", "flamenco"],
     },
   },
@@ -81,15 +125,22 @@ function smoothstep(a, b, x) {
   return t * t * (3 - 2 * t);
 }
 
-// Pesos normalizados (suman 1) de cada bioma en una posición de mundo.
+// Pesos normalizados (suman 1) de cada bioma en una posición de mundo. Cada
+// bioma domina en su centro (meseta de 0.5) y se mezcla con el vecino en 0.5.
 export function biomeWeights(worldX, seed = 0) {
   const u = fbm1(worldX * BIOME_FREQ, (seed + 4242) >>> 0, 3, 2, 0.5);
-  const pos = smoothstep(0.15, 0.85, u) * 2.5; // 0..2.5
-  const norte = clamp01((0.75 - pos) / 0.5);
-  const sur = clamp01((pos - 1.75) / 0.5);
-  const centro = clamp01((pos - 0.25) / 0.5) * clamp01((2.25 - pos) / 0.5);
-  const total = norte + centro + sur || 1;
-  return { norte: norte / total, centro: centro / total, sur: sur / total };
+  const pos = smoothstep(0.15, 0.85, u) * (BIOME_IDS.length - 0.5); // 0..4.5
+  const out = {};
+  let total = 0;
+  for (let i = 0; i < BIOME_IDS.length; i++) {
+    const lo = clamp01((pos - (i - 0.75)) / 0.5);
+    const hi = clamp01(((i + 0.75) - pos) / 0.5);
+    out[BIOME_IDS[i]] = lo * hi;
+    total += lo * hi;
+  }
+  const t = total || 1;
+  for (const id of BIOME_IDS) out[id] /= t;
+  return out;
 }
 
 // Pesos según el modo: región fija o procedural (`auto`). Memo acotado por
@@ -100,8 +151,8 @@ const WEIGHTS_CAP = 4096;
 
 export function modeWeights(mode, worldX, seed = 0) {
   if (BIOME_IDS.includes(mode)) {
-    const w = { norte: 0, centro: 0, sur: 0 };
-    w[mode] = 1;
+    const w = {};
+    for (const id of BIOME_IDS) w[id] = id === mode ? 1 : 0;
     return w;
   }
   const key = ((seed >>> 0) + ":" + Math.round(worldX));

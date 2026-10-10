@@ -574,6 +574,62 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   `placeFlora`. Tests nuevos en `render.test.js` (valle norte y corolas, día vs noche). Sin cambios
   de dorados (día intacto). Versión 1.0.1.
 
+## D-037 · Flora de sotobosque: quillay y mañío
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** cerrar el pendiente de flora austral con dos especies:
+  - **Quillay** (*Quillaja saponaria*, esclerófilo **endémico de Chile**): copa redondeada y motas
+    blancas de flor en **primavera/verano**; entra en los pools de **centro** (precordillera, valle
+    y costa, vía `LAYERS`) y del **sur/Patagonia** (valle y costa).
+  - **Mañío** (*Podocarpus* spp.): conífera austral oscura y estrecha, perenne; entra en los pools
+    del **sur** y la **Patagonia** (valle y costa).
+- **Motivo:** era el pendiente de [05 · Flora](05-flora.md) y del backlog post-1.0
+  ([11 · Roadmap](11-roadmap.md)).
+- **Alternativas:** sprites PNG externos (descartado: el proyecto mantiene matrices/código sin
+  assets); solo mañío (descartado: el quillay da identidad esclerófila al centro).
+- **Consecuencia:** cambia el *spawn* de centro y sur → dorados `flora.*` y `biome.*` regenerados;
+  tests de pools (`biomes.test.js`) y smoke de tipos nuevos (`render.test.js`). Versión 1.1.0.
+
+## D-038 · Biomas altiplano y Patagonia
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** ampliar los biomas de tres a **cinco**, en el orden del recorrido:
+  **altiplano → norte → centro → sur → patagonia**. `biomeWeights` se generaliza (cada bioma domina
+  en su centro, meseta de 0.5, y se mezcla con el vecino en 0.5).
+  - **Altiplano** (puna): eleva el relieve (`ampMul` 1.12), enfría el tinte árido y trae pastizal y
+    matorral bajo **sin árboles**; vicuña, guanaco, chinchilla y flamenco.
+  - **Patagonia** (estepa fría): baja la línea de nieve (`snowShift` −0.45), lenga baja, coirón y
+    matorral; guanaco, choique, puma y huemul.
+  - Selector **Región**, `?biome=` y las **vistas** aceptan los cinco; la floración sigue **solo** en
+    el norte. Los **fiordos/austral** quedan fuera: exigen geometría de agua/canales, no solo pools.
+- **Motivo:** avanzar el "más biomas" del backlog sin abrir un frente de terreno nuevo.
+- **Alternativas:** incluir fiordos ya (descartado por alcance); eje 2D latitud×altitud (descartado:
+    complejidad sin ganancia visible en el perfil); solo tintes sin pools (descartado: pálido).
+- **Consecuencia:** dorados nuevos `biome.altiplano` y `biome.patagonia`; el centro conserva su
+  lógica (sin tinte ni geometría propios); tests de suma, dominancia, tinte terrestre y pools.
+
+## D-039 · Ríos: meandro sutil y pendiente real
+
+- **Fecha:** 2026-10-09
+- **Estado:** aceptada
+- **Decisión:** cerrar los pendientes de [07 · Ríos](07-rios.md) **solo en el dibujo** de
+  `drawChannel`:
+  - **Meandro sutil** (`channelOffset`): el centro del canal se desplaza hasta 0.55·`width` por lado
+    (menos que la holgura libre de 0.68·`width` de la muesca), con rampa al nacimiento y seno
+    determinista por evento.
+  - **Pendiente real**: el nacimiento (`headY`) y el recorrido de `u` se derivan de
+    `ridgeHeight(layer, ev.xc)` (altura real en el centro), de modo que el cauce se ensancha según
+    el desnivel hasta el pie de la capa.
+- **Motivo:** último pendiente post-1.0 de ríos, sin reabrir el "agua dentro del tallado" que costó
+  fijar ([D-032](12-decisiones.md)).
+- **Alternativas:** ensanchar la muesca para un meandro mayor (descartado: tocaría el terreno y los
+  dorados de altura); meandro en la función de tallado (descartado: la muesca es función de columna,
+  no de profundidad).
+- **Consecuencia:** `riverEvents`, `terrain.*` y `rivers.*` intactos; `channelOffset` se exporta para
+  test; tests nuevos de agua bajo `ridgeHeight` y de meandro acotado.
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

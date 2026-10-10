@@ -1,6 +1,6 @@
 # 10 · UI y exportación
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 Implementado en `index.html`, `style.css` y `src/ui.js`.
 
@@ -22,7 +22,7 @@ Estilo retro (monoespaciado, mayúsculas, acento cian).
 | Relación | `aspectSel` / `aspectCustom` | 16:9 · 21:9 · 32:9 · personalizada (`W = round(270·ratio)`) |
 | Estación | `seasonSel` | `auto` (ciclo) o una fija |
 | Momento | `momentSel` | `auto` (raro), `none`, `18sep`, `leorey`, `kungleo` |
-| Región | `biomeSel` | `auto` (procedural), `norte`, `centro`, `sur` |
+| Región | `biomeSel` | `auto` (procedural), `altiplano`, `norte`, `centro`, `sur`, `patagonia` |
 | Floración | `bloomSel` | `auto`, `on`, `off` |
 | Vistas | `viewSel` / `viewName` / `btnSaveView` / `btnDelView` | Guardar/cargar/eliminar vistas favoritas |
 | Exportar PNG | `btnExport` | Descarga la vista actual |
@@ -34,9 +34,11 @@ Estilo retro (monoespaciado, mayúsculas, acento cian).
 - `camera.x` — posición horizontal del mundo.
 - `autoScroll`, `scrollSpeed` — recorrido automático.
 - `hour` (0–24), `timeAuto`, `timeSpeed` (0.125 h/s) — ciclo solar.
-- `weatherAuto`, `weatherTimer` — cambio de clima.
-- `moment` — modo de momento raro (`auto`/`none`/tipo).
-- `seed` — semilla activa.
+- `clock` (`real`/`fast`), `lat`/`longitude` — reloj y cálculo solar.
+- `weatherAuto`, `weatherTimer`, `weather` — clima y transiciones.
+- `season`/`seasonPhase` — estación fija o ciclo.
+- `moment`, `biomeMode`, `bloomMode` — momento raro, región y floración.
+- `seed` — semilla activa; `tSec`/`dayNum` — tiempo y días simulados.
 
 ## Exportación PNG
 

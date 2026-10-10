@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getPalette, lerpColor } from "../src/palette.js";
-import { LAYERS, seedLayers, drawLayer, drawSea, riverEvents } from "../src/terrain.js";
+import { getPalette, lerpColor, shade } from "../src/palette.js";
+import { LAYERS, seedLayers, drawLayer, drawSea, riverEvents, ridgeHeight } from "../src/terrain.js";
 import { placeFlora } from "../src/flora.js";
 import { Scene } from "../src/scene.js";
 import { seedToInt } from "../src/rng.js";
@@ -113,6 +113,28 @@ test("valle y costa dibujan el agua del canal", () => {
   }
 });
 
+test("el agua del cauce no flota: queda bajo el tallado (ridgeHeight)", () => {
+  seedLayers(SEED);
+  const pal = getPalette(12, "clear");
+  const agua = lerpColor(pal.sea, pal.seaHi, 0.3);
+  const riverColors = new Set([agua, shade(agua, -0.42), pal.seaHi]);
+  for (const name of ["valle", "costa"]) {
+    const layer = layerByName(name);
+    const cx = cameraWithRiver(layer);
+    assert.notEqual(cx, null, `${name}: no se halló río`);
+    const ctx = makeFakeCtx();
+    drawLayer(ctx, layer, pal, { x: cx }, W, H);
+    let pixelesRio = 0;
+    for (const [sx, y, , , col] of ctx.calls.fillRect) {
+      if (!riverColors.has(col)) continue;
+      pixelesRio++;
+      const wx = cx * layer.parallax + sx;
+      assert.ok(y >= ridgeHeight(layer, wx) - 1, `${name}: agua sobre el tallado en (${sx},${y})`);
+    }
+    assert.ok(pixelesRio > 0, `${name}: sin píxeles de río`);
+  }
+});
+
 test("Scene.resize cambia el lienzo y sigue renderizando", () => {
   const ctx = makeFakeCtx();
   const canvas = { width: W, height: H, getContext: () => ctx };
@@ -126,7 +148,7 @@ test("Scene.resize cambia el lienzo y sigue renderizando", () => {
 });
 
 test("el pipeline de biomas (región y floración) no lanza y dibuja", () => {
-  for (const biome of ["auto", "norte", "centro", "sur"]) {
+  for (const biome of ["auto", "altiplano", "norte", "centro", "sur", "patagonia"]) {
     for (const bloom of ["auto", "on", "off"]) {
       const ctx = makeFakeCtx();
       const canvas = { width: W, height: H, getContext: () => ctx };
@@ -196,7 +218,7 @@ test("los nuevos tipos de flora dibujan dentro del lienzo", () => {
   seedLayers(SEED);
   const pal = getPalette(12, "clear");
   const base = layerByName("valle");
-  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower", "coihue", "roble", "copihue", "michay", "chaura"]) {
+  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower", "coihue", "roble", "copihue", "michay", "chaura", "quillay", "manio"]) {
     const layer = { ...base, flora: { ...base.flora, types: [type] } };
     const ctx = makeFakeCtx();
     placeFlora(ctx, layer, pal, { x: 100 }, W, H, SEED, 0);

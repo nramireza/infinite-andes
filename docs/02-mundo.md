@@ -65,20 +65,24 @@ más corta** (textura rápida); combinada con el `parallax` y la amplitud, produ
 ## Biomas y regiones
 
 El perfil de las 6 capas es común, pero el **bioma** cambia el tinte y la composición de flora/fauna
-según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay tres:
+según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay cinco, en el orden en que
+aparecen al recorrer (de norte a sur):
 
 | Bioma | Carácter | Flora | Fauna |
 |-------|----------|-------|-------|
-| **norte** | árido (Atacama/Coquimbo) | matorral y roca, **sin araucaria** | guanaco, vicuña, culpeo, flamenco, chinchilla |
-| **centro** | actual (Linares–O'Higgins) | pools de `LAYERS` sin cambios | pools de `LAYERS` sin cambios |
-| **sur** | boscoso (Araucanía/Patagonia) | lenga y araucaria densas | pudú, monito del monte, choroy, huemul, puma |
+| **altiplano** | puna alta y fría (Norte Grande) | pastizal y matorral bajo, **sin árboles** | vicuña, guanaco, chinchilla, flamenco |
+| **norte** | árido (Atacama/Coquimbo) | matorral, copao y roca, **sin araucaria** | guanaco, vicuña, culpeo, flamenco, chinchilla |
+| **centro** | actual (Linares–O'Higgins) | pools de `LAYERS` (con quillay) | pools de `LAYERS` sin cambios |
+| **sur** | boscoso (Araucanía/Los Lagos) | lenga y araucaria densas | pudú, monito del monte, choroy, huemul, puma |
+| **patagonia** | estepa fría (Aysén/Magallanes) | lenga baja, coirón y matorral | guanaco, choique, puma, huemul |
 
 - **Procedural**: `biomeWeights(worldX, seed)` mezcla los biomas con ruido de baja frecuencia, así el
   paisaje **cambia al recorrer** (transición suave, sin saltos). Frecuencia `0.00015` (~regiones de
-  miles de px).
-- **Seleccionable**: `?biome=norte|centro|sur|auto` o el selector **Región** del panel.
+  miles de px); cada bioma domina en su centro y se mezcla con el vecino.
+- **Seleccionable**: `?biome=altiplano|norte|centro|sur|patagonia|auto` o el selector **Región** del panel.
 - **Geometría**: `biomeGeometry` modula la **amplitud** (`ampMul`) y la **línea de nieve**
-  (`snowShift`): el norte baja el relieve y sube la nieve; el sur lo eleva y la baja. Se aplica en
+  (`snowShift`): el norte baja el relieve y sube la nieve; el altiplano lo eleva con algo de nieve;
+  el sur lo eleva y la baja, y la Patagonia es la más nevada. Se aplica en
   `bankHeight`/`drawLayer` vía `setBiomeGeometry` (solo en capas con nieve). El **centro** no cambia.
 - **Tinte**: el bioma tiñe paleta de terreno/flora/suelo (nunca cielo ni astros) y **pondera** los
   pools de especies. La frecuencia del ruido (`freq`) no se toca: solo amplitud y nieve.

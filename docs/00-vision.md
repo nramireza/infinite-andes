@@ -1,6 +1,6 @@
 # 00 · Visión
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 ## Qué es
 
@@ -44,7 +44,7 @@ Personas que disfrutan de arte generativo, pixel art y paisajes; sin necesidad d
 
 ## Preguntas abiertas
 
-- Exportar una "tira larga" del paisaje (rango de `x`), no solo la vista actual: **post-1.0**
+- [ ] Exportar una "tira larga" del paisaje (rango de `x`), no solo la vista actual: **post-1.0**
   (ver [11 · Roadmap](11-roadmap.md)).
 - [x] ¿Habrá audio ambiente? **No**: pieza solo visual para fondo de pantalla ([D-025](12-decisiones.md)).
 - [x] Biomas/regiones seleccionables o procedurales ([D-016](12-decisiones.md), v0.6.0).

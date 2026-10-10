@@ -1,6 +1,6 @@
 # 01 · Experiencia
 
-> Estado: estable · Actualizado: 2026-10-08
+> Estado: estable · Actualizado: 2026-10-09
 
 ## Concepto
 
@@ -20,8 +20,8 @@ parar cuando una composición le gusta, o dejar que el paisaje se desplace solo.
 - Mediodía con el sol fuera de pantalla (pasa por encima).
 - Atardecer cálido sin sol visible (queda tras la cámara).
 - Noche con estrellas y aurora austral.
-- Clima cambiando solo: nieve, lluvia, niebla, viento.
-- Ríos meándricos bajando por el valle y un portezuelo en la cordillera de la Costa.
+- Clima cambiando solo: despejado, nieve, lluvia, niebla, viento y tormenta.
+- Ríos que bajan por el valle y un portezuelo en la cordillera de la Costa.
 - Volcanes con penacho en los Andes.
 
 ## Controles (panel superior izquierdo)
@@ -31,11 +31,19 @@ parar cuando una composición le gusta, o dejar que el paisaje se desplace solo.
 | Semilla + `↻` | Elegir/escribir una semilla o generar una nueva |
 | `◀` `▶` | Desplazar el paisaje |
 | auto + velocidad | Auto-scroll y su rapidez |
+| Relación | 16:9, 21:9, 32:9 o personalizada |
 | Hora | Deslizador de hora del día (0–24) |
 | paso del tiempo | Activar/desactivar el avance automático de la hora |
-| Clima | Automático o forzado (despejado, nieve, lluvia, niebla, viento) |
+| Reloj | Real (hora, estación y sol de Chile) o ciclo rápido |
+| Clima | Automático o forzado (despejado, nieve, lluvia, niebla, viento, tormenta) |
+| Estación | Automática (ciclo) o fija (verano, otoño, invierno, primavera) |
+| Momento | Raro automático o forzado (18-sep, Leo Rey, Kung Leo) |
+| Región | Procedural, altiplano, norte, centro, sur o Patagonia |
+| Floración | Desierto florido automático, forzado o desactivado |
+| Vistas | Guardar/cargar/eliminar vistas favoritas |
 | Exportar PNG | Descargar la vista actual |
-| HUD | Semilla, posición, hora y clima |
+| Copiar enlace | Copiar la URL con la vista actual |
+| HUD | Semilla, posición, hora, clima, estación y región |
 
 El panel se oculta con el botón `∞`.
 

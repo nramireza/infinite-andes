@@ -27,6 +27,8 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 | Roble | *Nothofagus obliqua* | Sí (Chile/Arg) | `roble` | Costa, Valle (sur) | Copa estrecha y erguida |
 | Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Precordillera, Valle, Costa (sur) | Arbusto espinoso con flores naranjas |
 | Chaura | *Gaultheria mucronata* | No (Patagonia) | `chaura` | Costa (sur) | Arbusto achaparrado con bayas blanco-rosadas |
+| Quillay | *Quillaja saponaria* | **Sí (Chile)** | `quillay` | Centro, Sur (precordillera, valle, costa) | Copa redondeada; flores blancas en primavera/verano |
+| Mañío | *Podocarpus* spp. | No (Patagonia) | `manio` | Sur, Patagonia (valle, costa) | Conífera austral oscura y estrecha |
 
 > La vegetación no crece dentro del cauce: `placeFlora` omite las columnas con `riverInfluence > 0.25`
 > y usa `bankHeight` para sentarse en el banco.
@@ -42,6 +44,7 @@ estación** ([D-031](12-decisiones.md), [15 · Estaciones](15-estaciones.md)); `
   **primavera** muestran **brotes** claros en la punta.
 - **Copihue y michay**: las campanas/flores aparecen en **primavera y verano**; en otoño e invierno
   solo se ve el follaje/enredadera.
+- **Quillay**: las motas blancas de flor aparecen en **primavera y verano**.
 - La **chaura** es perenne y conserva sus bayas todo el año.
 
 ## Biomas
@@ -49,7 +52,8 @@ estación** ([D-031](12-decisiones.md), [15 · Estaciones](15-estaciones.md)); `
 El bioma (`src/biomes.js`) **pondera** los `types` de cada capa; el pool efectivo se construye con
 `biomeFloraPool` (ver [D-016](12-decisiones.md)). El **norte árido no tiene araucaria** (matorral,
 copao y roca); el **sur** suma alerce, nalca, colihue, coihue, roble, copihue y michay
-([D-022](12-decisiones.md)). El tipo `flower` solo aparece con la floración
+([D-022](12-decisiones.md)); el **centro** aporta el quillay esclerófilo y el **sur/Patagonia** el
+mañío ([D-037](12-decisiones.md)). El tipo `flower` solo aparece con la floración
 del norte (`bloomAt`, [D-017](12-decisiones.md) y [D-024](12-decisiones.md)); se dibuja como manto
 amplio de tallos con corola de 3 px (`drawFlower`, ~10x el racimo original) que se **reparte hacia
 dentro de la banda visible** de la capa, cubriendo el valle y no solo su contorno.
@@ -74,13 +78,15 @@ Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante)
 | Coihue | 6–? | 1 | — |
 | Roble | 6–? | 1 | — |
 | Copihue | 5–? | 1 | — |
-| Michay | 3–? | 1 | — |
+| Michay | 3–? | 1 | Flores por estación (primavera/verano) |
 | Chaura | 3–? | 1 | — |
+| Quillay | 5–? | 1 | Flores por estación (primavera/verano) |
+| Mañío | 7–? | 1 | — |
 | Flor | 4–? | 1 | Bamboleo por seno (sway) |
 
 ## Especies por añadir (propuestas)
 
-- Quillay (*Quillaja saponaria*), mañío (*Podocarpus*) y otros arbustos del sotobosque (post-1.0).
+- Otros arbustos del sotobosque y especies locales (post-1.0).
 
 ## Cómo añadir una especie
 

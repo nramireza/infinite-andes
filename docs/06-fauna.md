@@ -99,8 +99,8 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 | Chungungo | EN | costero | muy-rara | 0.12 |
 | Chinchilla de cola larga | EN | casi extinta | muy-rara | 0.12 |
 | Rana de Darwin | EN | endémica, en declive | muy-rara | 0.12 |
-| Chucao | LC | común, sotobosque | comun | 3 |
-| Choique | NT | decreciente | poco-comun | 1.2 |
+| Chucao | LC | común, sotobosque | común | 3 |
+| Choique | NT | decreciente | poco-común | 1.2 |
 | Huillín | EN | ríos del sur | rara | 0.5 |
 
 - **Chance por capa**: andes 0.25, precordillera 0.3, valle 0.5, costa 0.55, playa 0.3, mar 0.35.
@@ -111,8 +111,10 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 ### Biomas y floración
 
 El bioma (`src/biomes.js`) **pondera** las `species` de cada capa con `biomeFaunaPool` (ver
-[D-016](12-decisiones.md)): el norte trae guanaco, vicuña y flamenco; el sur, pudú, monito, choroy,
-huemul, choique, chucao, **huillín** y la **rana de Darwin** (junto al cauce). Durante el **desierto florido** (`bloomAt`,
+[D-016](12-decisiones.md), [D-038](12-decisiones.md)): el altiplano trae vicuña, guanaco, chinchilla
+y flamenco; el norte, guanaco, vicuña, culpeo y flamenco; el sur, pudú, monito, choroy, huemul,
+choique, chucao, **huillín** y la **rana de Darwin** (junto al cauce); la Patagonia, guanaco,
+choique, puma y huemul. Durante el **desierto florido** (`bloomAt`,
 [D-017](12-decisiones.md)) sube la densidad (`chance × (1 + 0.6·bloom)`) y se refuerzan aves y zorros
 (`condor`, `culpeo`, `chilla`, `flamenco`).
 
@@ -138,10 +140,10 @@ huemul, choique, chucao, **huillín** y la **rana de Darwin** (junto al cauce). 
 | Chungungo | *Lontra felina* | Sí (Chile/Perú) | Mar, roqueríos | Día | Nada, se asoma |
 | Chinchilla de cola larga | *Chinchilla lanigera* | **Sí (Chile)** | Andes rocosos | Noche | Ágil en rocas |
 | Pingüino de Humboldt | *Spheniscus humboldti* | No | Mar | Día | Nada, emerge |
-| Guanaco/Yeco ya listados… | — | — | — | — | — |
 
-> Los nombres y la condición de endemismo se revisarán; varios son "nativos" más que endémicos.
-> Completar con estado de conservación (UICN) cuando se especifique.
+> Los nombres científicos y la condición de endemismo son una aproximación: varias especies son
+> "nativas" más que endémicas de Chile. El estado de conservación (UICN/MMA) se detalla en la
+> tabla de densidad de arriba.
 
 ## Modelo de datos de una especie
 

@@ -43,6 +43,8 @@ MATRIX=(
   "andes|12|storm"
   "andes|12|clear|norte"
   "andes|12|clear|sur"
+  "andes|12|clear|altiplano"
+  "andes|12|clear|patagonia||invierno"
   "andes|12|clear|norte|on"
   "andes|12|clear|auto"
   "andes|12|clear|||otono"

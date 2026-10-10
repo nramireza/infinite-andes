@@ -196,6 +196,8 @@ function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0, night
     case "copihue": return drawCopihue(ctx, x, baseY, size, pal, season);
     case "michay": return drawMichay(ctx, x, baseY, size, pal, season);
     case "chaura": return drawChaura(ctx, x, baseY, size, pal);
+    case "quillay": return drawQuillay(ctx, x, baseY, size, pal, season);
+    case "manio": return drawManio(ctx, x, baseY, size, pal);
     default: return drawGrass(ctx, x, baseY, size, pal);
   }
 }
@@ -466,6 +468,74 @@ function drawChaura(ctx, x, baseY, size, pal) {
     ctx.fillStyle = "#d97a9a";
     ctx.fillRect(fx, fy - 1, 1, 1);
   }
+}
+
+// Quillay (Quillaja saponaria): árbol esclerófilo de copa redondeada; florece
+// (motas blancas) en primavera y verano.
+function drawQuillay(ctx, x, baseY, size, pal, season = 0) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const h = Math.max(5, Math.round(size * 0.85));
+  const trunkH = Math.max(2, Math.round(size * 0.22));
+  const top = baseY - h;
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
+
+  const crownH = h - trunkH;
+  const ry = crownH / 2;
+  const rx = Math.max(2, Math.round(size * 0.4));
+  const cy = top + ry;
+  for (let dy = -ry; dy <= ry; dy++) {
+    const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
+    if (span <= 0) continue;
+    const yy = Math.round(cy + dy);
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - span, yy, span * 2 + 1, 1);
+    ctx.fillStyle = pal.floraL;
+    ctx.fillRect(x - span, yy, span * 2 + 1, 1);
+    if (hash1(Math.floor(x) * 5 + yy, 0x9111) < 0.4) {
+      ctx.fillStyle = pal.floraD;
+      ctx.fillRect(x + 1, yy, span, 1);
+    }
+  }
+  if (season !== 0 && season !== 3) return;
+  const n = 1 + Math.floor(size * 0.1);
+  for (let i = 0; i < n; i++) {
+    const hh = hash1(i * 37 + x, 0x9112);
+    const fy = top + 1 + Math.round(((i + 1) / (n + 1)) * crownH);
+    ctx.fillStyle = "#f4f0e6";
+    ctx.fillRect(x + Math.round((hh - 0.5) * rx * 1.6), fy, 1, 1);
+  }
+}
+
+// Mañío (Podocarpus): conífera austral de copa estrecha, oscura y colgante.
+function drawManio(ctx, x, baseY, size, pal) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const h = Math.max(7, Math.round(size * 1.0));
+  const trunkH = Math.max(2, Math.round(size * 0.18));
+  const top = baseY - h;
+  const halfMax = Math.max(2, Math.round(size * 0.3));
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
+  for (let i = 0; i < h - trunkH; i++) {
+    const t = i / (h - trunkH);
+    const half = Math.max(1, Math.round(halfMax * (0.35 + 0.65 * Math.sin(t * Math.PI))));
+    const yy = top + i;
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - half, yy, half * 2 + 1, 1);
+    if (i % 3 === 0 || t < 0.18) {
+      ctx.fillStyle = pal.floraL;
+      ctx.fillRect(x - half, yy, half * 2 + 1, 1);
+    }
+    if (i % 2 === 1) {
+      ctx.fillStyle = pal.floraL;
+      ctx.fillRect(x - half - 1, yy, 1, 1);
+      ctx.fillRect(x + half + 1, yy, 1, 1);
+    }
+  }
+  ctx.fillStyle = pal.floraL;
+  ctx.fillRect(x - 1, top - 1, 2, 1);
 }
 
 // Parche de flores del desierto florido: manto amplio (~10x el área del racimo

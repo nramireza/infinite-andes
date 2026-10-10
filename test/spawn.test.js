@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { LAYERS, seedLayers, riverInfluence, riverEvents } from "../src/terrain.js";
+import { LAYERS, seedLayers, riverInfluence, riverEvents, channelOffset } from "../src/terrain.js";
 import { floraSpawns } from "../src/flora.js";
 import { seedToInt } from "../src/rng.js";
 import { BASE_H, widthForRatio } from "../src/viewport.js";
@@ -46,6 +46,21 @@ test("riverEvents respeta la ventana de pantalla con el parallax", () => {
   for (const e of riverEvents(layer, camera, W)) {
     const sx = e.xc - camera.x * p;
     assert.ok(sx > -80 - V && sx < W + 80 + V, `evento fuera de ventana: sx=${sx}`);
+  }
+});
+
+test("el meandro del cauce es sutil y arranca centrado en el nacimiento", () => {
+  seedLayers(SEED);
+  for (const name of ["valle", "costa"]) {
+    const layer = layerByName(name);
+    const amp = layer.rivers.width * 0.55;
+    for (let s = 0.05; s < 1; s += 0.13) {
+      assert.equal(Math.abs(channelOffset(layer, s, 0)), 0, `${name}: el nacimiento no arranca centrado`);
+      for (let u = 0; u <= 1.0001; u += 0.05) {
+        const o = channelOffset(layer, s, u);
+        assert.ok(Math.abs(o) <= amp + 1e-9, `${name}: meandro fuera de la holgura (${o})`);
+      }
+    }
   }
 });
 

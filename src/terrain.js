@@ -19,21 +19,21 @@ export const LAYERS = [
   {
     name: "precordillera", parallax: 0.16, baseY: 158, amp: 50, freq: 0.0060, seed: 211,
     rugged: 0.7, snowFrac: 0.94, lightKey: "midL", darkKey: "midD", alpha: 0.9,
-    flora: { chunkW: 84, minSize: 5, maxSize: 10, minChance: 0.2, maxPer: 1, types: ["araucaria"] },
+    flora: { chunkW: 84, minSize: 5, maxSize: 10, minChance: 0.2, maxPer: 1, types: ["araucaria", "quillay"] },
     fauna: { chunkW: 200, chance: 0.3, species: ["huemul", "guanaco", "vicuna"] },
   },
   {
     name: "valle", parallax: 0.32, baseY: 200, amp: 20, freq: 0.012, seed: 307,
     rugged: 0.12, snowFrac: 1.4, lightKey: "valleyL", darkKey: "valleyD", alpha: 0.97, fields: true,
     rivers: { spacing: 1100, chance: 0.45, width: 3.2, depth: 7, wfreq: 4.2 },
-    flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria", "palma", "coihue", "roble", "michay"] },
+    flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria", "palma", "coihue", "roble", "michay", "quillay"] },
     fauna: { chunkW: 150, chance: 0.5, species: ["pudu", "huemul", "guina", "culpeo", "chingue", "huillin"] },
   },
   {
     name: "costa", parallax: 0.52, baseY: 226, amp: 12, freq: 0.010, seed: 419,
     rugged: 0.05, snowFrac: 1.4, lightKey: "costaL", darkKey: "costaD", alpha: 1,
     rivers: { spacing: 1500, chance: 0.4, width: 2.1, depth: 5, wfreq: 4.5 },
-    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma", "coihue", "roble", "copihue", "michay", "chaura"] },
+    flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma", "coihue", "roble", "copihue", "michay", "chaura", "quillay"] },
     fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana", "rana", "huillin"] },
   },
   {
@@ -146,6 +146,14 @@ function channelHalf(layer, seed, u) {
   return Math.max(0.4, R.width * (taper + wobble));
 }
 
+// Meandro sutil: el canal ondula dentro de la holgura de la muesca (0.55·width
+// por lado, menos que el 0.68·width libre) y arranca centrado en el nacimiento.
+export function channelOffset(layer, seed, u) {
+  const R = layer.rivers;
+  const ramp = Math.min(1, u / 0.2);
+  return R.width * 0.55 * Math.sin(u * R.wfreq * 1.15 + seed * 6.3) * ramp;
+}
+
 // Eventos de río visibles para una cámara: centro en x y semilla del meandro.
 export function riverEvents(layer, camera, W) {
   const R = layer.rivers;
@@ -163,9 +171,11 @@ export function riverEvents(layer, camera, W) {
   return out;
 }
 
-// Canal de agua de una quebrada: centrado en la muesca (`ev.xc`), sin meandro en
-// profundidad, para que el cauce quede dentro del tallado y herede su parallax.
-// Brota en el fondo de la muesca y se ensancha al bajar; el borde oscuro lo integra.
+// Canal de agua de una quebrada: centrado en la muesca (`ev.xc`) con un meandro
+// sutil, para que el cauce quede dentro del tallado y herede su parallax.
+// El nacimiento y la conicidad se derivan de la altura real del terreno en el
+// centro (`ridgeHeight`, "pendiente real"): el agua brota unas filas bajo la
+// punta de la muesca y se ensancha según el desnivel hasta el pie de la capa.
 function drawChannel(ctx, layer, pal, camera, W, H) {
   const R = layer.rivers;
   const p = layer.parallax;
@@ -173,21 +183,22 @@ function drawChannel(ctx, layer, pal, camera, W, H) {
   const bank = shade(water, -0.42);
 
   for (const ev of riverEvents(layer, camera, W)) {
-    const cx = ev.xc - camera.x * p;
+    const sx0 = ev.xc - camera.x * p;
     const A = layer.amp * ampMulAt(ev.xc);
     const topRef = layer.baseY - A;
     const botRef = layer.baseY + A;
     const y0 = Math.max(0, Math.round(topRef));
     const y1 = Math.min(H, Math.round(botRef));
-    const span = botRef - topRef;
-    // Nacimiento orgánico: el agua brota unas filas más abajo de la punta de la
-    // muesca (determinista por evento) con un pequeño salto brillante.
-    const headU = 0.05 + hash1(ev.seed, 0x51e) * 0.12;
-    const headY = topRef + span * headU;
+    // Nacimiento orgánico: brota unas filas más abajo de la punta de la muesca
+    // (determinista por evento) con un pequeño salto brillante.
+    const headBase = ridgeHeight(layer, ev.xc);
+    const headY = headBase + 1 + hash1(ev.seed, 0x51e) * 3;
+    const run = Math.max(2, botRef - headY);
     for (let y = y0; y < y1; y++) {
       if (y < headY - 1) continue;
-      const u = Math.max(0, (y - headY) / (botRef - headY));
+      const u = Math.max(0, Math.min(1, (y - headY) / run));
       const hw = channelHalf(layer, ev.seed, u);
+      const cx = sx0 + channelOffset(layer, ev.seed, u);
       const left = Math.round(cx - hw);
       const right = Math.round(cx + hw);
       if (right < -2 || left > W + 2) continue;
