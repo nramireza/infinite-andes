@@ -40,16 +40,28 @@ Anchura y frames por tipo; el mapa de paleta mezcla claves de `getPalette` con a
 literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía general está en
 [08 · Arte pixel](08-arte-pixel.md).
 
-| Tipo | Tamaño (px) aprox. | Frames | Anclaje | Color |
-|------|--------------------|--------|---------|-------|
-| `condor` | 16 × 6 | 2 | centro | cuerpo `trunk`, manchas `snow` |
-| resto terrestres | 6–10 × 4–8 | 2 | pies | cuerpo `trunk`/`sandD`/`sand` |
-| `choroy` / `cachana` | 8 × 4 | 2 | centro | verde/rojizo, en bandada |
-| `flamenco` | 6 × 9 | 2 | pies | rosa literal `#f2a0b8` |
-| `pinguino` | 6 × 8 | 2 | pies | negro/blanco, pico naranja |
-| `choique` | 7 × 10 | 2 | pies | cuerpo `trunk`, patas `sand` |
-| `chucao` | 6 × 6 | 2 | pies | cuerpo `trunk`, pecho literal `#c0502a` |
-| `huillin` | 9 × 4 | 2 | pies | cuerpo `trunk`, vientre `sand` |
+| Tipo | Tamaño (px) | Frames | Anclaje | Silueta / color |
+|------|-------------|--------|---------|-----------------|
+| `condor` | 20 × 6 | 2 | centro | alas anchas con primarias "digitadas", collar `snow`, cabeza chica |
+| `huemul` | 9 × 9 | 2 | pies | cuerpo robusto, cuello corto, astas bifurcadas (`trunk`/`sandD`) |
+| `pudu` | 7 × 7 | 2 | pies | ciervo diminuto, hocico corto |
+| `guina` | 8 × 4 | 2 | pies | felino pequeño y redondo, vientre `sandD` |
+| `puma` | 12 × 5 | 2 | pies | perfil largo, cola tendida, vientre `sand` |
+| `culpeo` | 9 × 5 | 2 | pies | zorro de cola poblada `#c96a3a` |
+| `chilla` | 8 × 5 | 2 | pies | zorro gris, cola más corta |
+| `guanaco` | 8 × 14 | 2 | pies | cuello y patas largos (`sandD`/`sand`) |
+| `vicuna` | 7 × 12 | 2 | pies | camélido esbelto y erguido |
+| `chingue` | 9 × 4 | 2 | pies | rayas `snow`, cola blanca |
+| `monito` | 7 × 6 | 2 | pies | marsupial diminuto |
+| `chinchilla` | 7 × 6 | 2 | pies | roedor redondo, orejas grandes, cola `snowD` |
+| `choroy` / `cachana` | 10 × 5 | 2 | centro | loros con cola larga, verde/rojizo |
+| `flamenco` | 7 × 15 | 2 | pies | cuello en S, patas finas, pico curvo `#f2a0b8` |
+| `pinguino` | 7 × 10 | 2 | pies | erguido, aletas, pico naranja |
+| `chungungo` | 12 × 4 | 2 | pies | mustélido alargado nadando |
+| `huillin` | 12 × 4 | 2 | pies | nutria de río alargada |
+| `choique` | 8 × 15 | 2 | pies | ñandú: cuello y patas largos |
+| `chucao` | 7 × 7 | 2 | pies | pecho rojizo `#c0502a`, cola corta |
+| `rana` | 6 × 4 | 2 | pies | triangular, hocico puntiagudo |
 
 - Los caracteres de la matriz se mapean a **claves de `getPalette(hour, weather)`** (o a un hex
   literal), así que la fauna responde a la hora y al clima sin reescribir colores.
@@ -177,6 +189,9 @@ La flora sigue el mismo esquema en `FLORA` (`flora.js`). Ver [09 · Arquitectura
       y la **manada** ([D-041](12-decisiones.md), v1.2.0).
 - [x] Post-1.0: refinar los sprites restantes (zorros, camélidos, mustélidos, loros, etc.) y generar
       las fichas por especie ([D-044](12-decisiones.md), [`especies/`](especies/README.md), v1.2.0).
+- [x] Post-1.0: **silueta y proporción** de toda la fauna revisadas a **escala relativa por especie**
+      (camélidos y aves grandes más altos, especies pequeñas más compactas) y sprites redibujados a
+      partir de la anatomía real ([D-047](12-decisiones.md), v1.4.0).
 
 ## Momentos de fauna
 

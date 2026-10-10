@@ -52,8 +52,12 @@
 
 ### Guía de estilo para sprites nuevos
 
-- **Tamaño:** un animal terrestre ronda 6–10 px de ancho y 4–8 de alto; las aves 8–16 px.
-  Los personajes de momento, ~9×12 px.
+- **Silueta primero:** la forma debe leerse como la especie real (cuello, patas, cola, pico o
+  cuernos) antes que el color. Un buen contorno en 1 px pesa más que un tono extra.
+- **Tamaño por especie:** cada sprite se dimensiona a escala relativa (ver la tabla de
+  [06 · Fauna](06-fauna.md)): los camélidos y aves grandes (guanaco, choique, flamenco, cóndor)
+  llegan a 14–20 px; los pequeños (pudú, monito, rana) ronda 6–7 px. Los personajes de momento,
+  ~9×12 px.
 - **Anclaje** (`anchor`): `ground` (los pies tocan `bankHeight`) o `center` (voladores, centrado
   en la trayectoria). Al añadir una especie, elige el correcto o "flotará".
 - **Contorno:** 1 px de un tono oscuro (sombra del cuerpo) para despegarlo del fondo.
@@ -81,3 +85,6 @@
 - [x] **Sprites restantes refinados** (v1.2.0): zorros, camélidos, chingue, monito, chinchilla,
   loros, choique, chucao, huillín y rana ([D-044](12-decisiones.md)); cada especie tiene su ficha en
   [`especies/`](especies/README.md).
+- [x] **Silueta y proporción de la fauna** revisadas (v1.4.0): matrices redimensionadas a **escala
+  relativa por especie** y formas más fieles (cuello, patas, cola, pico), con `palette` ampliada
+  donde aporta volumen ([D-047](12-decisiones.md)).

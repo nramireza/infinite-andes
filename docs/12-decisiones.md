@@ -728,6 +728,30 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   ganancia visible); atlas offscreen (descartado por ahora).
 - **Consecuencia:** sin cambios en el render; la fauna mantiene sus matrices.
 
+## D-047 · Silueta y proporción de la fauna (escala relativa por especie)
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** redibujar las matrices de **toda** la fauna (`SPECIES.frames`) poniendo la
+  **silueta y la proporción por delante del color**:
+  - **Escala relativa por especie**: cada sprite se dimensiona según su tamaño real (cóndor 20×6,
+    guanaco 8×14, choique 8×15, flamenco 7×15 frente a pudú 7×7 o rana 6×4), en vez del rango
+    estrecho 6–10 px anterior.
+  - **Anatomía legible**: cuello y patas largos en camélidos y ñandú; cola poblada en zorros; perfil
+    y cola larga en el puma; cola larga en loros; cuello en S y pico curvo en el flamenco; cuerpos
+    alargados en mustélidos; astas en el huemul.
+  - La `palette` por especie se amplía solo donde aporta volumen (p. ej. `k` para astas/ojos).
+  - Se mantienen **2 frames** y el resto del modelo (movimiento, `fps`, anclaje, spawn): no cambia la
+    colocación ni el determinismo.
+- **Motivo:** los sprites eran correctos pero abstractos y de tamaño poco discriminado; con la guía
+  de estilo fijada ([08 · Arte pixel](08-arte-pixel.md)) tocaba ganar fidelidad.
+- **Alternativas:** aumentar solo el color/dithering (descartado: sin silueta fiel no se lee la
+  especie); 3.er frame de animación (pospuesto); sprites PNG externos (descartado, [D-010](#d-010--fauna-determinista-con-actividad-horaria)).
+- **Consecuencia:** cambian solo `frames`/`palette` de `SPECIES`; los dorados `fauna.*` (que digieren
+  el spawn) quedan **intactos** y `test/fauna.test.js` sigue validando anchos y caracteres mapeados.
+  Las fichas de `docs/especies/` se regeneran con `npm run species` (incluyen el nuevo tamaño). La
+  flora queda para una tanda posterior ([D-046](#d-046--sprites-de-flora-procedurales-sin-caché)).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

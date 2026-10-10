@@ -14,7 +14,7 @@
 | Rareza (juego) | muy-rara |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 6×5 px · 2 frames |
+| Sprite | 7×6 px · 2 frames |
 
 ## Notas
 

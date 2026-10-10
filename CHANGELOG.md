@@ -6,6 +6,16 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-10
+
+### Changed
+- **Silueta y proporción de la fauna** ([D-047](docs/12-decisiones.md)): las 21 matrices de `SPECIES`
+  se redibujan a **escala relativa por especie** y con anatomía más fiel (cuello y patas largos en
+  camélidos y ñandú; cola poblada en zorros; perfil y cola del puma; cola de los loros; cuello en S
+  del flamenco; astas del huemul; cuerpos alargados de las nutrias). Solo cambian `frames`/`palette`
+  (con `k` añadido donde aporta); el spawn y los dorados `fauna.*` quedan **intactos**. La flora
+  queda para una tanda posterior.
+
 ## [1.3.0] - 2026-10-10
 
 ### Changed
