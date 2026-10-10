@@ -148,7 +148,7 @@ test("Scene.resize cambia el lienzo y sigue renderizando", () => {
 });
 
 test("el pipeline de biomas (región y floración) no lanza y dibuja", () => {
-  for (const biome of ["auto", "altiplano", "norte", "centro", "sur", "patagonia"]) {
+  for (const biome of ["auto", "altiplano", "norte", "centro", "sur", "patagonia", "austral"]) {
     for (const bloom of ["auto", "on", "off"]) {
       const ctx = makeFakeCtx();
       const canvas = { width: W, height: H, getContext: () => ctx };
@@ -218,7 +218,7 @@ test("los nuevos tipos de flora dibujan dentro del lienzo", () => {
   seedLayers(SEED);
   const pal = getPalette(12, "clear");
   const base = layerByName("valle");
-  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower", "coihue", "roble", "copihue", "michay", "chaura", "quillay", "manio"]) {
+  for (const type of ["cactus", "alerce", "nalca", "colihue", "palma", "flower", "coihue", "roble", "copihue", "michay", "chaura", "quillay", "manio", "canelo", "arrayan", "notro"]) {
     const layer = { ...base, flora: { ...base.flora, types: [type] } };
     const ctx = makeFakeCtx();
     placeFlora(ctx, layer, pal, { x: 100 }, W, H, SEED, 0);

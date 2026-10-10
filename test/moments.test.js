@@ -43,6 +43,18 @@ test("el 18sep pinta el cielo y los papelitos", () => {
   assert.ok(ctx.calls.fillRect.length > 0);
 });
 
+test("el vuelo de cóndor, la bandada y la manada dibujan", () => {
+  const cases = [[momentSky, "condor"], [momentSky, "bandada"], [momentGround, "manada"]];
+  for (const [fn, mode] of cases) {
+    const ctx = makeFakeCtx();
+    fn(ctx, pal, { x: 0 }, W, H, SEED, 2, mode);
+    assert.ok(ctx.calls.fillRect.length > 0, `${mode} no dibujó`);
+    const again = makeFakeCtx();
+    fn(again, pal, { x: 0 }, W, H, SEED, 2, mode);
+    assert.deepEqual(again.calls.fillRect, ctx.calls.fillRect, `${mode} no es determinista`);
+  }
+});
+
 test("drawText dibuja píxeles de texto", () => {
   const ctx = makeFakeCtx();
   drawText(ctx, "MORTAL KUMBIA", 0, 0, "#ffffff", 1);

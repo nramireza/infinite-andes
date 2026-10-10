@@ -11,7 +11,7 @@ const WEATHER_LABEL = {
 };
 
 const BIOME_LABEL = {
-  auto: "procedural", altiplano: "altiplano", norte: "norte", centro: "centro", sur: "sur", patagonia: "patagonia",
+  auto: "procedural", altiplano: "altiplano", norte: "norte", centro: "centro", sur: "sur", patagonia: "patagonia", austral: "fiordos",
 };
 
 const SEASON_LABEL = {
@@ -38,6 +38,7 @@ export function setupUI(scene, hooks = {}) {
   const biomeSel = $("biomeSel");
   const bloomSel = $("bloomSel");
   const btnExport = $("btnExport");
+  const btnExportStrip = $("btnExportStrip");
   const btnCopy = $("btnCopy");
   const viewSel = $("viewSel");
   const viewName = $("viewName");
@@ -240,6 +241,7 @@ export function setupUI(scene, hooks = {}) {
   });
 
   btnExport.addEventListener("click", () => scene.exportPNG());
+  btnExportStrip.addEventListener("click", () => scene.exportStrip(8));
   btnCopy.addEventListener("click", async () => {
     updateURL();
     const prev = btnCopy.textContent;

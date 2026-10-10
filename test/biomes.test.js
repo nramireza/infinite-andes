@@ -127,7 +127,7 @@ test("los pools de bioma incluyen la flora y fauna nuevas", () => {
 
   const sur = modeWeights("sur", 0, SEED);
   const surCosta = biomeFloraPool("costa", sur, 0, layerByName("costa").flora.types);
-  for (const t of ["alerce", "nalca", "colihue", "chaura", "quillay", "manio"]) {
+  for (const t of ["alerce", "nalca", "colihue", "chaura", "quillay", "manio", "canelo", "arrayan", "notro"]) {
     assert.ok(surCosta.some((e) => e.type === t), `el sur no tiene ${t}`);
   }
   const surValle = biomeFaunaPool("valle", sur, 0, layerByName("valle").fauna.species);
@@ -141,13 +141,21 @@ test("altiplano y Patagonia aportan sus pools", () => {
   assert.ok(!alt.some((e) => e.type === "manio"), "el altiplano no debe tener mañío");
 
   const patFlora = biomeFloraPool("valle", modeWeights("patagonia", 0, SEED), 0, layerByName("valle").flora.types);
-  assert.ok(patFlora.some((e) => e.type === "manio"), "Patagonia sin mañío");
+  for (const t of ["manio", "notro", "arrayan"]) assert.ok(patFlora.some((e) => e.type === t), `Patagonia sin ${t}`);
   const patFauna = biomeFaunaPool("valle", modeWeights("patagonia", 0, SEED), 0, layerByName("valle").fauna.species);
   for (const t of ["guanaco", "choique", "huemul"]) assert.ok(patFauna.some((e) => e.type === t), `Patagonia sin ${t}`);
 });
 
-test("biomeGeometry mezcla amplitud y nieve; centro no cambia", () => {
-  assert.deepEqual(biomeGeometry(modeWeights("centro", 0, SEED)), { ampMul: 1, snowShift: 0 });
+test("austral aporta flora y fauna de fiordo", () => {
+  const w = modeWeights("austral", 0, SEED);
+  const flora = biomeFloraPool("costa", w, 0, layerByName("costa").flora.types);
+  for (const t of ["manio", "canelo", "coihue"]) assert.ok(flora.some((e) => e.type === t), `austral sin ${t}`);
+  const fauna = biomeFaunaPool("costa", w, 0, layerByName("costa").fauna.species);
+  for (const t of ["huillin", "chungungo"]) assert.ok(fauna.some((e) => e.type === t), `austral sin ${t}`);
+});
+
+test("biomeGeometry mezcla amplitud, nieve y fiordos; centro no cambia", () => {
+  assert.deepEqual(biomeGeometry(modeWeights("centro", 0, SEED)), { ampMul: 1, snowShift: 0, fjord: 0 });
   const norte = biomeGeometry(modeWeights("norte", 0, SEED));
   assert.ok(norte.ampMul < 1 && norte.snowShift > 0);
   const sur = biomeGeometry(modeWeights("sur", 0, SEED));
@@ -156,6 +164,12 @@ test("biomeGeometry mezcla amplitud y nieve; centro no cambia", () => {
   assert.ok(altiplano.ampMul > 1 && altiplano.snowShift < 0);
   const patagonia = biomeGeometry(modeWeights("patagonia", 0, SEED));
   assert.ok(patagonia.snowShift < -0.3, "Patagonia debe bajar más la nieve");
+  const austral = biomeGeometry(modeWeights("austral", 0, SEED));
+  assert.equal(austral.fjord, 1, "austral debe activar los fiordos");
+  for (const id of BIOME_IDS) {
+    if (id === "austral") continue;
+    assert.equal(biomeGeometry(modeWeights(id, 0, SEED)).fjord, 0, `${id} no debe tener fiordos`);
+  }
 });
 
 test("la geometría por bioma cambia la altura y es determinista", () => {

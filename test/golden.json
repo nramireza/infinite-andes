@@ -20,12 +20,13 @@
   "fauna.mar": "e2127571",
   "biome.norte": "5ebbbf2a",
   "biome.centro": "85ce157c",
-  "biome.sur": "937dc465",
+  "biome.sur": "a56c1f6b",
   "fauna.rana": "05ba6c2f",
   "palette.season.verano": "afcc4b30",
   "palette.season.otono": "19a69582",
   "palette.season.invierno": "e3ff9a5e",
   "palette.season.primavera": "e799c5f6",
   "biome.altiplano": "d8c092fa",
-  "biome.patagonia": "ddff6df5"
+  "biome.patagonia": "c76f2864",
+  "biome.austral": "7751af00"
 }

@@ -1,6 +1,6 @@
 # 08 · Arte pixel
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 ## Resolución y escalado
 
@@ -77,4 +77,7 @@
   `radixDither` automático en sprites queda descartado.
 - [x] **Sprites de fauna refinados** (v0.16.0): cóndor, huemul, pudú, güiña, puma, flamenco,
   pingüino y chungungo ganaron detalle (ojos/pico, vientre claro, cola) y dithering manual
-  ([D-033](12-decisiones.md)). El resto de las especies queda para post-1.0.
+  ([D-033](12-decisiones.md)).
+- [x] **Sprites restantes refinados** (v1.2.0): zorros, camélidos, chingue, monito, chinchilla,
+  loros, choique, chucao, huillín y rana ([D-044](12-decisiones.md)); cada especie tiene su ficha en
+  [`especies/`](especies/README.md).

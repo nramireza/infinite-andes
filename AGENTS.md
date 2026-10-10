@@ -37,8 +37,8 @@ google-chrome-stable --headless=new --disable-gpu --no-sandbox \
 
 Parámetros de URL útiles: `seed`, `x` (posición; desactiva auto-scroll), `hour` (0–24),
 `weather` (`clear|snow|rain|fog|wind|storm`), `aspect` (`16:9|21:9|32:9` o decimal; por defecto `32:9`),
-`season` (`auto|verano|otono|invierno|primavera`), `biome` (`auto|altiplano|norte|centro|sur|patagonia`),
-`bloom` (`auto|on|off`), `moment` (`auto|none|18sep|leorey|kungleo`) y `ui` (`0` = kiosco).
+`season` (`auto|verano|otono|invierno|primavera`), `biome` (`auto|altiplano|norte|centro|sur|patagonia|austral`),
+`bloom` (`auto|on|off`), `moment` (`auto|none|18sep|leorey|kungleo|condor|bandada|manada`) y `ui` (`0` = kiosco).
 
 - **Capturas versionadas**: `npm run shots` genera `screenshots/v<versión>-<hash|fecha>/` con la
   matriz de semillas/horas/climas, `manifest.json` y `contact-sheet.png`. La versión sale de

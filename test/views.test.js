@@ -17,6 +17,14 @@ test("encodeView/decodeView hacen roundtrip del estado", () => {
   assert.deepEqual(decodeView(encodeView(state)), state);
 });
 
+test("los biomas ampliados sobreviven el roundtrip y rechazan basura", () => {
+  for (const biome of ["altiplano", "norte", "centro", "sur", "patagonia", "austral"]) {
+    assert.deepEqual(decodeView(encodeView({ seed: "x", biome })), { seed: "x", biome });
+  }
+  assert.equal(decodeView("?biome=fiordos").biome, undefined);
+  assert.equal(decodeView("?biome=puna").biome, undefined);
+});
+
 test("decodeView aplica defaults y descarta valores inválidos", () => {
   assert.deepEqual(decodeView(""), {});
   assert.deepEqual(decodeView("?seed=&weather=lava&aspect=0"), {});

@@ -7,7 +7,7 @@ import { fbm1 } from "./noise.js";
 import { hash1, hashInt } from "./rng.js";
 import { lerpColor } from "./palette.js";
 
-export const BIOME_IDS = ["altiplano", "norte", "centro", "sur", "patagonia"];
+export const BIOME_IDS = ["altiplano", "norte", "centro", "sur", "patagonia", "austral"];
 
 // Tintes por bioma: solo claves de terreno/flora/suelo (nunca cielo ni astros).
 export const BIOMES = {
@@ -70,8 +70,8 @@ export const BIOMES = {
     geometry: { ampMul: 1.06, snowShift: -0.3 },
     flora: {
       precordillera: ["araucaria", "alerce", "lenga", "coihue", "michay", "bush"],
-      valle: ["lenga", "nalca", "colihue", "coihue", "roble", "michay", "copihue", "araucaria", "bush", "quillay", "manio"],
-      costa: ["lenga", "coihue", "roble", "alerce", "nalca", "colihue", "copihue", "michay", "chaura", "araucaria", "bush", "quillay", "manio"],
+      valle: ["lenga", "nalca", "colihue", "coihue", "roble", "michay", "copihue", "araucaria", "bush", "quillay", "manio", "canelo", "arrayan", "notro"],
+      costa: ["lenga", "coihue", "roble", "alerce", "nalca", "colihue", "copihue", "michay", "chaura", "araucaria", "bush", "quillay", "manio", "canelo", "arrayan", "notro"],
       playa: ["grass", "rock"],
     },
     fauna: {
@@ -92,8 +92,8 @@ export const BIOMES = {
     // Estepa fría: lenga y ñire bajos, coirón y matorral; mucha nieve.
     flora: {
       precordillera: ["lenga", "coihue", "michay", "bush", "rock"],
-      valle: ["lenga", "colihue", "michay", "chaura", "bush", "grass", "manio"],
-      costa: ["lenga", "coihue", "michay", "chaura", "colihue", "bush", "manio"],
+      valle: ["lenga", "colihue", "michay", "chaura", "bush", "grass", "manio", "notro", "arrayan"],
+      costa: ["lenga", "coihue", "michay", "chaura", "colihue", "bush", "manio", "notro", "arrayan", "canelo"],
       playa: ["grass", "rock"],
     },
     fauna: {
@@ -101,6 +101,28 @@ export const BIOMES = {
       precordillera: ["guanaco", "choique", "puma", "huemul"],
       valle: ["guanaco", "choique", "culpeo", "puma", "huemul"],
       costa: ["chucao", "pudu", "guina", "culpeo", "huillin", "rana"],
+      playa: ["chilla", "flamenco"],
+    },
+  },
+  austral: {
+    palette: {
+      valleyL: "#3d6b52", valleyD: "#2a4a3a", costaL: "#356048", costaD: "#244234",
+      floraL: "#2f6a46", floraD: "#1e4a32", sand: "#b8c4bc", sandD: "#8ea098",
+      rock: "#5a6a6e", rockD: "#414f54", snow: "#ffffff", snowD: "#dbe8f2",
+    },
+    geometry: { ampMul: 1.08, snowShift: -0.5, fjord: 1 },
+    // Fiordos: islas boscosas y húmedas cortadas por canales de agua.
+    flora: {
+      precordillera: ["alerce", "coihue", "manio", "canelo", "bush"],
+      valle: ["coihue", "manio", "canelo", "nalca", "colihue", "notro", "arrayan", "lenga", "bush"],
+      costa: ["coihue", "manio", "canelo", "nalca", "colihue", "notro", "arrayan", "alerce", "chaura", "bush"],
+      playa: ["grass", "rock"],
+    },
+    fauna: {
+      andes: ["condor", "chinchilla"],
+      precordillera: ["huemul", "puma", "guanaco"],
+      valle: ["huillin", "rana", "pudu", "guina"],
+      costa: ["huillin", "chungungo", "pinguino", "chucao", "rana", "pudu", "guina"],
       playa: ["chilla", "flamenco"],
     },
   },
@@ -185,19 +207,21 @@ function tintFor(weights) {
   return out;
 }
 
-// Geometría mezclada por pesos: multiplicador de amplitud y desplazamiento de la
-// línea de nieve. Centro no cambia nada (1 / 0).
+// Geometría mezclada por pesos: multiplicador de amplitud, desplazamiento de la
+// línea de nieve y fuerza de fiordos. Centro no cambia nada (1 / 0 / 0).
 export function biomeGeometry(weights) {
   let ampMul = 0;
   let snowShift = 0;
+  let fjord = 0;
   for (const id of BIOME_IDS) {
     const w = weights[id] || 0;
     if (w <= 0) continue;
     const g = BIOMES[id].geometry || { ampMul: 1, snowShift: 0 };
     ampMul += w * g.ampMul;
     snowShift += w * g.snowShift;
+    fjord += w * (g.fjord || 0);
   }
-  return { ampMul: ampMul || 1, snowShift };
+  return { ampMul: ampMul || 1, snowShift, fjord };
 }
 
 // Floración de desierto: bloques raros y extensos, solo con presencia de norte.

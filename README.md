@@ -8,7 +8,7 @@ Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** estable (v1.1) · **Versión:** 1.1.0 · **Licencia:** MIT
+> **Estado:** estable (v1.2) · **Versión:** 1.2.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -40,8 +40,8 @@ npm run start:python
 | `weather` | `?weather=storm` | Clima fijo: `clear`, `snow`, `rain`, `fog`, `wind`, `storm` |
 | `season`  | `?season=otono` | Estación: `auto` (ciclo), `verano`, `otono`, `invierno`, `primavera` |
 | `aspect`  | `?aspect=21:9` | Relación de aspecto: `16:9`, `21:9`, `32:9` (def.) o decimal (`2.4`) |
-| `moment`  | `?moment=kungleo` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo` |
-| `biome`   | `?biome=patagonia` | Región: `auto` (procedural), `altiplano`, `norte` (árido), `centro`, `sur` (boscoso), `patagonia` |
+| `moment`  | `?moment=condor` | Momento raro: `auto`, `none`, `18sep`, `leorey`, `kungleo`, `condor`, `bandada`, `manada` |
+| `biome`   | `?biome=austral` | Región: `auto` (procedural), `altiplano`, `norte` (árido), `centro`, `sur` (boscoso), `patagonia`, `austral` (fiordos) |
 | `bloom`   | `?bloom=on`   | Desierto florido (norte): `auto`, `on`, `off` |
 | `clock`   | `?clock=fast` | Reloj: `real` (def., hora/estación y sol de Chile) o `fast` (ciclo) |
 | `lat`     | `?lat=-53`    | Latitud para el cálculo solar (por defecto −33.45, Santiago) |
@@ -52,7 +52,7 @@ npm run start:python
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
 `?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
-`?biome=patagonia&season=invierno` (estepa nevada) ·
+`?biome=austral&season=invierno` (fiordos nevados) · `?moment=condor` (vuelo de cóndor) ·
 `?ui=0&fit=cover` (fondo de pantalla a pantalla completa) · `?clock=fast` (ciclo día/noche rápido).
 
 Por defecto la pantalla sigue el **reloj real**: hora local, estación del hemisferio sur, el
@@ -100,11 +100,13 @@ Panel superior izquierdo (se oculta con el botón `∞`):
 - **Clima**: automático o forzado a uno de los seis (despejado, nieve, lluvia, niebla, viento,
   tormenta).
 - **Estación**: automática (ciclo de ~8 min) o fija (verano, otoño, invierno, primavera).
-- **Momento**: raro automático o forzado (18 de septiembre, Leo Rey, Kung Leo).
-- **Región**: procedural (automático), Altiplano, Norte árido, Centro, Sur boscoso o Patagonia
-  esteparia.
+- **Momento**: raro automático o forzado (18 de septiembre, Leo Rey, Kung Leo, vuelo de cóndor,
+  bandada, manada).
+- **Región**: procedural (automático), Altiplano, Norte árido, Centro, Sur boscoso, Patagonia
+  esteparia o Austral (fiordos).
 - **Floración**: desierto florido automático, forzado o desactivado (solo en el norte).
-- **Exportar PNG**: descarga la vista actual. **Copiar enlace**: comparte la vista.
+- **Exportar PNG**: descarga la vista actual. **Tira**: descarga 8 pantallas seguidas.
+  **Copiar enlace**: comparte la vista.
 - **HUD**: semilla, posición, hora y clima.
 
 Atajos de teclado: `Espacio` pausa/reanuda el auto-scroll · `←`/`→` desplazan · `H`/`P` muestran el
@@ -135,7 +137,7 @@ infinite-andes/
 │   ├── terrain.js        # capas de montaña, nieve, rocas, playa, mar, ríos
 │   ├── flora.js          # araucaria, lenga, cultivos, arbustos, quillay, mañío, rocas
 │   ├── fauna.js          # especies endémicas (sprites + spawn)
-│   ├── moments.js        # momentos raros (18-sep, Leo Rey, Kung Leo)
+│   ├── moments.js        # momentos raros (18-sep, Leo Rey, Kung Leo, cóndor, bandada, manada)
 │   ├── biomes.js         # biomas (altiplano…patagonia) y desierto florido
 │   ├── seasons.js        # ciclo estacional (tinte, nieve, clima)
 │   ├── views.js          # serialización del estado (enlaces y favoritos)
@@ -146,8 +148,9 @@ infinite-andes/
 ├── scripts/serve.mjs     # servidor de desarrollo sin caché (npm start)
 ├── scripts/capture.sh    # capturas versionadas (npm run shots)
 ├── scripts/bench.mjs     # benchmark de render/update (npm run bench)
+├── scripts/specimens.mjs # fichas de especies (npm run specimens)
 ├── screenshots/          # capturas por versión (ver screenshots/README.md)
-└── docs/                 # documentación del proyecto (ver docs/README.md)
+└── docs/                 # documentación del proyecto (ver docs/README.md; fichas en docs/especies/)
 ```
 
 ---
@@ -170,5 +173,6 @@ infinite-andes/
 - [Glosario](docs/13-glosario.md)
 - [Paleta maestra](docs/14-paleta-maestra.md)
 - [Estaciones](docs/15-estaciones.md)
+- [Fichas de especies](docs/especies/README.md)
 
 → Índice y convenciones completas en [docs/README.md](docs/README.md).

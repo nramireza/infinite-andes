@@ -1,6 +1,6 @@
 # 11 · Roadmap
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 ## Fase 1 — Terreno, cielo y clima ✅ (hecha, v0.1.0)
 
@@ -79,16 +79,23 @@
 - [x] **Ríos**: meandro sutil dentro de la holgura y cauce con pendiente real
       ([D-039](12-decisiones.md), [07 · Ríos](07-rios.md)).
 
+## Fase 5 — Detalles ✅ (hecha, v1.2.0)
+
+- [x] **Export de tira larga** en PNG (8 pantallas, `Scene.exportStrip`)
+      ([D-040](12-decisiones.md), [10 · UI y exportación](10-ui-y-export.md)).
+- [x] **Momentos raros de fauna**: vuelo de cóndor, bandada y manada
+      ([D-041](12-decisiones.md), [06 · Fauna](06-fauna.md)).
+- [x] **Bioma austral/fiordos** con canales de agua tallados ([D-042](12-decisiones.md), [02 · Mundo](02-mundo.md)).
+- [x] **Flora de sotobosque**: canelo, arrayán y notro ([D-043](12-decisiones.md), [05 · Flora](05-flora.md)).
+- [x] **Sprites de fauna restantes** refinados ([D-044](12-decisiones.md), [08 · Arte pixel](08-arte-pixel.md)).
+- [x] **Fichas de especies** generadas con `npm run specimens` ([especies/](especies/README.md)).
+- [x] **Tags** de release `v1.0.1` y `v1.1.0` publicados.
+
 ## Post-1.0 (backlog)
 
-- **Export de tira larga**: rango de `x` en PNG y/o GIF/secuencia ([00 · Visión](00-vision.md),
-  [10 · UI y exportación](10-ui-y-export.md)). Opcional, no prioritario para wallpaper.
-- **Más momentos raros**: vuelo largo de cóndor como evento, bandada, manada
-  ([06 · Fauna](06-fauna.md)).
-- **Más biomas**: austral/fiordos (requiere geometría de agua/canales, no solo pools).
-- **Fauna**: refinar los sprites restantes y completar la plantilla
-  [`templates/especimen.md`](templates/especimen.md) de cada especie ([06 · Fauna](06-fauna.md)).
-- **Flora**: otros arbustos del sotobosque ([05 · Flora](05-flora.md)).
+- **Tira animada**: GIF/secuencia además del PNG ([10 · UI y exportación](10-ui-y-export.md)).
+- **Más momentos raros** y más biomas (paisajes insulares, etc.).
+- **Fauna/flora**: nuevas especies y refinar más sprites ([06 · Fauna](06-fauna.md), [05 · Flora](05-flora.md)).
 
 ## Backlog / ideas
 

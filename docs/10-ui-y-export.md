@@ -1,6 +1,6 @@
 # 10 · UI y exportación
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 Implementado en `index.html`, `style.css` y `src/ui.js`.
 
@@ -26,6 +26,7 @@ Estilo retro (monoespaciado, mayúsculas, acento cian).
 | Floración | `bloomSel` | `auto`, `on`, `off` |
 | Vistas | `viewSel` / `viewName` / `btnSaveView` / `btnDelView` | Guardar/cargar/eliminar vistas favoritas |
 | Exportar PNG | `btnExport` | Descarga la vista actual |
+| Exportar tira | `btnExportStrip` | Descarga una tira de 8 pantallas desde la cámara |
 | Copiar enlace | `btnCopy` | Copia la URL con la vista actual |
 | HUD | `hud` | Semilla, `x`, hora, clima, estación y bioma |
 
@@ -45,7 +46,10 @@ Estilo retro (monoespaciado, mayúsculas, acento cian).
 `Scene.exportPNG()` usa `canvas.toBlob` y descarga un archivo
 `infinite-andes_<seed>_<HHMM>.png` con la vista actual (al tamaño interno vigente, p. ej.
 960×270 a 32:9).
-Pendiente: exportar una **tira larga** seleccionable.
+
+`Scene.exportStrip(tiles)` exporta una **tira larga** de varias pantallas (8 por defecto, máx. 40)
+hacia la derecha desde la cámara. Renderiza una sola vez en un lienzo ancho (`W·tiles`), así el cielo
+y el parallax continúan sin costuras; descarga `infinite-andes_<seed>_strip<N>_x<X>.png`.
 
 ## URLs y compartición
 
@@ -112,7 +116,8 @@ muestra el error en pantalla en lugar de un negro silencioso. Para desarrollo, `
 
 ## Pendiente
 
-- Exportar tira larga (rango de `x`) y/o GIF/secuencia: **post-1.0** (ver
+- GIF/secuencia animada (la tira larga en PNG ya está, v1.2.0): **post-1.0** (ver
   [11 · Roadmap](11-roadmap.md)).
+- [x] Exportar tira larga (rango de `x`) en PNG ([D-040](12-decisiones.md), v1.2.0).
 - [x] Modos de kiosco adicionales: HUD y cursor ocultos en kiosco ([D-026](12-decisiones.md), v0.11.1).
 - [x] Accesibilidad y atajos de teclado (flechas, espacio, pantalla completa) ([D-026](12-decisiones.md), v0.11.1).

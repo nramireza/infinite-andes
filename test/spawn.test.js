@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { LAYERS, seedLayers, riverInfluence, riverEvents, channelOffset } from "../src/terrain.js";
+import { LAYERS, seedLayers, riverInfluence, riverEvents, channelOffset, ridgeHeight, setFjordStrength } from "../src/terrain.js";
 import { floraSpawns } from "../src/flora.js";
 import { seedToInt } from "../src/rng.js";
 import { BASE_H, widthForRatio } from "../src/viewport.js";
@@ -62,6 +62,25 @@ test("el meandro del cauce es sutil y arranca centrado en el nacimiento", () => 
       }
     }
   }
+});
+
+test("los fiordos tallan la costa solo con fuerza activa", () => {
+  seedLayers(SEED);
+  const layer = layerByName("costa");
+  const sum = () => {
+    let a = 0;
+    for (let x = 0; x < 3000; x += 1) a += ridgeHeight(layer, x);
+    return a;
+  };
+  const dry = sum();
+  try {
+    setFjordStrength(() => 1);
+    const wet = sum();
+    assert.ok(wet > dry + 500, `los fiordos deberían tallar más (dry ${dry}, wet ${wet})`);
+  } finally {
+    setFjordStrength(null); // restaurar el estado global
+  }
+  assert.equal(sum(), dry, "sin fiordos la costa debe ser idéntica");
 });
 
 test("floraSpawns es determinista", () => {

@@ -198,6 +198,9 @@ function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0, night
     case "chaura": return drawChaura(ctx, x, baseY, size, pal);
     case "quillay": return drawQuillay(ctx, x, baseY, size, pal, season);
     case "manio": return drawManio(ctx, x, baseY, size, pal);
+    case "canelo": return drawCanelo(ctx, x, baseY, size, pal, season);
+    case "arrayan": return drawArrayan(ctx, x, baseY, size, pal, season);
+    case "notro": return drawNotro(ctx, x, baseY, size, pal, season);
     default: return drawGrass(ctx, x, baseY, size, pal);
   }
 }
@@ -536,6 +539,103 @@ function drawManio(ctx, x, baseY, size, pal) {
   }
   ctx.fillStyle = pal.floraL;
   ctx.fillRect(x - 1, top - 1, 2, 1);
+}
+
+// Canelo (Drimys winteri): siempreverde de copa densa; flor blanca en primavera/verano.
+function drawCanelo(ctx, x, baseY, size, pal, season = 0) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const h = Math.max(6, Math.round(size * 0.95));
+  const trunkH = Math.max(2, Math.round(size * 0.24));
+  const top = baseY - h;
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
+  const crownH = h - trunkH;
+  const ry = crownH / 2;
+  const rx = Math.max(2, Math.round(size * 0.36));
+  const cy = top + ry;
+  for (let dy = -ry; dy <= ry; dy++) {
+    const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
+    if (span <= 0) continue;
+    const yy = Math.round(cy + dy);
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - span, yy, span * 2 + 1, 1);
+    // brillo de hoja lustrosa
+    if ((yy + span) % 3 === 0) {
+      ctx.fillStyle = pal.floraL;
+      ctx.fillRect(x - span, yy, span * 2 + 1, 1);
+    }
+  }
+  if (season !== 0 && season !== 3) return;
+  const n = 1 + Math.floor(size * 0.1);
+  for (let i = 0; i < n; i++) {
+    const hh = hash1(i * 41 + x, 0xc0e);
+    ctx.fillStyle = "#f6f2e6";
+    ctx.fillRect(x + Math.round((hh - 0.5) * rx * 1.7), top + 1 + (i % Math.max(1, crownH)), 1, 1);
+  }
+}
+
+// Arrayán (Luma apiculata): tronco canela rojizo y copa menuda; flor blanca.
+function drawArrayan(ctx, x, baseY, size, pal, season = 0) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const h = Math.max(5, Math.round(size * 0.8));
+  const trunkH = Math.max(3, Math.round(size * 0.34));
+  const top = baseY - h;
+  ctx.fillStyle = "#8a4a3a";
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
+  const crownH = h - trunkH;
+  const ry = crownH / 2;
+  const rx = Math.max(2, Math.round(size * 0.32));
+  const cy = top + ry;
+  for (let dy = -ry; dy <= ry; dy++) {
+    const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
+    if (span <= 0) continue;
+    const yy = Math.round(cy + dy);
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - span, yy, span * 2 + 1, 1);
+    ctx.fillStyle = pal.floraL;
+    ctx.fillRect(x - span, yy, Math.max(1, span), 1);
+  }
+  if (season !== 0 && season !== 3) return;
+  const n = 1 + Math.floor(size * 0.1);
+  for (let i = 0; i < n; i++) {
+    const hh = hash1(i * 43 + x, 0xa77a);
+    ctx.fillStyle = "#f4f0e6";
+    ctx.fillRect(x + Math.round((hh - 0.5) * rx * 1.6), top + 1 + (i % 3), 1, 1);
+  }
+}
+
+// Notro / ciruelillo (Embothrium coccineum): ramilletes de flores rojas.
+function drawNotro(ctx, x, baseY, size, pal, season = 0) {
+  x = Math.round(x);
+  baseY = Math.round(baseY);
+  const h = Math.max(5, Math.round(size * 0.85));
+  const trunkH = Math.max(2, Math.round(size * 0.26));
+  const top = baseY - h;
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
+  const crownH = h - trunkH;
+  const rx = Math.max(2, Math.round(size * 0.34));
+  const ry = crownH / 2;
+  const cy = top + ry;
+  for (let dy = -ry; dy <= ry; dy++) {
+    const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
+    if (span <= 0) continue;
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - span, Math.round(cy + dy), span * 2 + 1, 1);
+  }
+  if (season !== 0 && season !== 3) return;
+  const n = 2 + Math.floor(size * 0.14);
+  for (let i = 0; i < n; i++) {
+    const hh = hash1(i * 47 + x, 0x07e0);
+    const fx = x + Math.round((hh - 0.5) * rx * 1.8);
+    const fy = baseY - Math.round(2 + hh * crownH);
+    ctx.fillStyle = "#d1401e";
+    ctx.fillRect(fx, fy, 1, 1);
+    ctx.fillStyle = "#f26a2a";
+    ctx.fillRect(fx + 1, fy - (i % 2), 1, 1);
+  }
 }
 
 // Parche de flores del desierto florido: manto amplio (~10x el área del racimo

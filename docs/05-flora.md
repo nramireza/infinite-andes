@@ -1,6 +1,6 @@
 # 05 · Flora
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 Implementado en `src/flora.js` (dibujo y colocación) usando las paletas de `src/palette.js`.
 La flora se dibuja por capa con `placeFlora(ctx, layer, ...)`; cada capa define en `LAYERS`
@@ -28,7 +28,10 @@ su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
 | Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Precordillera, Valle, Costa (sur) | Arbusto espinoso con flores naranjas |
 | Chaura | *Gaultheria mucronata* | No (Patagonia) | `chaura` | Costa (sur) | Arbusto achaparrado con bayas blanco-rosadas |
 | Quillay | *Quillaja saponaria* | **Sí (Chile)** | `quillay` | Centro, Sur (precordillera, valle, costa) | Copa redondeada; flores blancas en primavera/verano |
-| Mañío | *Podocarpus* spp. | No (Patagonia) | `manio` | Sur, Patagonia (valle, costa) | Conífera austral oscura y estrecha |
+| Mañío | *Podocarpus* spp. | No (Patagonia) | `manio` | Sur, Patagonia, Austral (valle, costa) | Conífera austral oscura y estrecha |
+| Canelo | *Drimys winteri* | No (Chile/Argentina) | `canelo` | Sur, Austral | Siempreverde de copa densa; flor blanca |
+| Arrayán | *Luma apiculata* | No (Chile/Argentina) | `arrayan` | Sur, Austral | Tronco canela rojizo y copa menuda; flor blanca |
+| Notro / Ciruelillo | *Embothrium coccineum* | No (Chile/Argentina) | `notro` | Sur, Patagonia, Austral | Ramilletes de flores rojas |
 
 > La vegetación no crece dentro del cauce: `placeFlora` omite las columnas con `riverInfluence > 0.25`
 > y usa `bankHeight` para sentarse en el banco.
@@ -53,7 +56,8 @@ El bioma (`src/biomes.js`) **pondera** los `types` de cada capa; el pool efectiv
 `biomeFloraPool` (ver [D-016](12-decisiones.md)). El **norte árido no tiene araucaria** (matorral,
 copao y roca); el **sur** suma alerce, nalca, colihue, coihue, roble, copihue y michay
 ([D-022](12-decisiones.md)); el **centro** aporta el quillay esclerófilo y el **sur/Patagonia** el
-mañío ([D-037](12-decisiones.md)). El tipo `flower` solo aparece con la floración
+mañío; el **austral** (fiordos) suma canelo, arrayán y notro
+([D-037](12-decisiones.md), [D-043](12-decisiones.md)). El tipo `flower` solo aparece con la floración
 del norte (`bloomAt`, [D-017](12-decisiones.md) y [D-024](12-decisiones.md)); se dibuja como manto
 amplio de tallos con corola de 3 px (`drawFlower`, ~10x el racimo original) que se **reparte hacia
 dentro de la banda visible** de la capa, cubriendo el valle y no solo su contorno.
@@ -82,7 +86,15 @@ Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante)
 | Chaura | 3–? | 1 | — |
 | Quillay | 5–? | 1 | Flores por estación (primavera/verano) |
 | Mañío | 7–? | 1 | — |
+| Canelo | 6–? | 1 | Flores por estación (primavera/verano) |
+| Arrayán | 5–? | 1 | Flores por estación (primavera/verano) |
+| Notro | 5–? | 1 | Flores por estación (primavera/verano) |
 | Flor | 4–? | 1 | Bamboleo por seno (sway) |
+
+## Fichas de especies
+
+Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `npm run specimens`
+(nombre científico, endemismo, zona y notas).
 
 ## Especies por añadir (propuestas)
 

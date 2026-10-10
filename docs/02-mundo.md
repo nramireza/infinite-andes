@@ -1,6 +1,6 @@
 # 02 · Mundo y geografía
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 ## Punto de vista
 
@@ -65,7 +65,7 @@ más corta** (textura rápida); combinada con el `parallax` y la amplitud, produ
 ## Biomas y regiones
 
 El perfil de las 6 capas es común, pero el **bioma** cambia el tinte y la composición de flora/fauna
-según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay cinco, en el orden en que
+según la región (`src/biomes.js`, ver [D-016](12-decisiones.md)). Hay seis, en el orden en que
 aparecen al recorrer (de norte a sur):
 
 | Bioma | Carácter | Flora | Fauna |
@@ -75,15 +75,20 @@ aparecen al recorrer (de norte a sur):
 | **centro** | actual (Linares–O'Higgins) | pools de `LAYERS` (con quillay) | pools de `LAYERS` sin cambios |
 | **sur** | boscoso (Araucanía/Los Lagos) | lenga y araucaria densas | pudú, monito del monte, choroy, huemul, puma |
 | **patagonia** | estepa fría (Aysén/Magallanes) | lenga baja, coirón y matorral | guanaco, choique, puma, huemul |
+| **austral** | fiordos (sur insular) | islas boscosas: mañío, canelo, coihue | huillín, chungungo, pingüino, chucao, rana |
 
 - **Procedural**: `biomeWeights(worldX, seed)` mezcla los biomas con ruido de baja frecuencia, así el
   paisaje **cambia al recorrer** (transición suave, sin saltos). Frecuencia `0.00015` (~regiones de
   miles de px); cada bioma domina en su centro y se mezcla con el vecino.
-- **Seleccionable**: `?biome=altiplano|norte|centro|sur|patagonia|auto` o el selector **Región** del panel.
-- **Geometría**: `biomeGeometry` modula la **amplitud** (`ampMul`) y la **línea de nieve**
-  (`snowShift`): el norte baja el relieve y sube la nieve; el altiplano lo eleva con algo de nieve;
-  el sur lo eleva y la baja, y la Patagonia es la más nevada. Se aplica en
-  `bankHeight`/`drawLayer` vía `setBiomeGeometry` (solo en capas con nieve). El **centro** no cambia.
+- **Seleccionable**: `?biome=altiplano|norte|centro|sur|patagonia|austral|auto` o el selector **Región** del panel.
+- **Geometría**: `biomeGeometry` modula la **amplitud** (`ampMul`), la **línea de nieve**
+  (`snowShift`) y la **fuerza de fiordos** (`fjord`): el norte baja el relieve y sube la nieve; el
+  altiplano lo eleva con algo de nieve; el sur lo eleva y la baja, y la Patagonia es la más nevada.
+  Se aplica en `bankHeight`/`drawLayer` vía `setBiomeGeometry` (solo en capas con nieve). El
+  **centro** no cambia.
+- **Fiordos** ([D-042](12-decisiones.md)): solo con bioma **austral**, `setFjordStrength` activa
+  canales de agua densos que tallan el valle y la Costa (`fjords` en `LAYERS`, reutilizando el
+  tallado de ríos); sin ese bioma no se talla ni se dibuja ningún canal.
 - **Tinte**: el bioma tiñe paleta de terreno/flora/suelo (nunca cielo ni astros) y **pondera** los
   pools de especies. La frecuencia del ruido (`freq`) no se toca: solo amplitud y nieve.
 - **Desierto florido**: en el norte, `bloomAt` abre **parches amplios y raros** de flores (tipo

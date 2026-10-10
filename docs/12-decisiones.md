@@ -1,6 +1,6 @@
 # 12 · Decisiones
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 Registro de decisiones de diseño y técnica. Para añadir una, copia
 [`templates/decision.md`](templates/decision.md) y agrega una entrada con el siguiente número.
@@ -629,6 +629,69 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   no de profundidad).
 - **Consecuencia:** `riverEvents`, `terrain.*` y `rivers.*` intactos; `channelOffset` se exporta para
   test; tests nuevos de agua bajo `ridgeHeight` y de meandro acotado.
+
+## D-040 · Export de tira larga en PNG
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** añadir `Scene.exportStrip(tiles = 8)` y el botón **Tira**: renderiza una sola vez en
+  un lienzo ancho (`W·tiles`, máx. 40 pantallas) desde la cámara y descarga el PNG. El clima se
+  presta cubriendo la tira con niebla; las partículas quedan donde estaban.
+- **Motivo:** cerrar el pendiente de [00 · Visión](00-vision.md) y [10 · UI](10-ui-y-export.md).
+- **Alternativas:** renderizar por pantallas y unir (descartado: las capas lentas saltarían por el
+  parallax); GIF/secuencia sin dependencias (descartado por ahora: coste).
+- **Consecuencia:** PNG largo disponible; el GIF/secuencia queda opcional en el backlog.
+
+## D-041 · Momentos de fauna: cóndor, bandada y manada
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** sumar tres momentos deterministas a `moments.js`: **vuelo de cóndor** amplio con
+  escolta (cielo), **bandada** en formación en V (cielo) y **manada** de guanacos (suelo). Se
+  fuerzan con `?moment=` y en el selector.
+- **Motivo:** cerrar el pendiente de [06 · Fauna](06-fauna.md) ("más momentos raros").
+- **Alternativas:** integrarlos como fauna normal (descartado: los momentos son raros/ancla);
+  sprites desde `fauna.js` (descartado: la escala y el movimiento difieren).
+- **Consecuencia:** `MOMENT_IDS` pasa a 6; `VIEW_MOMENTS` y el selector amplían; tests de dibujo y
+  determinismo.
+
+## D-042 · Bioma austral/fiordos
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** añadir el bioma **austral** (fiordos) al final del orden procedural (sexto).
+  Reutiliza el tallado de ríos mediante un config `fjords` en `LAYERS` (valle y Costa) y un sampler
+  `setFjordStrength`: los canales solo se tallan/dibujan donde el bioma austral domina. Paleta
+  húmeda, más nieve y pools de islas boscosas (mañío, canelo, coihue; huillín, chungungo).
+- **Motivo:** completar los biomas sin abrir un sistema de geometría nuevo.
+- **Alternativas:** capa de fiordos aparte (descartado: rompe el perfil de 6 capas); fiordos
+  permanentes (descartado: contaminaría el resto de biomas).
+- **Consecuencia:** `BIOME_IDS` pasa a 6; `biomeGeometry` suma `fjord`; golden `biome.austral`
+  nuevo. Sin `setFjordStrength` (tests/dorados) el terreno es idéntico al de siempre.
+
+## D-043 · Flora de sotobosque: canelo, arrayán y notro
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** añadir **canelo** (*Drimys winteri*), **arrayán** (*Luma apiculata*) y **notro**
+  (*Embothrium coccineum*), con flores en primavera/verano (notro siempre rojo). Van a los pools del
+  **sur**, **Patagonia** y **austral**.
+- **Motivo:** ampliar el sotobosque austral que pedía el backlog de [05 · Flora](05-flora.md).
+- **Alternativas:** reutilizar coihue/mañío (descartado: poca variedad); sprites PNG (descartado).
+- **Consecuencia:** dorados `biome.sur`, `biome.patagonia` y `biome.austral` regenerados.
+
+## D-044 · Sprites de fauna restantes y fichas de especies
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** refinar los sprites de fauna que faltaban (zorros, guanaco, vicuña, chingue, monito,
+  chinchilla, choroy, cachaña, etc.) con ojos, vientre y cola, y generar una **ficha por especie**
+  (flora y fauna) en `docs/especies/` con `npm run specimens`.
+- **Motivo:** cerrar el pendiente de [06 · Fauna](06-fauna.md) y [08 · Arte pixel](08-arte-pixel.md).
+- **Alternativas:** mantenter las matrices simples (descartado: poca legibilidad); fichas a mano
+  (descartado: se desincronizan). El script lee `SPECIES` del código + una tabla de metadatos.
+- **Consecuencia:** los dorados de fauna no cambian (solo guardan posición/tipo); 38 fichas y un
+  `scripts/specimens.mjs` reutilizable.
 
 ## Decisiones abiertas
 

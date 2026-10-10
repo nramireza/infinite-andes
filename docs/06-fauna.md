@@ -1,6 +1,6 @@
 # 06 · Fauna
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 **Set implementado** (Fase 2) en [`src/fauna.js`](../src/fauna.js): el grueso de la tabla objetivo,
 con sprites de **matrices de píxeles en código**, spawn determinista por *chunk* y actividad según
@@ -164,6 +164,19 @@ especie con detalle (UICN, nombre científico, referencia), usa
       ([D-022](12-decisiones.md)); huellas tras la fauna que camina ([D-021](12-decisiones.md)).
 - [x] Refinar los sprites icónicos (cóndor, huemul, pudú, güiña, puma, flamenco, pingüino,
       chungungo) con dithering manual ([D-033](12-decisiones.md), v0.16.0).
-- [ ] Post-1.0: decidir si el cóndor pasa a ser un "momento" destacado (vuelo largo ocasional).
-- [ ] Post-1.0: refinar los sprites restantes y completar la plantilla
-      [`templates/especimen.md`](templates/especimen.md) de cada especie.
+- [x] Post-1.0: el cóndor es un **momento** destacado (vuelo largo ocasional), junto a la **bandada**
+      y la **manada** ([D-041](12-decisiones.md), v1.2.0).
+- [x] Post-1.0: refinar los sprites restantes (zorros, camélidos, mustélidos, loros, etc.) y generar
+      las fichas por especie ([D-044](12-decisiones.md), [`especies/`](especies/README.md), v1.2.0).
+
+## Momentos de fauna
+
+Además del cóndor, que existe como especie en el cielo, hay tres **momentos raros** de fauna
+(`src/moments.js`, [D-041](12-decisiones.md)): el **vuelo de cóndor** con escolta, la **bandada** en
+formación en V y la **manada** de guanacos trotando. Se disparan como el resto de momentos
+(`?moment=condor|bandada|manada`) y son deterministas.
+
+## Fichas de especies
+
+Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `npm run specimens`
+(nombre científico, endemismo, UICN, movimiento, actividad y rareza).

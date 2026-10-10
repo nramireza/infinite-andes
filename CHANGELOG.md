@@ -6,6 +6,27 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-10
+
+### Added
+- **Export de tira larga** ([D-040](docs/12-decisiones.md)): `Scene.exportStrip(tiles)` y botón
+  **Tira** descargan un PNG de 8 pantallas seguidas (máx. 40) renderizado de una sola vez, sin
+  costuras en el cielo ni el parallax.
+- **Momentos de fauna** ([D-041](docs/12-decisiones.md)): **vuelo de cóndor** con escolta,
+  **bandada** en V y **manada** de guanacos, seleccionables con `?moment=` y en el panel.
+- **Bioma austral/fiordos** ([D-042](docs/12-decisiones.md)): sexto bioma con canales de agua
+  densos tallados en valle y Costa (config `fjords` + `setFjordStrength`), islas boscosas y fauna de
+  borde de agua. Sin ese bioma, el terreno es idéntico al anterior.
+- **Flora de sotobosque austral** ([D-043](docs/12-decisiones.md)): **canelo**, **arrayán** y
+  **notro** (flores rojas).
+- **Fichas de especies** ([D-044](docs/12-decisiones.md)): `npm run specimens` genera una ficha por
+  especie (flora y fauna) en `docs/especies/`.
+
+### Changed
+- **Sprites de fauna restantes** refinados (zorros, camélidos, chingue, monito, chinchilla, loros,
+  etc.) con ojos, vientre y cola ([D-044](docs/12-decisiones.md)).
+- Documentación al día (fichas, momentos, biomas, tira) y **tags** `v1.0.1`/`v1.1.0` publicados.
+
 ## [1.1.0] - 2026-10-09
 
 ### Added
@@ -359,7 +380,8 @@ Primera versión funcional (Fase 1: paisaje, cielo y clima).
 - Ríos tallados en el valle y la Costa con curso meándrico sinusoidal.
 - Panel de control (semilla, scroll, hora, clima), export PNG y parámetros de URL.
 
-[Unreleased]: https://github.com/nramireza/infinite-andes/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/nramireza/infinite-andes/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/nramireza/infinite-andes/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/nramireza/infinite-andes/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/nramireza/infinite-andes/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/nramireza/infinite-andes/compare/v0.16.0...v1.0.0

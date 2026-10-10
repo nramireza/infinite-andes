@@ -23,7 +23,7 @@
 | 14 | [Paleta maestra](14-paleta-maestra.md) | Tabla de colores por hora (generada con `npm run palette`) |
 | 15 | [Estaciones](15-estaciones.md) | Ciclo estacional, tinte, nieve y clima |
 
-Plantillas en [`templates/`](templates/).
+Plantillas en [`templates/`](templates/). Fichas de flora y fauna en [`especies/`](especies/) (generadas con `npm run specimens`).
 
 ## Convenciones
 

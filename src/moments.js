@@ -1,14 +1,16 @@
 // Momentos raros y deterministas: eventos ocasionales que rompen la rutina.
 //
-// Hoy: `18sep` (ambiente patrio + papelitos), `leorey` (cumbia) y `kungleo`
-// (su alter ego de Mortal Kombat). El disparo es determinista por (semilla, x)
-// y puede forzarse con `?moment=` o desde el panel. Solo es visual.
+// `18sep` (ambiente patrio + papelitos), `leorey` (cumbia), `kungleo` (su alter
+// ego de Mortal Kombat), `condor` (vuelo amplio con escolta), `bandada`
+// (parvada en formación) y `manada` (guanacos trotando). El disparo es
+// determinista por (semilla, x) y puede forzarse con `?moment=` o desde el
+// panel. Solo es visual.
 
 import { mulberry32, hashInt, hash1 } from "./rng.js";
 import { LAYERS, bankHeight } from "./terrain.js";
 import { px } from "./pixel.js";
 
-export const MOMENT_IDS = ["18sep", "leorey", "kungleo"];
+export const MOMENT_IDS = ["18sep", "leorey", "kungleo", "condor", "bandada", "manada"];
 const SPACING = 9000; // px de mundo entre posibles momentos
 const CHANCE = 0.22;  // probabilidad por bloque
 const TRICOLOR = ["#0039a6", "#ffffff", "#d52b1e"];
@@ -225,22 +227,125 @@ function drawKungLeo(ctx, pal, left, top, s, tSec) {
   }
 }
 
+// --- Vuelo de cóndor: planeo amplio con un par de escoltas -----------------
+
+const CONDOR_PAL = { d: "trunk", k: "snow" };
+const CONDOR_FRAMES = [
+  [
+    "...d.......d...",
+    "..ddd.....ddd..",
+    ".dddddddddddddd",
+    "ddddddddddddddd",
+    "...d.kddddk.d..",
+    ".....dddddd....",
+    "......dddd.....",
+  ],
+  [
+    "....dd...dd....",
+    "...dddddddddd..",
+    "..dddddddddddd.",
+    "..dddddddddddd.",
+    "....kddddddk...",
+    "......dddd.....",
+    "......d..d.....",
+  ],
+];
+
+function condorFrame(t, phase, i = 0) {
+  return ((Math.floor(t * 2.2 + phase + i * 0.5) % 2) + 2) % 2;
+}
+
+function drawCondorFlight(ctx, pal, ev, camera, W, tSec, layer) {
+  const base = ev.wx - camera.x * layer.parallax;
+  if (base < -80 || base > W + 80) return;
+  const s = hash1(Math.round(ev.wx), 0x3e0) * Math.PI * 2;
+  const x = base + Math.sin(tSec * 0.22 + s) * W * 0.32; // planeo largo
+  const y = 26 + Math.sin(tSec * 0.6 + s) * 6;
+  drawCharacter(ctx, CONDOR_FRAMES[condorFrame(tSec, s)], CONDOR_PAL, pal, Math.round(x), Math.round(y), false);
+  for (let i = 1; i <= 2; i++) {
+    ctx.globalAlpha = 0.8;
+    drawCharacter(ctx, CONDOR_FRAMES[condorFrame(tSec, s, i)], CONDOR_PAL, pal,
+      Math.round(x - i * 11), Math.round(y - 3 - i * 2), false);
+    ctx.globalAlpha = 1;
+  }
+}
+
+// --- Bandada: parvada en formación en V -----------------------------------
+
+function drawBandada(ctx, pal, ev, camera, W, tSec, layer) {
+  const base = ev.wx - camera.x * layer.parallax;
+  if (base < -100 || base > W + 100) return;
+  const s = hash1(Math.round(ev.wx), 0x4e0) * Math.PI * 2;
+  const x = base + Math.sin(tSec * 0.18 + s) * W * 0.3;
+  const y = 38 + Math.sin(tSec * 0.5 + s) * 5;
+  for (let i = 0; i < 7; i++) {
+    const side = i % 2 ? 1 : -1;
+    const k = Math.ceil(i / 2);
+    const bx = Math.round(x + side * k * 5);
+    const by = Math.round(y + k * 3);
+    const flap = Math.sin(tSec * 6 + i) > 0 ? 0 : 1;
+    px(ctx, bx, by, pal.trunk);
+    px(ctx, bx - 1, by + 1 + flap, pal.trunk);
+    px(ctx, bx + 1, by + 1 + flap, pal.trunk);
+  }
+}
+
+// --- Manada: guanacos trotando --------------------------------------------
+
+const GUANACO_PAL = { b: "trunk", l: "sand", h: "trunk" };
+const GUANACO_FRAMES = [
+  [
+    "...bb...",
+    "..bbbb..",
+    ".bbbbbb.",
+    "bbbbbbh.",
+    ".b..b...",
+    ".l..l...",
+  ],
+  [
+    "...bb...",
+    "..bbbb..",
+    ".bbbbbb.",
+    "bbbbbbh.",
+    "..b..b..",
+    ".l...l..",
+  ],
+];
+
+function drawManada(ctx, pal, ev, camera, W, tSec, layer) {
+  const s = hash1(Math.round(ev.wx), 0x5e0) * Math.PI * 2;
+  for (let i = 0; i < 3; i++) {
+    const wx = ev.wx + (i - 1) * 9;
+    const left = Math.round(wx - camera.x * layer.parallax);
+    if (left < -20 || left > W + 20) continue;
+    const top = Math.round(bankHeight(layer, wx) - 6 + Math.sin(tSec * 4 + i) * 0.5);
+    const fi = ((Math.floor(tSec * 4 + s + i * 0.3) % 2) + 2) % 2;
+    drawCharacter(ctx, GUANACO_FRAMES[fi], GUANACO_PAL, pal, left, top, false);
+  }
+}
+
 // --- Entradas públicas -----------------------------------------------------
 
-// Capa de cielo: ambiente patrio. Se dibuja por delante de las nubes.
+// Capa de cielo: ambiente patrio y aves en vuelo. Se dibuja por delante de las nubes.
 export function momentSky(ctx, pal, camera, W, H, seed, tSec, mode) {
   if (mode === "none") return;
   const evs = eventsFor(mode, seed, camera, W);
-  if (evs.some((e) => e.type === "18sep")) patrioticSky(ctx, W, H, tSec);
+  const layer = costa();
+  for (const ev of evs) {
+    if (ev.type === "18sep") patrioticSky(ctx, W, H, tSec);
+    else if (ev.type === "condor" && layer) drawCondorFlight(ctx, pal, ev, camera, W, tSec, layer);
+    else if (ev.type === "bandada" && layer) drawBandada(ctx, pal, ev, camera, W, tSec, layer);
+  }
 }
 
-// Capa de suelo: personajes. Se dibuja por delante del terreno.
+// Capa de suelo: personajes y manadas. Se dibuja por delante del terreno.
 export function momentGround(ctx, pal, camera, W, H, seed, tSec, mode) {
   if (mode === "none") return;
   const layer = costa();
   if (!layer) return;
   const p = layer.parallax;
   for (const ev of eventsFor(mode, seed, camera, W)) {
+    if (ev.type === "manada") { drawManada(ctx, pal, ev, camera, W, tSec, layer); continue; }
     if (ev.type !== "leorey" && ev.type !== "kungleo") continue;
     const left = Math.round(ev.wx - camera.x * p);
     if (left < -40 || left > W + 40) continue;

@@ -1,6 +1,6 @@
 # 01 · Experiencia
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 ## Concepto
 
@@ -37,11 +37,12 @@ parar cuando una composición le gusta, o dejar que el paisaje se desplace solo.
 | Reloj | Real (hora, estación y sol de Chile) o ciclo rápido |
 | Clima | Automático o forzado (despejado, nieve, lluvia, niebla, viento, tormenta) |
 | Estación | Automática (ciclo) o fija (verano, otoño, invierno, primavera) |
-| Momento | Raro automático o forzado (18-sep, Leo Rey, Kung Leo) |
-| Región | Procedural, altiplano, norte, centro, sur o Patagonia |
+| Momento | Raro automático o forzado (18-sep, Leo Rey, Kung Leo, cóndor, bandada, manada) |
+| Región | Procedural, altiplano, norte, centro, sur, Patagonia o Austral (fiordos) |
 | Floración | Desierto florido automático, forzado o desactivado |
 | Vistas | Guardar/cargar/eliminar vistas favoritas |
 | Exportar PNG | Descargar la vista actual |
+| Exportar tira | Descargar 8 pantallas seguidas (PNG) |
 | Copiar enlace | Copiar la URL con la vista actual |
 | HUD | Semilla, posición, hora, clima, estación y región |
 

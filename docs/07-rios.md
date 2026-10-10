@@ -1,6 +1,6 @@
 # 07 · Ríos
 
-> Estado: estable · Actualizado: 2026-10-09
+> Estado: estable · Actualizado: 2026-10-10
 
 Implementado en `src/terrain.js` (`riverInfluence`, `riverCarve`, `channelHalf`, `riverEvents`,
 `drawChannel`) y verificado con tests de spawn (`test/spawn.test.js`).
@@ -44,6 +44,9 @@ desde la cordillera hacia el nivel de la capa siguiente:
 - **Flora**: `floraSpawns` usa `bankHeight` y omite las columnas con `riverInfluence > 0.25`.
 - **Fauna del cauce**: la rana de Darwin y el huillín (`RIVER_SPECIES` en `fauna.js`) se colocan
   aparte, en el **borde del cauce** (`ev.xc ± offset`), no por chunk ([D-022](12-decisiones.md)).
+- **Fiordos** ([D-042](12-decisiones.md)): el mismo tallado se reutiliza con el config `fjords`
+  (valle y Costa) y el sampler `setFjordStrength`, activo solo con el bioma **austral**; así los
+  canales densos no afectan al resto del paisaje (ver [02 · Mundo](02-mundo.md)).
 
 ## Estado
 

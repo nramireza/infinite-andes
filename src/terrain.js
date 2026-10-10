@@ -26,6 +26,7 @@ export const LAYERS = [
     name: "valle", parallax: 0.32, baseY: 200, amp: 20, freq: 0.012, seed: 307,
     rugged: 0.12, snowFrac: 1.4, lightKey: "valleyL", darkKey: "valleyD", alpha: 0.97, fields: true,
     rivers: { spacing: 1100, chance: 0.45, width: 3.2, depth: 7, wfreq: 4.2 },
+    fjords: { spacing: 64, chance: 0.6, width: 5, depth: 11, wfreq: 5 },
     flora: { chunkW: 40, minSize: 5, maxSize: 12, minChance: 0.75, maxPer: 5, types: ["crop", "crop", "bush", "grass", "araucaria", "palma", "coihue", "roble", "michay", "quillay"] },
     fauna: { chunkW: 150, chance: 0.5, species: ["pudu", "huemul", "guina", "culpeo", "chingue", "huillin"] },
   },
@@ -33,6 +34,7 @@ export const LAYERS = [
     name: "costa", parallax: 0.52, baseY: 226, amp: 12, freq: 0.010, seed: 419,
     rugged: 0.05, snowFrac: 1.4, lightKey: "costaL", darkKey: "costaD", alpha: 1,
     rivers: { spacing: 1500, chance: 0.4, width: 2.1, depth: 5, wfreq: 4.5 },
+    fjords: { spacing: 60, chance: 0.62, width: 4.5, depth: 8, wfreq: 5 },
     flora: { chunkW: 44, minSize: 8, maxSize: 18, minChance: 0.8, maxPer: 4, types: ["lenga", "lenga", "bush", "araucaria", "palma", "coihue", "roble", "copihue", "michay", "chaura", "quillay"] },
     fauna: { chunkW: 160, chance: 0.55, species: ["pudu", "guina", "culpeo", "chilla", "monito", "choroy", "cachana", "rana", "huillin"] },
   },
@@ -67,6 +69,28 @@ function ampMulAt(wx) {
 
 function snowShiftAt(wx) {
   return biomeGeo ? biomeGeo(wx).snowShift : 0;
+}
+
+// Fuerza de los fiordos (0..1) por posición de mundo. Sin sampler (tests y
+// dorados) es 0 y no se talla/dibuja ningún canal de fiordo.
+let fjordStrength = null;
+const FJORD_CACHE = new Map();
+const FJORD_CAP = 8192;
+
+export function setFjordStrength(fn) {
+  fjordStrength = fn || null;
+  FJORD_CACHE.clear();
+}
+
+function fjordAt(wx) {
+  if (!fjordStrength) return 0;
+  const key = Math.round(wx);
+  const hit = FJORD_CACHE.get(key);
+  if (hit !== undefined) return hit;
+  const v = fjordStrength(wx);
+  if (FJORD_CACHE.size >= FJORD_CAP) FJORD_CACHE.clear();
+  FJORD_CACHE.set(key, v);
+  return v;
 }
 
 // Mezcla la semilla del usuario en cada capa para que el paisaje cambie.
@@ -109,18 +133,17 @@ export function bankHeight(layer, wx) {
   return layer.baseY - (n * layer.amp * ampMulAt(wx) + volcanoAdd(layer, wx));
 }
 
-// Influencia 0..1 del cauce en una columna (muesca de entrada del río).
-export function riverInfluence(layer, wx) {
-  const R = layer.rivers;
+// Influencia 0..1 de un canal (muesca) en una columna, dado su config y sal
+// de hash. `salt` distingue ríos (911) de fiordos (411).
+function channelInfluence(R, wx, seed, salt) {
   if (!R) return 0;
-  const s = LSeed(layer);
   const V = R.spacing;
   const c0 = Math.floor(wx / V) - 1;
   const halfW = R.width * 2.2;
   let infl = 0;
   for (let c = c0; c <= c0 + 2; c++) {
-    if (hash1(c, s + 911) > R.chance) continue;
-    const xc = c * V + hash1(c, s + 912) * V;
+    if (hash1(c, seed + salt) > R.chance) continue;
+    const xc = c * V + hash1(c, seed + salt + 1) * V;
     const d = Math.abs(wx - xc);
     if (d > halfW) continue;
     infl = Math.max(infl, Math.pow(1 - d / halfW, 1.6));
@@ -128,8 +151,24 @@ export function riverInfluence(layer, wx) {
   return infl;
 }
 
+// Influencia 0..1 del cauce en una columna (muesca del río y, con bioma austral,
+// de los fiordos). Sin `fjordStrength` el resultado es idéntico al de siempre.
+export function riverInfluence(layer, wx) {
+  const s = LSeed(layer);
+  let infl = channelInfluence(layer.rivers, wx, s, 911);
+  const st = fjordAt(wx);
+  if (st > 0) infl = Math.max(infl, channelInfluence(layer.fjords, wx, s + 7, 411) * st);
+  return infl;
+}
+
 function riverCarve(layer, wx) {
-  return layer.rivers ? layer.rivers.depth * riverInfluence(layer, wx) : 0;
+  const s = LSeed(layer);
+  let carve = layer.rivers ? layer.rivers.depth * channelInfluence(layer.rivers, wx, s, 911) : 0;
+  const st = fjordAt(wx);
+  if (st > 0 && layer.fjords) {
+    carve = Math.max(carve, layer.fjords.depth * channelInfluence(layer.fjords, wx, s + 7, 411) * st);
+  }
+  return carve;
 }
 
 export function ridgeHeight(layer, wx) {
@@ -139,8 +178,7 @@ export function ridgeHeight(layer, wx) {
 // Ancho del agua según la profundidad `u` (0 nacimiento, 1 desembocadura).
 // Conicidad: nace como un punto (potencia 0.8) y se ensancha al bajar, con una
 // ondulación leve. El máximo (1.52·width) respeta la muesca (media 2.2·width).
-function channelHalf(layer, seed, u) {
-  const R = layer.rivers;
+function channelHalf(R, seed, u) {
   const taper = Math.pow(Math.max(0, u), 0.8) * 1.4;
   const wobble = 0.12 * Math.sin(u * R.wfreq + seed * 5);
   return Math.max(0.4, R.width * (taper + wobble));
@@ -148,10 +186,13 @@ function channelHalf(layer, seed, u) {
 
 // Meandro sutil: el canal ondula dentro de la holgura de la muesca (0.55·width
 // por lado, menos que el 0.68·width libre) y arranca centrado en el nacimiento.
-export function channelOffset(layer, seed, u) {
-  const R = layer.rivers;
+function channelOffsetFor(R, seed, u) {
   const ramp = Math.min(1, u / 0.2);
   return R.width * 0.55 * Math.sin(u * R.wfreq * 1.15 + seed * 6.3) * ramp;
+}
+
+export function channelOffset(layer, seed, u) {
+  return channelOffsetFor(layer.rivers, seed, u);
 }
 
 // Eventos de río visibles para una cámara: centro en x y semilla del meandro.
@@ -171,18 +212,45 @@ export function riverEvents(layer, camera, W) {
   return out;
 }
 
+// Eventos de fiordo visibles: canales densos que solo existen con bioma austral.
+export function fjordEvents(layer, camera, W) {
+  const F = layer.fjords;
+  if (!F || !fjordStrength) return [];
+  const p = layer.parallax;
+  const s = LSeed(layer) + 7;
+  const V = F.spacing;
+  const c0 = Math.floor((camera.x * p - 80) / V);
+  const c1 = Math.floor((camera.x * p + W + 80) / V);
+  const out = [];
+  for (let c = c0; c <= c1; c++) {
+    if (hash1(c, s + 411) > F.chance) continue;
+    const xc = c * V + hash1(c, s + 412) * V;
+    const st = fjordAt(xc);
+    if (st <= 0.05) continue;
+    out.push({ xc, seed: hash1(c, s + 413), strength: st, kind: "fjord" });
+  }
+  return out;
+}
+
+function channelsFor(layer, camera, W) {
+  const out = [];
+  if (layer.rivers) for (const ev of riverEvents(layer, camera, W)) out.push({ ...ev, kind: "river" });
+  if (layer.fjords && fjordStrength) for (const ev of fjordEvents(layer, camera, W)) out.push(ev);
+  return out;
+}
+
 // Canal de agua de una quebrada: centrado en la muesca (`ev.xc`) con un meandro
 // sutil, para que el cauce quede dentro del tallado y herede su parallax.
 // El nacimiento y la conicidad se derivan de la altura real del terreno en el
 // centro (`ridgeHeight`, "pendiente real"): el agua brota unas filas bajo la
 // punta de la muesca y se ensancha según el desnivel hasta el pie de la capa.
 function drawChannel(ctx, layer, pal, camera, W, H) {
-  const R = layer.rivers;
   const p = layer.parallax;
   const water = lerpColor(pal.sea, pal.seaHi, 0.3);
   const bank = shade(water, -0.42);
 
-  for (const ev of riverEvents(layer, camera, W)) {
+  for (const ev of channelsFor(layer, camera, W)) {
+    const R = ev.kind === "fjord" ? layer.fjords : layer.rivers;
     const sx0 = ev.xc - camera.x * p;
     const A = layer.amp * ampMulAt(ev.xc);
     const topRef = layer.baseY - A;
@@ -197,8 +265,8 @@ function drawChannel(ctx, layer, pal, camera, W, H) {
     for (let y = y0; y < y1; y++) {
       if (y < headY - 1) continue;
       const u = Math.max(0, Math.min(1, (y - headY) / run));
-      const hw = channelHalf(layer, ev.seed, u);
-      const cx = sx0 + channelOffset(layer, ev.seed, u);
+      const hw = channelHalf(R, ev.seed, u);
+      const cx = sx0 + channelOffsetFor(R, ev.seed, u);
       const left = Math.round(cx - hw);
       const right = Math.round(cx + hw);
       if (right < -2 || left > W + 2) continue;
@@ -229,6 +297,7 @@ function drawChannel(ctx, layer, pal, camera, W, H) {
 const COL_CAP = 4096;
 
 export function clearColumnCaches() {
+  FJORD_CACHE.clear();
   for (const l of LAYERS) {
     delete l._col;
     delete l._field;
@@ -363,8 +432,8 @@ export function drawLayer(ctx, layer, pal, camera, W, H) {
     }
   }
 
-  // canal meándrico del río, dentro de la propia capa
-  if (layer.rivers) drawChannel(ctx, layer, pal, camera, W, H);
+  // canales de agua (ríos y, con bioma austral, fiordos), dentro de la propia capa
+  if (layer.rivers || layer.fjords) drawChannel(ctx, layer, pal, camera, W, H);
 
   // línea de marea (arena húmeda) en la playa
   if (layer.beach) {

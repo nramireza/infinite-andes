@@ -3,7 +3,7 @@
 import { getPalette, lerpPalettes, nightAmount, applyBiome } from "./palette.js";
 import { Sky } from "./sky.js";
 import { Weather } from "./weather.js";
-import { LAYERS, drawLayer, drawSea, seedLayers, setBiomeGeometry, clearColumnCaches } from "./terrain.js";
+import { LAYERS, drawLayer, drawSea, seedLayers, setBiomeGeometry, setFjordStrength, clearColumnCaches } from "./terrain.js";
 import { placeFlora } from "./flora.js";
 import { placeFauna } from "./fauna.js";
 import { momentSky, momentGround } from "./moments.js";
@@ -27,6 +27,8 @@ export class Scene {
       g.snowShift += seasonSnowShift(this.seasonState());
       return g;
     });
+    // Los fiordos solo se tallan/dibujan donde el bioma austral domina.
+    setFjordStrength((wx) => biomeGeometry(modeWeights(this.biomeMode, wx, this.seed)).fjord);
     this.sky = new Sky(seed);
     this.weather = new Weather(this.W, this.H);
 
@@ -275,6 +277,40 @@ export class Scene {
       a.download = `infinite-andes_${this.seed}_${hh}${mm}.png`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    });
+  }
+
+  // Exporta una tira larga de varias pantallas hacia la derecha desde la cámara.
+  // Se renderiza una sola vez en un lienzo ancho, así el cielo y el parallax
+  // continúan sin costuras (las capas lentas encajan de pantalla a pantalla).
+  exportStrip(tiles = 8) {
+    const n = Math.max(1, Math.min(40, Math.round(tiles) || 8));
+    const stripW = this.W * n;
+    const canvas = document.createElement("canvas");
+    canvas.width = stripW;
+    canvas.height = this.H;
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+    const saved = { ctx: this.ctx, W: this.W, x: this.camera.x, wW: this.weather.W };
+    this.ctx = ctx;
+    this.W = stripW;
+    this.weather.W = stripW; // la niebla cubre la tira; las partículas quedan igual
+    try {
+      this.render();
+    } finally {
+      this.ctx = saved.ctx;
+      this.W = saved.W;
+      this.weather.W = saved.wW;
+      this.camera.x = saved.x;
+    }
+    const x0 = Math.round(saved.x);
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `infinite-andes_${this.seed}_strip${n}_x${x0}.png`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
     });
   }
 }
