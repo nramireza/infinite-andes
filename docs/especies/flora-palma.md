@@ -9,6 +9,8 @@
 | Endémica de Chile | Sí (Chile) |
 | Tipo en código | `palma` (flora) |
 | Zona / capa | Centro (valle, costa) |
+| Altura relativa (juego) | ×1.4 |
+| Altura real típica | 15–20 m |
 
 ## Notas
 

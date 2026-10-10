@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Patagonia) |
 | Tipo en código | `coihue` (flora) |
 | Zona / capa | Centro, Sur, Patagonia, Austral (valle, costa, precordillera) |
+| Altura relativa (juego) | ×1.7 |
+| Altura real típica | 35–45 m |
 
 ## Notas
 

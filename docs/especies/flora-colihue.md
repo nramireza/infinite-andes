@@ -9,6 +9,8 @@
 | Endémica de Chile | No |
 | Tipo en código | `colihue` (flora) |
 | Zona / capa | Sur, Patagonia, Austral (valle, costa) |
+| Altura relativa (juego) | ×1.1 |
+| Altura real típica | 3–6 m |
 
 ## Notas
 

@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Chile/Argentina) |
 | Tipo en código | `canelo` (flora) |
 | Zona / capa | Sur, Patagonia, Austral (valle, costa, precordillera) |
+| Altura relativa (juego) | ×1.3 |
+| Altura real típica | 15–20 m |
 
 ## Notas
 

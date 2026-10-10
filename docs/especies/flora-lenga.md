@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Patagonia) |
 | Tipo en código | `lenga` (flora) |
 | Zona / capa | Centro, Sur, Patagonia, Austral (costa, precordillera, valle) |
+| Altura relativa (juego) | ×1.3 |
+| Altura real típica | 15–25 m |
 
 ## Notas
 

@@ -9,6 +9,8 @@
 | Endémica de Chile | Sí (Chile) |
 | Tipo en código | `copihue` (flora) |
 | Zona / capa | Centro, Sur (costa, valle) |
+| Altura relativa (juego) | ×1.1 |
+| Altura real típica | trepadora (hasta ~10 m) |
 
 ## Notas
 

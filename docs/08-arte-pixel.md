@@ -57,10 +57,10 @@
 
 - **Silueta primero:** la forma debe leerse como la especie real (cuello, patas, cola, pico o
   cuernos) antes que el color. Un buen contorno en 1 px pesa más que un tono extra.
-- **Tamaño por especie:** cada sprite se dimensiona a escala relativa (ver la tabla de
-  [06 · Fauna](06-fauna.md)): los camélidos y aves grandes (guanaco, choique, flamenco, cóndor)
-  llegan a 14–20 px; los pequeños (pudú, monito, rana) ronda 6–7 px. Los personajes de momento,
-  ~9×12 px.
+- **Tamaño por especie:** cada sprite se dimensiona a escala relativa: la fauna con su matriz
+  (ver [06 · Fauna](06-fauna.md); camélidos y aves grandes 14–20 px, pequeños 6–7 px) y la flora con
+  un **multiplicador `height`** sobre el rango de la capa (ver [05 · Flora](05-flora.md);
+  araucaria/alerce ×1.9, pasto ×0.5). Los personajes de momento, ~9×12 px.
 - **Anclaje** (`anchor`): `ground` (los pies tocan `bankHeight`) o `center` (voladores, centrado
   en la trayectoria). Al añadir una especie, elige el correcto o "flotará".
 - **Contorno:** 1 px de un tono oscuro (sombra del cuerpo) para despegarlo del fondo.
@@ -94,3 +94,6 @@
 - [x] **Silueta y hábito de la flora** revisados (v1.5.0): `DRAWERS` redibujados con el porte real
   (copa de araucaria, frondas de palma, candelabro del copao, roseta de nalca, nudos del colihue,
   copas irregulares de Nothofagus) sin cambiar las `size` por capa ([D-048](12-decisiones.md)).
+- [x] **Altura relativa de la flora** (v1.6.0): cada especie multiplica el rango de su capa por un
+  `height` (araucaria/alerce ×1.9, pasto ×0.5) con su altura real (`heightM`) documentada
+  ([D-049](12-decisiones.md)).

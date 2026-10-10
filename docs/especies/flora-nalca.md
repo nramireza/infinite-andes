@@ -9,6 +9,8 @@
 | Endémica de Chile | Sí (Chile/Argentina) |
 | Tipo en código | `nalca` (flora) |
 | Zona / capa | Sur, Austral (valle, costa) |
+| Altura relativa (juego) | ×0.9 |
+| Altura real típica | 1,5–3 m (hojas) |
 
 ## Notas
 

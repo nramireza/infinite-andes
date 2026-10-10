@@ -40,7 +40,10 @@ test("cada entrada de FLORA es coherente", () => {
     assert.ok(KINDS.has(d.kind), `${type}: kind inválido ${d.kind}`);
     if (d.kind === "especie") {
       assert.ok(d.common && d.sci, `${type}: especie sin common/sci`);
+      assert.ok(d.heightM, `${type}: especie sin heightM (altura real)`);
     }
+    assert.ok(typeof d.height === "number" && d.height > 0.3 && d.height < 2.5,
+      `${type}: height fuera de rango (${d.height})`);
     if (d.zones) checkZones(type, d.zones);
     if (!d.bloomOnly && d.kind !== "efecto") {
       assert.ok(zoneCount(d.zones) > 0, `${type}: sin zonas`);

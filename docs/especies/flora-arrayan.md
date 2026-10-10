@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Chile/Argentina) |
 | Tipo en código | `arrayan` (flora) |
 | Zona / capa | Sur, Patagonia, Austral (valle, costa) |
+| Altura relativa (juego) | ×1 |
+| Altura real típica | 10–15 m |
 
 ## Notas
 

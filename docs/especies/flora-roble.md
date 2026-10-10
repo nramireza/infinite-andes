@@ -9,6 +9,8 @@
 | Endémica de Chile | Sí (Chile/Argentina) |
 | Tipo en código | `roble` (flora) |
 | Zona / capa | Centro, Sur (valle, costa) |
+| Altura relativa (juego) | ×1.5 |
+| Altura real típica | 25–35 m |
 
 ## Notas
 

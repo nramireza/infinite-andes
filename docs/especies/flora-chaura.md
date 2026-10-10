@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Patagonia) |
 | Tipo en código | `chaura` (flora) |
 | Zona / capa | Centro, Sur, Patagonia, Austral (costa, valle) |
+| Altura relativa (juego) | ×0.6 |
+| Altura real típica | 0,5–1,5 m |
 
 ## Notas
 

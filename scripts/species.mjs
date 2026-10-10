@@ -51,12 +51,12 @@ function sci(d) {
 
 function floraTable() {
   const rows = [
-    "| Nombre común | Nombre científico | Endémica | Tipo en código | Zona/capa | Notas |",
-    "|--------------|-------------------|----------|----------------|-----------|-------|",
+    "| Nombre común | Nombre científico | Endémica | Tipo en código | Zona/capa | Altura real | Notas |",
+    "|--------------|-------------------|----------|----------------|-----------|-------------|-------|",
   ];
   for (const type in FLORA) {
     const d = FLORA[type];
-    rows.push(`| ${d.common || "—"} | ${sci(d)} | ${d.endemism || "—"} | \`${type}\` | ${zoneLabel(d)} | ${d.notes || "—"} |`);
+    rows.push(`| ${d.common || "—"} | ${sci(d)} | ${d.endemism || "—"} | \`${type}\` | ${zoneLabel(d)} | ${d.heightM || "—"} | ${d.notes || "—"} |`);
   }
   return rows.join("\n");
 }
@@ -128,6 +128,8 @@ function floraFicha(type) {
     row("Endémica de Chile", d.endemism || "—"),
     row("Tipo en código", `\`${type}\` (flora)`),
     row("Zona / capa", zoneLabel(d)),
+    row("Altura relativa (juego)", `×${d.height ?? 1}`),
+    row("Altura real típica", d.heightM || "—"),
     "",
     "## Notas",
     "",

@@ -9,6 +9,8 @@
 | Endémica de Chile | No |
 | Tipo en código | `cactus` (flora) |
 | Zona / capa | Altiplano, Norte (precordillera, valle, costa) |
+| Altura relativa (juego) | ×1.2 |
+| Altura real típica | 3–7 m |
 
 ## Notas
 

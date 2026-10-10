@@ -10,30 +10,30 @@ las especies y sus `zones` (los pools por bioma y capa).
 ## Especies representadas (actualmente)
 
 <!-- BEGIN:flora-tabla (generado con `npm run species`) -->
-| Nombre común | Nombre científico | Endémica | Tipo en código | Zona/capa | Notas |
-|--------------|-------------------|----------|----------------|-----------|-------|
-| Araucaria / Pehuén | *Araucaria araucana* | Sí (Chile/Argentina) | `araucaria` | Centro, Sur (precordillera, valle, costa) | Árbol emblema; silueta de paraguas; la copa se bambolea. |
-| Lenga / Ñire | *Nothofagus pumilio / N. antarctica* | No (Patagonia) | `lenga` | Centro, Sur, Patagonia, Austral (costa, precordillera, valle) | Caducifolio: pierde hojas en otoño, queda desnudo en invierno y brota en primavera. |
-| Copihue | *Lapageria rosea* | Sí (Chile) | `copihue` | Centro, Sur (costa, valle) | Enredadera y flor nacional; campanas rojas en primavera/verano. |
-| Copao / Cactus columnar | *Eulychnia spp.* | No | `cactus` | Altiplano, Norte (precordillera, valle, costa) | Columna con brazos y espinas. |
-| Alerce / Lahual | *Fitzroya cupressoides* | Sí (Chile/Argentina) | `alerce` | Sur, Austral (precordillera, costa) | Conífera alta y estrecha; en peligro. |
-| Nalca / Pangue | *Gunnera tinctoria* | Sí (Chile/Argentina) | `nalca` | Sur, Austral (valle, costa) | Hojas gigantes junto al agua. |
-| Colihue / Quila | *Chusquea spp.* | No | `colihue` | Sur, Patagonia, Austral (valle, costa) | Cañaverales (bambú nativo). |
-| Palma chilena | *Jubaea chilensis* | Sí (Chile) | `palma` | Centro (valle, costa) | Tronco esbelto y frondas; en peligro. |
-| Coihue | *Nothofagus dombeyi* | No (Patagonia) | `coihue` | Centro, Sur, Patagonia, Austral (valle, costa, precordillera) | Copa ancha y redondeada; tronco recto. |
-| Roble | *Nothofagus obliqua* | Sí (Chile/Argentina) | `roble` | Centro, Sur (valle, costa) | Caducifolio; copa estrecha y erguida; pierde hojas en otoño. |
-| Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Centro, Sur, Patagonia (valle, costa, precordillera) | Arbusto espinoso; flores naranjas en primavera/verano. |
-| Chaura | *Gaultheria mucronata* | No (Patagonia) | `chaura` | Centro, Sur, Patagonia, Austral (costa, valle) | Arbusto achaparrado con bayas blanco-rosadas; perenne. |
-| Quillay | *Quillaja saponaria* | Sí (Chile) | `quillay` | Centro, Sur (precordillera, valle, costa) | Esclerófilo; flores blancas en primavera/verano. |
-| Mañío | *Podocarpus spp.* | No (Patagonia) | `manio` | Sur, Patagonia, Austral (valle, costa, precordillera) | Conífera austral oscura y estrecha; perenne. |
-| Canelo | *Drimys winteri* | No (Chile/Argentina) | `canelo` | Sur, Patagonia, Austral (valle, costa, precordillera) | Siempreverde de copa densa; flor blanca; árbol sagrado mapuche. |
-| Arrayán | *Luma apiculata* | No (Chile/Argentina) | `arrayan` | Sur, Patagonia, Austral (valle, costa) | Tronco canela rojizo y copa menuda; flor blanca. |
-| Notro / Ciruelillo | *Embothrium coccineum* | No (Chile/Argentina) | `notro` | Sur, Patagonia, Austral (valle, costa) | Ramilletes de flores rojas. |
-| Arbusto genérico | — | — | `bush` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa) | Bulto verde redondeado. |
-| Cultivos / campos | — | — | `crop` | Norte, Centro (valle) | Hileras de cultivo; refuerza el valle agrícola. |
-| Pasto / duna | — | — | `grass` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa, playa) | Matas pequeñas de pasto. |
-| Rocas | — | — | `rock` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa, playa) | Pedreros sueltos. |
-| Flor del desierto | — | — | `flower` | — | Parche del desierto florido; entra solo con la floración. |
+| Nombre común | Nombre científico | Endémica | Tipo en código | Zona/capa | Altura real | Notas |
+|--------------|-------------------|----------|----------------|-----------|-------------|-------|
+| Araucaria / Pehuén | *Araucaria araucana* | Sí (Chile/Argentina) | `araucaria` | Centro, Sur (precordillera, valle, costa) | 30–40 m | Árbol emblema; silueta de paraguas; la copa se bambolea. |
+| Lenga / Ñire | *Nothofagus pumilio / N. antarctica* | No (Patagonia) | `lenga` | Centro, Sur, Patagonia, Austral (costa, precordillera, valle) | 15–25 m | Caducifolio: pierde hojas en otoño, queda desnudo en invierno y brota en primavera. |
+| Copihue | *Lapageria rosea* | Sí (Chile) | `copihue` | Centro, Sur (costa, valle) | trepadora (hasta ~10 m) | Enredadera y flor nacional; campanas rojas en primavera/verano. |
+| Copao / Cactus columnar | *Eulychnia spp.* | No | `cactus` | Altiplano, Norte (precordillera, valle, costa) | 3–7 m | Columna con brazos y espinas. |
+| Alerce / Lahual | *Fitzroya cupressoides* | Sí (Chile/Argentina) | `alerce` | Sur, Austral (precordillera, costa) | 40–45 m | Conífera alta y estrecha; en peligro. |
+| Nalca / Pangue | *Gunnera tinctoria* | Sí (Chile/Argentina) | `nalca` | Sur, Austral (valle, costa) | 1,5–3 m (hojas) | Hojas gigantes junto al agua. |
+| Colihue / Quila | *Chusquea spp.* | No | `colihue` | Sur, Patagonia, Austral (valle, costa) | 3–6 m | Cañaverales (bambú nativo). |
+| Palma chilena | *Jubaea chilensis* | Sí (Chile) | `palma` | Centro (valle, costa) | 15–20 m | Tronco esbelto y frondas; en peligro. |
+| Coihue | *Nothofagus dombeyi* | No (Patagonia) | `coihue` | Centro, Sur, Patagonia, Austral (valle, costa, precordillera) | 35–45 m | Copa ancha y redondeada; tronco recto. |
+| Roble | *Nothofagus obliqua* | Sí (Chile/Argentina) | `roble` | Centro, Sur (valle, costa) | 25–35 m | Caducifolio; copa estrecha y erguida; pierde hojas en otoño. |
+| Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Centro, Sur, Patagonia (valle, costa, precordillera) | 1–3 m | Arbusto espinoso; flores naranjas en primavera/verano. |
+| Chaura | *Gaultheria mucronata* | No (Patagonia) | `chaura` | Centro, Sur, Patagonia, Austral (costa, valle) | 0,5–1,5 m | Arbusto achaparrado con bayas blanco-rosadas; perenne. |
+| Quillay | *Quillaja saponaria* | Sí (Chile) | `quillay` | Centro, Sur (precordillera, valle, costa) | 10–15 m | Esclerófilo; flores blancas en primavera/verano. |
+| Mañío | *Podocarpus spp.* | No (Patagonia) | `manio` | Sur, Patagonia, Austral (valle, costa, precordillera) | 10–20 m | Conífera austral oscura y estrecha; perenne. |
+| Canelo | *Drimys winteri* | No (Chile/Argentina) | `canelo` | Sur, Patagonia, Austral (valle, costa, precordillera) | 15–20 m | Siempreverde de copa densa; flor blanca; árbol sagrado mapuche. |
+| Arrayán | *Luma apiculata* | No (Chile/Argentina) | `arrayan` | Sur, Patagonia, Austral (valle, costa) | 10–15 m | Tronco canela rojizo y copa menuda; flor blanca. |
+| Notro / Ciruelillo | *Embothrium coccineum* | No (Chile/Argentina) | `notro` | Sur, Patagonia, Austral (valle, costa) | 5–10 m | Ramilletes de flores rojas. |
+| Arbusto genérico | — | — | `bush` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa) | — | Bulto verde redondeado. |
+| Cultivos / campos | — | — | `crop` | Norte, Centro (valle) | — | Hileras de cultivo; refuerza el valle agrícola. |
+| Pasto / duna | — | — | `grass` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa, playa) | — | Matas pequeñas de pasto. |
+| Rocas | — | — | `rock` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa, playa) | — | Pedreros sueltos. |
+| Flor del desierto | — | — | `flower` | — | — | Parche del desierto florido; entra solo con la floración. |
 <!-- END:flora-tabla -->
 
 > La vegetación no crece dentro del cauce: `placeFlora` omite las columnas con `riverInfluence > 0.25`
@@ -65,39 +65,35 @@ del norte (`bloomAt`, [D-017](12-decisiones.md) y [D-024](12-decisiones.md)); se
 amplio de tallos con corola de 3 px (`drawFlower`, ~10x el racimo original) que se **reparte hacia
 dentro de la banda visible** de la capa, cubriendo el valle y no solo su contorno.
 
-## Especificación de sprites
+## Altura relativa (porte por especie)
 
-Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante):
+El tamaño de cada planta no es fijo por tipo: cada capa define un rango (`flora.minSize`–`maxSize`
+en `terrain.js`) y **cada especie lo multiplica por su `height`**, para reflejar su porte real
+([D-049](12-decisiones.md)). Así la perspectiva por parallax se conserva (una araucaria de
+precordillera sigue siendo menor que una de costa) y, dentro de una capa, los árboles duplican a los
+arbustos.
 
-| Tipo | Tamaño | Frames | Animación |
-|------|--------|--------|-----------|
-| Araucaria | 5–24 | 1 | Bamboleo por seno (sway) |
-| Lenga | 8–22 | 1 | — |
-| Arbusto | 4–? | 1 | — |
-| Cultivo | 5–12 | 1 | — |
-| Pasto | 4–9 | 1 | — |
-| Roca | 4–? | 1 | — |
-| Cactus | 6–? | 1 | — |
-| Alerce | 8–? | 1 | — |
-| Nalca | 8–? | 1 | — |
-| Colihue | 4–? | 1 | — |
-| Palma | 8–? | 1 | — |
-| Coihue | 6–? | 1 | — |
-| Roble | 6–? | 1 | — |
-| Copihue | 5–? | 1 | — |
-| Michay | 3–? | 1 | Flores por estación (primavera/verano) |
-| Chaura | 3–? | 1 | — |
-| Quillay | 5–? | 1 | Flores por estación (primavera/verano) |
-| Mañío | 7–? | 1 | — |
-| Canelo | 6–? | 1 | Flores por estación (primavera/verano) |
-| Arrayán | 5–? | 1 | Flores por estación (primavera/verano) |
-| Notro | 5–? | 1 | Flores por estación (primavera/verano) |
-| Flor | 4–? | 1 | Bamboleo por seno (sway) |
+| Tipo | `height` | Altura real | Tipo | `height` | Altura real |
+|------|----------|-------------|------|----------|-------------|
+| Araucaria | ×1.9 | 30–40 m | Quillay | ×1.0 | 10–15 m |
+| Alerce | ×1.9 | 40–45 m | Arrayán | ×1.0 | 10–15 m |
+| Coihue | ×1.7 | 35–45 m | Notro | ×0.9 | 5–10 m |
+| Roble | ×1.5 | 25–35 m | Nalca | ×0.9 | 1,5–3 m (hojas) |
+| Palma | ×1.4 | 15–20 m | Colihue | ×1.1 | 3–6 m |
+| Mañío | ×1.4 | 10–20 m | Copihue | ×1.1 | trepadora |
+| Lenga | ×1.3 | 15–25 m | Copao | ×1.2 | 3–7 m |
+| Canelo | ×1.3 | 15–20 m | Michay | ×0.7 | 1–3 m |
+| Chaura | ×0.6 | 0,5–1,5 m | Arbusto genérico | ×0.7 | — |
+| Cultivo | ×0.8 | — | Pasto / duna | ×0.5 | — |
+| Rocas | ×0.7 | — | Flor del desierto | ×1.0 | — |
+
+En `floraSpawns` el `rng` se consume igual que antes (solo cambia el `size`, no la posición ni el
+tipo), de modo que el paisaje sigue siendo reproducible.
 
 ## Silueta y hábito
 
 Los `DRAWERS` priorizan el **hábito real** de cada planta sobre el color ([D-048](12-decisiones.md)),
-dentro de las mismas `size` por capa:
+dentro del tamaño de la capa escalado por el porte de la especie:
 
 - **Araucaria**: tronco alto y recto con **copa de paraguas** (ancha al centro, redondeada) y ramas
   punzantes por pisos.

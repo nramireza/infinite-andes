@@ -14,90 +14,107 @@ export const FLORA = {
   araucaria: {
     kind: "especie", common: "Araucaria / Pehuén", sci: "Araucaria araucana",
     endemism: "Sí (Chile/Argentina)", notes: "Árbol emblema; silueta de paraguas; la copa se bambolea.",
+    height: 1.9, heightM: "30–40 m",
     zones: { centro: { precordillera: 1, valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 } },
   },
   lenga: {
     kind: "especie", common: "Lenga / Ñire", sci: "Nothofagus pumilio / N. antarctica",
     endemism: "No (Patagonia)", notes: "Caducifolio: pierde hojas en otoño, queda desnudo en invierno y brota en primavera.",
+    height: 1.3, heightM: "15–25 m",
     zones: { centro: { costa: 2 }, sur: { precordillera: 1, valle: 1, costa: 1 }, patagonia: { precordillera: 1, valle: 1, costa: 1 }, austral: { valle: 1 } },
   },
   copihue: {
     kind: "especie", common: "Copihue", sci: "Lapageria rosea",
     endemism: "Sí (Chile)", notes: "Enredadera y flor nacional; campanas rojas en primavera/verano.",
+    height: 1.1, heightM: "trepadora (hasta ~10 m)",
     zones: { centro: { costa: 1 }, sur: { valle: 1, costa: 1 } },
   },
   cactus: {
     kind: "especie", common: "Copao / Cactus columnar", sci: "Eulychnia spp.",
     endemism: "No", notes: "Columna con brazos y espinas.",
+    height: 1.2, heightM: "3–7 m",
     zones: { altiplano: { precordillera: 1, valle: 1, costa: 1 }, norte: { precordillera: 1, valle: 1, costa: 1 } },
   },
   alerce: {
     kind: "especie", common: "Alerce / Lahual", sci: "Fitzroya cupressoides",
     endemism: "Sí (Chile/Argentina)", notes: "Conífera alta y estrecha; en peligro.",
+    height: 1.9, heightM: "40–45 m",
     zones: { sur: { precordillera: 1, costa: 1 }, austral: { precordillera: 1, costa: 1 } },
   },
   nalca: {
     kind: "especie", common: "Nalca / Pangue", sci: "Gunnera tinctoria",
     endemism: "Sí (Chile/Argentina)", notes: "Hojas gigantes junto al agua.",
+    height: 0.9, heightM: "1,5–3 m (hojas)",
     zones: { sur: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
   },
   colihue: {
     kind: "especie", common: "Colihue / Quila", sci: "Chusquea spp.",
     endemism: "No", notes: "Cañaverales (bambú nativo).",
+    height: 1.1, heightM: "3–6 m",
     zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
   },
   palma: {
     kind: "especie", common: "Palma chilena", sci: "Jubaea chilensis",
     endemism: "Sí (Chile)", notes: "Tronco esbelto y frondas; en peligro.",
+    height: 1.4, heightM: "15–20 m",
     zones: { centro: { valle: 1, costa: 1 } },
   },
   coihue: {
     kind: "especie", common: "Coihue", sci: "Nothofagus dombeyi",
     endemism: "No (Patagonia)", notes: "Copa ancha y redondeada; tronco recto.",
+    height: 1.7, heightM: "35–45 m",
     zones: { centro: { valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 }, patagonia: { precordillera: 1, costa: 1 }, austral: { precordillera: 1, valle: 1, costa: 1 } },
   },
   roble: {
     kind: "especie", common: "Roble", sci: "Nothofagus obliqua",
     endemism: "Sí (Chile/Argentina)", notes: "Caducifolio; copa estrecha y erguida; pierde hojas en otoño.",
+    height: 1.5, heightM: "25–35 m",
     zones: { centro: { valle: 1, costa: 1 }, sur: { valle: 1, costa: 1 } },
   },
   michay: {
     kind: "especie", common: "Michay", sci: "Berberis darwinii",
     endemism: "No (Patagonia)", notes: "Arbusto espinoso; flores naranjas en primavera/verano.",
+    height: 0.7, heightM: "1–3 m",
     zones: { centro: { valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 }, patagonia: { precordillera: 1, valle: 1, costa: 1 } },
   },
   chaura: {
     kind: "especie", common: "Chaura", sci: "Gaultheria mucronata",
     endemism: "No (Patagonia)", notes: "Arbusto achaparrado con bayas blanco-rosadas; perenne.",
+    height: 0.6, heightM: "0,5–1,5 m",
     zones: { centro: { costa: 1 }, sur: { costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { costa: 1 } },
   },
   quillay: {
     kind: "especie", common: "Quillay", sci: "Quillaja saponaria",
     endemism: "Sí (Chile)", notes: "Esclerófilo; flores blancas en primavera/verano.",
+    height: 1.0, heightM: "10–15 m",
     zones: { centro: { precordillera: 1, valle: 1, costa: 1 }, sur: { valle: 1, costa: 1 } },
   },
   manio: {
     kind: "especie", common: "Mañío", sci: "Podocarpus spp.",
     endemism: "No (Patagonia)", notes: "Conífera austral oscura y estrecha; perenne.",
+    height: 1.4, heightM: "10–20 m",
     zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { precordillera: 1, valle: 1, costa: 1 } },
   },
   canelo: {
     kind: "especie", common: "Canelo", sci: "Drimys winteri",
     endemism: "No (Chile/Argentina)", notes: "Siempreverde de copa densa; flor blanca; árbol sagrado mapuche.",
+    height: 1.3, heightM: "15–20 m",
     zones: { sur: { valle: 1, costa: 1 }, patagonia: { costa: 1 }, austral: { precordillera: 1, valle: 1, costa: 1 } },
   },
   arrayan: {
     kind: "especie", common: "Arrayán", sci: "Luma apiculata",
     endemism: "No (Chile/Argentina)", notes: "Tronco canela rojizo y copa menuda; flor blanca.",
+    height: 1.0, heightM: "10–15 m",
     zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
   },
   notro: {
     kind: "especie", common: "Notro / Ciruelillo", sci: "Embothrium coccineum",
     endemism: "No (Chile/Argentina)", notes: "Ramilletes de flores rojas.",
+    height: 0.9, heightM: "5–10 m",
     zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
   },
   bush: {
-    kind: "generico", common: "Arbusto genérico", notes: "Bulto verde redondeado.",
+    kind: "generico", common: "Arbusto genérico", notes: "Bulto verde redondeado.", height: 0.7,
     zones: {
       altiplano: { precordillera: 1, valle: 1, costa: 1 }, norte: { precordillera: 1, valle: 1, costa: 1 },
       centro: { valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 },
@@ -105,25 +122,25 @@ export const FLORA = {
     },
   },
   crop: {
-    kind: "generico", common: "Cultivos / campos", notes: "Hileras de cultivo; refuerza el valle agrícola.",
+    kind: "generico", common: "Cultivos / campos", notes: "Hileras de cultivo; refuerza el valle agrícola.", height: 0.8,
     zones: { norte: { valle: 1 }, centro: { valle: 2 } },
   },
   grass: {
-    kind: "generico", common: "Pasto / duna", notes: "Matas pequeñas de pasto.",
+    kind: "generico", common: "Pasto / duna", notes: "Matas pequeñas de pasto.", height: 0.5,
     zones: {
       altiplano: { precordillera: 1, valle: 2, costa: 1, playa: 1 }, norte: { valle: 1, playa: 1 },
       centro: { valle: 1, playa: 2 }, sur: { playa: 1 }, patagonia: { valle: 1, playa: 1 }, austral: { playa: 1 },
     },
   },
   rock: {
-    kind: "generico", common: "Rocas", notes: "Pedreros sueltos.",
+    kind: "generico", common: "Rocas", notes: "Pedreros sueltos.", height: 0.7,
     zones: {
       altiplano: { precordillera: 1, valle: 1, costa: 1, playa: 1 }, norte: { precordillera: 1, valle: 1, costa: 1, playa: 1 },
       centro: { playa: 1 }, sur: { playa: 1 }, patagonia: { precordillera: 1, playa: 1 }, austral: { playa: 1 },
     },
   },
   flower: {
-    kind: "efecto", common: "Flor del desierto", bloomOnly: true, notes: "Parche del desierto florido; entra solo con la floración.",
+    kind: "efecto", common: "Flor del desierto", bloomOnly: true, notes: "Parche del desierto florido; entra solo con la floración.", height: 1.0,
   },
 };
 
@@ -896,10 +913,12 @@ export function floraSpawns(layer, camera, W, H, seed, poolAt) {
       if (riverInfluence(layer, wx) > 0.25) continue; // fuera del cauce
       const gy = Math.round(bankHeight(layer, wx));
       if (gy > H + 4) continue;
-      const size = f.minSize + rng() * (f.maxSize - f.minSize);
+      const base = f.minSize + rng() * (f.maxSize - f.minSize);
       const pool = poolAt ? poolAt(wx) : null;
       const list = pool && pool.length ? pool : centroFloraPool(layer.name);
       const type = pickType(list && list.length ? list : DEFAULT_FLORA_POOL, rng);
+      // Altura relativa por especie (porte real): multiplica el rango de la capa.
+      const size = base * (FLORA[type]?.height ?? 1);
       const warm = rng() < 0.4;
       // Las flores de la floración se reparten hacia el interior de la banda
       // visible de la capa (no solo en el contorno). El hash no consume rng.

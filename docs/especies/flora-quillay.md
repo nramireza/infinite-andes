@@ -9,6 +9,8 @@
 | Endémica de Chile | Sí (Chile) |
 | Tipo en código | `quillay` (flora) |
 | Zona / capa | Centro, Sur (precordillera, valle, costa) |
+| Altura relativa (juego) | ×1 |
+| Altura real típica | 10–15 m |
 
 ## Notas
 

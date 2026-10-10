@@ -9,6 +9,8 @@
 | Endémica de Chile | Sí (Chile/Argentina) |
 | Tipo en código | `araucaria` (flora) |
 | Zona / capa | Centro, Sur (precordillera, valle, costa) |
+| Altura relativa (juego) | ×1.9 |
+| Altura real típica | 30–40 m |
 
 ## Notas
 

@@ -6,6 +6,16 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-10-10
+
+### Changed
+- **Altura relativa de la flora por especie** ([D-049](docs/12-decisiones.md)): cada entrada de
+  `FLORA` define un `height` (multiplicador del `size` de la capa) y una `heightM` (altura real
+  típica). Los árboles (araucaria/alerce ×1.9, coihue ×1.7, roble ×1.5) destacan sobre los arbustos
+  (michay ×0.7, chaura ×0.6) y el pasto (×0.5) sin romper la perspectiva por parallax. Solo cambia
+  el `size`: posición, tipo y determinismo quedan igual; los dorados `flora.*` se regeneran
+  (intencional). Fichas y tabla de 05–06 con la altura real (`npm run species`).
+
 ## [1.5.0] - 2026-10-10
 
 ### Changed

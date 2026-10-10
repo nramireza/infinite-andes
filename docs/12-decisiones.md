@@ -773,6 +773,28 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   quedan **intactos**. El borde irregular usa `hash1` (determinista). La documentación de tamaño por
   tipo no cambia (los rangos de `size` siguen iguales).
 
+## D-049 · Altura relativa de la flora por especie
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** dar a cada especie de `FLORA` un porte propio con dos campos:
+  - `height`: **multiplicador** (0.5–1.9) que escala el `size` que antes venía solo de la capa
+    (`flora.minSize`–`maxSize` en `terrain.js`). Se aplica en `floraSpawns` **sin alterar el orden
+    de `rng`** (solo cambia el `size`).
+  - `heightM`: **altura real típica** (p. ej. araucaria `30–40 m`), documental, que se muestra en la
+    tabla de [05 · Flora](05-flora.md) y en las fichas de `docs/especies/` (vía `npm run species`).
+  - Árboles altos: araucaria/alerce ×1.9, coihue ×1.7, roble ×1.5; arbustos: michay ×0.7,
+    chaura ×0.6; genéricos: pasto ×0.5, cultivo ×0.8, roca/arbusto ×0.7.
+- **Motivo:** la `size` era por capa y todas las especies compartían rango, así que la araucaria (un
+  árbol de 30–40 m) podía salir del tamaño de un pasto. La fauna ya tenía escala por especie
+  ([D-047](#d-047--silueta-y-proporción-de-la-fauna-escala-relativa-por-especie)).
+- **Alternativas:** rango absoluto en px por especie (descartado: rompe la perspectiva por parallax,
+  que exige que capas lejanas sean menores); altura en metros normalizada a una referencia
+  (descartado: menos control artístico que el multiplicador directo).
+- **Consecuencia:** cambia `size` de la flora → los dorados `flora.*` se regeneran (intencional);
+  posición, tipo, determinismo y resto de dorados quedan intactos. `test/species.test.js` valida que
+  cada especie tenga `height` en rango y `heightM`. Los `DRAWERS` no cambian ([D-048](#d-048--silueta-y-hábito-de-la-flora-procural-sin-cambiar-size)).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

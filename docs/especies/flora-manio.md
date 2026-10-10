@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Patagonia) |
 | Tipo en código | `manio` (flora) |
 | Zona / capa | Sur, Patagonia, Austral (valle, costa, precordillera) |
+| Altura relativa (juego) | ×1.4 |
+| Altura real típica | 10–20 m |
 
 ## Notas
 

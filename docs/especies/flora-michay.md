@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Patagonia) |
 | Tipo en código | `michay` (flora) |
 | Zona / capa | Centro, Sur, Patagonia (valle, costa, precordillera) |
+| Altura relativa (juego) | ×0.7 |
+| Altura real típica | 1–3 m |
 
 ## Notas
 

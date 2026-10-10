@@ -9,6 +9,8 @@
 | Endémica de Chile | No (Chile/Argentina) |
 | Tipo en código | `notro` (flora) |
 | Zona / capa | Sur, Patagonia, Austral (valle, costa) |
+| Altura relativa (juego) | ×0.9 |
+| Altura real típica | 5–10 m |
 
 ## Notas
 
