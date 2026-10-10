@@ -43,7 +43,10 @@
 
 - Los sprites son **matrices de píxeles en código** (filas de caracteres + mapa de paleta).
   `bakeSprite`/`drawSprite` (`pixel.js`) hornean a un canvas offscreen para futuros casos.
-- La flora es mayormente **procedural** (formas por bucles). La fauna (`fauna.js`) usa matrices
+- La flora es **procedural** (formas por bucles) en `flora.js`; cada `DRAWERS` dibuja el hábito real
+  de la planta (copa de paraguas de la araucaria, frondas de la palma, candelabro del copao, roseta
+  de la nalca…) y el borde de las copas usa `hash1` para una silueta irregular determinista
+  ([D-046](12-decisiones.md), [D-048](12-decisiones.md)). La fauna (`fauna.js`) usa matrices
   de caracteres dibujadas con `px`/`fillRect`, mapeando cada carácter a una clave de `getPalette`
   (responde a hora y clima) o a un hex literal (p. ej. el flamenco o el pingüino). Ver
   [D-010](12-decisiones.md).
@@ -88,3 +91,6 @@
 - [x] **Silueta y proporción de la fauna** revisadas (v1.4.0): matrices redimensionadas a **escala
   relativa por especie** y formas más fieles (cuello, patas, cola, pico), con `palette` ampliada
   donde aporta volumen ([D-047](12-decisiones.md)).
+- [x] **Silueta y hábito de la flora** revisados (v1.5.0): `DRAWERS` redibujados con el porte real
+  (copa de araucaria, frondas de palma, candelabro del copao, roseta de nalca, nudos del colihue,
+  copas irregulares de Nothofagus) sin cambiar las `size` por capa ([D-048](12-decisiones.md)).

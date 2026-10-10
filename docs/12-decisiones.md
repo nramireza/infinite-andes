@@ -752,6 +752,27 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   Las fichas de `docs/especies/` se regeneran con `npm run species` (incluyen el nuevo tamaño). La
   flora queda para una tanda posterior ([D-046](#d-046--sprites-de-flora-procedurales-sin-caché)).
 
+## D-048 · Silueta y hábito de la flora (procural, sin cambiar `size`)
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** redibujar los `DRAWERS` de flora (`src/flora.js`) para que cada planta muestre su
+  **hábito real** dentro del mismo presupuesto de píxeles:
+  - **Araucaria** con copa de paraguas (perfil redondeado, ramas punzantes por pisos) y tronco alto.
+  - **Alerce** con tronco visible y copa cónica estrecha de ramas colgantes.
+  - **Palma** con tronco anillado y **frondas radiales que escalan** con `size`.
+  - **Copao** con tronco macizo, costilla iluminada, brazo en candelabro y espinas.
+  - **Nalca** con hojas grandes de borde dentado y nervadura; **colihue** con nudos.
+  - **Nothofagus** (coihue, roble) con tronco y ramas hacia la copa y contorno irregular por `hash1`.
+- **Motivo:** cerrar el pendiente de [05 · Flora](05-flora.md) y [08 · Arte pixel](08-arte-pixel.md)
+  tras la fauna ([D-047](#d-047--silueta-y-proporción-de-la-fauna-escala-relativa-por-especie)).
+- **Alternativas:** pasar la flora a matrices (`bakeSprite`) para darle detalle (descartado,
+  [D-046](#d-046--sprites-de-flora-procedurales-sin-caché)); cambiar las `size` por capa (descartado:
+  el porte relativo ya lo da el dibujo y el `size` es espacial).
+- **Consecuencia:** cambian solo los `DRAWERS`; el spawn (`floraSpawns`) y los dorados `flora.*`
+  quedan **intactos**. El borde irregular usa `hash1` (determinista). La documentación de tamaño por
+  tipo no cambia (los rangos de `size` siguen iguales).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

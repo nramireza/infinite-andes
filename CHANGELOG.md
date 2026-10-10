@@ -6,6 +6,15 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-10
+
+### Changed
+- **Silueta y hábito de la flora** ([D-048](docs/12-decisiones.md)): los `DRAWERS` de `src/flora.js`
+  se redibujan con el porte real de cada planta (copa de paraguas de la araucaria, frondas radiales
+  de la palma, candelabro del copao, roseta dentada de la nalca, nudos del colihue, copas irregulares
+  de los Nothofagus). Solo cambia el dibujo: `size` por capa, spawn y dorados `flora.*` quedan
+  **intactos**.
+
 ## [1.4.0] - 2026-10-10
 
 ### Changed

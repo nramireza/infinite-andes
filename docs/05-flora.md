@@ -94,6 +94,21 @@ Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante)
 | Notro | 5–? | 1 | Flores por estación (primavera/verano) |
 | Flor | 4–? | 1 | Bamboleo por seno (sway) |
 
+## Silueta y hábito
+
+Los `DRAWERS` priorizan el **hábito real** de cada planta sobre el color ([D-048](12-decisiones.md)),
+dentro de las mismas `size` por capa:
+
+- **Araucaria**: tronco alto y recto con **copa de paraguas** (ancha al centro, redondeada) y ramas
+  punzantes por pisos.
+- **Alerce**: tronco recto visible y copa cónica estrecha con ramas colgantes.
+- **Palma chilena**: tronco con anillos y **frondas radiales** que escalan con el tamaño.
+- **Copao / cactus**: tronco con costilla iluminada, **brazo en candelabro** y espinas.
+- **Nalca**: roseta de **hojas grandes de borde dentado** con nervadura marcada sobre pecíolos.
+- **Colihue**: cañas con **nudos** visibles y hojas diagonales.
+- **Coihue y roble** (Nothofagus): tronco con **ramas que abren hacia la copa** y contorno
+  irregular (hash determinista), no una elipse perfecta.
+
 ## Fichas de especies
 
 Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `npm run species`
