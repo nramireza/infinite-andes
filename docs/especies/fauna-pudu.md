@@ -1,6 +1,6 @@
 # Pudú (`pudu`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | Sí (Chile/Argentina) |
 | Estado UICN | NT |
 | Tipo en código | `pudu` (fauna) |
-| Movimiento | camina (sigue el banco, evita el cauce) |
+| Movimiento | `walk` |
 | Actividad | crepúsculo |
-| Rareza (juego) | poco-comun |
+| Rareza (juego) | poco-común |
 | Anclaje | pies |
+| Colocación | por chunk |
 | Sprite | 6×6 px · 2 frames |
 
 ## Notas

@@ -1,6 +1,6 @@
 # Cóndor (`condor`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | No (Andes) |
 | Estado UICN | NT |
 | Tipo en código | `condor` (fauna) |
-| Movimiento | vuelo (planeo en el cielo de la capa) |
+| Movimiento | `fly` |
 | Actividad | día |
-| Rareza (juego) | comun |
+| Rareza (juego) | común |
 | Anclaje | centro |
+| Colocación | por chunk |
 | Sprite | 16×6 px · 2 frames |
 
 ## Notas

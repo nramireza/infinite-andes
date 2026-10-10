@@ -88,8 +88,16 @@
 - [x] **Bioma austral/fiordos** con canales de agua tallados ([D-042](12-decisiones.md), [02 · Mundo](02-mundo.md)).
 - [x] **Flora de sotobosque**: canelo, arrayán y notro ([D-043](12-decisiones.md), [05 · Flora](05-flora.md)).
 - [x] **Sprites de fauna restantes** refinados ([D-044](12-decisiones.md), [08 · Arte pixel](08-arte-pixel.md)).
-- [x] **Fichas de especies** generadas con `npm run specimens` ([especies/](especies/README.md)).
+- [x] **Fichas de especies** generadas con `npm run species` ([especies/](especies/README.md)).
 - [x] **Tags** de release `v1.0.1` y `v1.1.0` publicados.
+
+## Fase 6 — Refactor de especies ✅ (hecha, v1.3.0)
+
+- [x] **Registro único `FLORA`/`SPECIES`** con metadata y `zones` como fuente única de los pools
+      ([D-045](12-decisiones.md), [09 · Arquitectura](09-arquitectura.md)).
+- [x] **Docs generadas**: fichas y tablas de 05/06 con `npm run species`, sin duplicar metadata.
+- [x] **Test de validación** del registro ([`../test/species.test.js`](../test/species.test.js)).
+- [x] **Sprites de flora procedurales** (sin caché), evaluado ([D-046](12-decisiones.md)).
 
 ## Post-1.0 (backlog)
 

@@ -1,6 +1,6 @@
 # Pingüino de Humboldt (`pinguino`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | No |
 | Estado UICN | VU |
 | Tipo en código | `pinguino` (fauna) |
-| Movimiento | nada (vaivén sobre el agua) |
+| Movimiento | `swim` |
 | Actividad | día |
 | Rareza (juego) | rara |
 | Anclaje | pies |
+| Colocación | por chunk |
 | Sprite | 6×8 px · 2 frames |
 
 ## Notas

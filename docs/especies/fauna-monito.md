@@ -1,6 +1,6 @@
 # Monito del monte (`monito`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | Sí (Chile/Argentina) |
 | Estado UICN | NT |
 | Tipo en código | `monito` (fauna) |
-| Movimiento | salta (sigue el banco, evita el cauce) |
+| Movimiento | `hop` |
 | Actividad | noche |
-| Rareza (juego) | poco-comun |
+| Rareza (juego) | poco-común |
 | Anclaje | pies |
+| Colocación | por chunk |
 | Sprite | 6×5 px · 2 frames |
 
 ## Notas

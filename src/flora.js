@@ -6,6 +6,140 @@ import { shade, lerpColor } from "./palette.js";
 
 const FLOWER_COLORS = ["#e05a9a", "#f2c14e", "#f4f0e6", "#9a6ad0"];
 
+// Registro de flora: una entrada por tipo dibujable. Es la **fuente única** de
+// los pools: `zones[bioma][capa]` da el peso con que la especie aparece ahí.
+// `kind` distingue especies con ficha ("especie") de genéricos y efectos; los
+// campos `common/sci/endemism/notes` alimentan las fichas y las tablas de docs.
+export const FLORA = {
+  araucaria: {
+    kind: "especie", common: "Araucaria / Pehuén", sci: "Araucaria araucana",
+    endemism: "Sí (Chile/Argentina)", notes: "Árbol emblema; silueta de paraguas; la copa se bambolea.",
+    zones: { centro: { precordillera: 1, valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 } },
+  },
+  lenga: {
+    kind: "especie", common: "Lenga / Ñire", sci: "Nothofagus pumilio / N. antarctica",
+    endemism: "No (Patagonia)", notes: "Caducifolio: pierde hojas en otoño, queda desnudo en invierno y brota en primavera.",
+    zones: { centro: { costa: 2 }, sur: { precordillera: 1, valle: 1, costa: 1 }, patagonia: { precordillera: 1, valle: 1, costa: 1 }, austral: { valle: 1 } },
+  },
+  copihue: {
+    kind: "especie", common: "Copihue", sci: "Lapageria rosea",
+    endemism: "Sí (Chile)", notes: "Enredadera y flor nacional; campanas rojas en primavera/verano.",
+    zones: { centro: { costa: 1 }, sur: { valle: 1, costa: 1 } },
+  },
+  cactus: {
+    kind: "especie", common: "Copao / Cactus columnar", sci: "Eulychnia spp.",
+    endemism: "No", notes: "Columna con brazos y espinas.",
+    zones: { altiplano: { precordillera: 1, valle: 1, costa: 1 }, norte: { precordillera: 1, valle: 1, costa: 1 } },
+  },
+  alerce: {
+    kind: "especie", common: "Alerce / Lahual", sci: "Fitzroya cupressoides",
+    endemism: "Sí (Chile/Argentina)", notes: "Conífera alta y estrecha; en peligro.",
+    zones: { sur: { precordillera: 1, costa: 1 }, austral: { precordillera: 1, costa: 1 } },
+  },
+  nalca: {
+    kind: "especie", common: "Nalca / Pangue", sci: "Gunnera tinctoria",
+    endemism: "Sí (Chile/Argentina)", notes: "Hojas gigantes junto al agua.",
+    zones: { sur: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
+  },
+  colihue: {
+    kind: "especie", common: "Colihue / Quila", sci: "Chusquea spp.",
+    endemism: "No", notes: "Cañaverales (bambú nativo).",
+    zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
+  },
+  palma: {
+    kind: "especie", common: "Palma chilena", sci: "Jubaea chilensis",
+    endemism: "Sí (Chile)", notes: "Tronco esbelto y frondas; en peligro.",
+    zones: { centro: { valle: 1, costa: 1 } },
+  },
+  coihue: {
+    kind: "especie", common: "Coihue", sci: "Nothofagus dombeyi",
+    endemism: "No (Patagonia)", notes: "Copa ancha y redondeada; tronco recto.",
+    zones: { centro: { valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 }, patagonia: { precordillera: 1, costa: 1 }, austral: { precordillera: 1, valle: 1, costa: 1 } },
+  },
+  roble: {
+    kind: "especie", common: "Roble", sci: "Nothofagus obliqua",
+    endemism: "Sí (Chile/Argentina)", notes: "Caducifolio; copa estrecha y erguida; pierde hojas en otoño.",
+    zones: { centro: { valle: 1, costa: 1 }, sur: { valle: 1, costa: 1 } },
+  },
+  michay: {
+    kind: "especie", common: "Michay", sci: "Berberis darwinii",
+    endemism: "No (Patagonia)", notes: "Arbusto espinoso; flores naranjas en primavera/verano.",
+    zones: { centro: { valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 }, patagonia: { precordillera: 1, valle: 1, costa: 1 } },
+  },
+  chaura: {
+    kind: "especie", common: "Chaura", sci: "Gaultheria mucronata",
+    endemism: "No (Patagonia)", notes: "Arbusto achaparrado con bayas blanco-rosadas; perenne.",
+    zones: { centro: { costa: 1 }, sur: { costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { costa: 1 } },
+  },
+  quillay: {
+    kind: "especie", common: "Quillay", sci: "Quillaja saponaria",
+    endemism: "Sí (Chile)", notes: "Esclerófilo; flores blancas en primavera/verano.",
+    zones: { centro: { precordillera: 1, valle: 1, costa: 1 }, sur: { valle: 1, costa: 1 } },
+  },
+  manio: {
+    kind: "especie", common: "Mañío", sci: "Podocarpus spp.",
+    endemism: "No (Patagonia)", notes: "Conífera austral oscura y estrecha; perenne.",
+    zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { precordillera: 1, valle: 1, costa: 1 } },
+  },
+  canelo: {
+    kind: "especie", common: "Canelo", sci: "Drimys winteri",
+    endemism: "No (Chile/Argentina)", notes: "Siempreverde de copa densa; flor blanca; árbol sagrado mapuche.",
+    zones: { sur: { valle: 1, costa: 1 }, patagonia: { costa: 1 }, austral: { precordillera: 1, valle: 1, costa: 1 } },
+  },
+  arrayan: {
+    kind: "especie", common: "Arrayán", sci: "Luma apiculata",
+    endemism: "No (Chile/Argentina)", notes: "Tronco canela rojizo y copa menuda; flor blanca.",
+    zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
+  },
+  notro: {
+    kind: "especie", common: "Notro / Ciruelillo", sci: "Embothrium coccineum",
+    endemism: "No (Chile/Argentina)", notes: "Ramilletes de flores rojas.",
+    zones: { sur: { valle: 1, costa: 1 }, patagonia: { valle: 1, costa: 1 }, austral: { valle: 1, costa: 1 } },
+  },
+  bush: {
+    kind: "generico", common: "Arbusto genérico", notes: "Bulto verde redondeado.",
+    zones: {
+      altiplano: { precordillera: 1, valle: 1, costa: 1 }, norte: { precordillera: 1, valle: 1, costa: 1 },
+      centro: { valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 },
+      patagonia: { precordillera: 1, valle: 1, costa: 1 }, austral: { precordillera: 1, valle: 1, costa: 1 },
+    },
+  },
+  crop: {
+    kind: "generico", common: "Cultivos / campos", notes: "Hileras de cultivo; refuerza el valle agrícola.",
+    zones: { norte: { valle: 1 }, centro: { valle: 2 } },
+  },
+  grass: {
+    kind: "generico", common: "Pasto / duna", notes: "Matas pequeñas de pasto.",
+    zones: {
+      altiplano: { precordillera: 1, valle: 2, costa: 1, playa: 1 }, norte: { valle: 1, playa: 1 },
+      centro: { valle: 1, playa: 2 }, sur: { playa: 1 }, patagonia: { valle: 1, playa: 1 }, austral: { playa: 1 },
+    },
+  },
+  rock: {
+    kind: "generico", common: "Rocas", notes: "Pedreros sueltos.",
+    zones: {
+      altiplano: { precordillera: 1, valle: 1, costa: 1, playa: 1 }, norte: { precordillera: 1, valle: 1, costa: 1, playa: 1 },
+      centro: { playa: 1 }, sur: { playa: 1 }, patagonia: { precordillera: 1, playa: 1 }, austral: { playa: 1 },
+    },
+  },
+  flower: {
+    kind: "efecto", common: "Flor del desierto", bloomOnly: true, notes: "Parche del desierto florido; entra solo con la floración.",
+  },
+};
+
+// Pools de centro derivados de las zonas (fallback de `floraSpawns` sin `poolAt`).
+const CENTRO_FLORA = {};
+for (const type in FLORA) {
+  const z = FLORA[type].zones?.centro;
+  if (!z) continue;
+  for (const layerName in z) (CENTRO_FLORA[layerName] ||= []).push({ type, w: z[layerName] });
+}
+function centroFloraPool(layerName) {
+  return CENTRO_FLORA[layerName] || null;
+}
+
+const DEFAULT_FLORA_POOL = [{ type: "grass", w: 1 }];
+
 function drawAraucaria(ctx, x, baseY, size, pal, sway) {
   x = Math.round(x);
   baseY = Math.round(baseY);
@@ -178,31 +312,36 @@ function drawRock(ctx, x, baseY, size, pal) {
   }
 }
 
-function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0, night = 0) {
-  switch (type) {
-    case "araucaria": return drawAraucaria(ctx, x, baseY, size, pal, sway);
-    case "lenga": return drawLenga(ctx, x, baseY, size, pal, warm, season);
-    case "bush": return drawBush(ctx, x, baseY, size, pal);
-    case "crop": return drawCrop(ctx, x, baseY, size, pal);
-    case "rock": return drawRock(ctx, x, baseY, size, pal);
-    case "flower": return drawFlower(ctx, x, baseY, size, pal, sway, night);
-    case "cactus": return drawCactus(ctx, x, baseY, size, pal);
-    case "alerce": return drawAlerce(ctx, x, baseY, size, pal);
-    case "nalca": return drawNalca(ctx, x, baseY, size, pal);
-    case "colihue": return drawColihue(ctx, x, baseY, size, pal);
-    case "palma": return drawPalma(ctx, x, baseY, size, pal);
-    case "coihue": return drawCoihue(ctx, x, baseY, size, pal);
-    case "roble": return drawRoble(ctx, x, baseY, size, pal, season);
-    case "copihue": return drawCopihue(ctx, x, baseY, size, pal, season);
-    case "michay": return drawMichay(ctx, x, baseY, size, pal, season);
-    case "chaura": return drawChaura(ctx, x, baseY, size, pal);
-    case "quillay": return drawQuillay(ctx, x, baseY, size, pal, season);
-    case "manio": return drawManio(ctx, x, baseY, size, pal);
-    case "canelo": return drawCanelo(ctx, x, baseY, size, pal, season);
-    case "arrayan": return drawArrayan(ctx, x, baseY, size, pal, season);
-    case "notro": return drawNotro(ctx, x, baseY, size, pal, season);
-    default: return drawGrass(ctx, x, baseY, size, pal);
-  }
+// Dispatch de dibujo por tipo. Las funciones se declaran más abajo (hoisting);
+// cada una recibe un `env` uniforme { sway, warm, season, night }.
+export const DRAWERS = {
+  araucaria: (ctx, x, y, s, pal, e) => drawAraucaria(ctx, x, y, s, pal, e.sway),
+  lenga: (ctx, x, y, s, pal, e) => drawLenga(ctx, x, y, s, pal, e.warm, e.season),
+  bush: (ctx, x, y, s, pal) => drawBush(ctx, x, y, s, pal),
+  grass: (ctx, x, y, s, pal) => drawGrass(ctx, x, y, s, pal),
+  crop: (ctx, x, y, s, pal) => drawCrop(ctx, x, y, s, pal),
+  rock: (ctx, x, y, s, pal) => drawRock(ctx, x, y, s, pal),
+  flower: (ctx, x, y, s, pal, e) => drawFlower(ctx, x, y, s, pal, e.sway, e.night),
+  cactus: (ctx, x, y, s, pal) => drawCactus(ctx, x, y, s, pal),
+  alerce: (ctx, x, y, s, pal) => drawAlerce(ctx, x, y, s, pal),
+  nalca: (ctx, x, y, s, pal) => drawNalca(ctx, x, y, s, pal),
+  colihue: (ctx, x, y, s, pal) => drawColihue(ctx, x, y, s, pal),
+  palma: (ctx, x, y, s, pal) => drawPalma(ctx, x, y, s, pal),
+  coihue: (ctx, x, y, s, pal) => drawCoihue(ctx, x, y, s, pal),
+  roble: (ctx, x, y, s, pal, e) => drawRoble(ctx, x, y, s, pal, e.season),
+  copihue: (ctx, x, y, s, pal, e) => drawCopihue(ctx, x, y, s, pal, e.season),
+  michay: (ctx, x, y, s, pal, e) => drawMichay(ctx, x, y, s, pal, e.season),
+  chaura: (ctx, x, y, s, pal) => drawChaura(ctx, x, y, s, pal),
+  quillay: (ctx, x, y, s, pal, e) => drawQuillay(ctx, x, y, s, pal, e.season),
+  manio: (ctx, x, y, s, pal) => drawManio(ctx, x, y, s, pal),
+  canelo: (ctx, x, y, s, pal, e) => drawCanelo(ctx, x, y, s, pal, e.season),
+  arrayan: (ctx, x, y, s, pal, e) => drawArrayan(ctx, x, y, s, pal, e.season),
+  notro: (ctx, x, y, s, pal, e) => drawNotro(ctx, x, y, s, pal, e.season),
+};
+
+export function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0, night = 0) {
+  const fn = DRAWERS[type] || DRAWERS.grass;
+  fn(ctx, x, baseY, size, pal, { sway, warm, season, night });
 }
 
 // Copao / cactus columnar (norte árido): columna con brazos y espinas.
@@ -701,9 +840,8 @@ export function floraSpawns(layer, camera, W, H, seed, poolAt) {
       if (gy > H + 4) continue;
       const size = f.minSize + rng() * (f.maxSize - f.minSize);
       const pool = poolAt ? poolAt(wx) : null;
-      const type = pool && pool.length
-        ? pickType(pool, rng)
-        : f.types[Math.floor(rng() * f.types.length)];
+      const list = pool && pool.length ? pool : centroFloraPool(layer.name);
+      const type = pickType(list && list.length ? list : DEFAULT_FLORA_POOL, rng);
       const warm = rng() < 0.4;
       // Las flores de la floración se reparten hacia el interior de la banda
       // visible de la capa (no solo en el contorno). El hash no consume rng.

@@ -1,6 +1,6 @@
 # Choroy (`choroy`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | Sí (Chile) |
 | Estado UICN | LC |
 | Tipo en código | `choroy` (fauna) |
-| Movimiento | bandada (vuelo en formación) |
+| Movimiento | `flock` |
 | Actividad | día |
-| Rareza (juego) | comun |
+| Rareza (juego) | común |
 | Anclaje | centro |
+| Colocación | por chunk |
 | Sprite | 8×4 px · 2 frames |
 
 ## Notas

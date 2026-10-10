@@ -1,6 +1,6 @@
 # Copao / Cactus columnar (`cactus`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Eulychnia spp.* |
 | Endémica de Chile | No |
 | Tipo en código | `cactus` (flora) |
-| Zona / capa | Norte (precordillera, valle, costa) |
+| Zona / capa | Altiplano, Norte (precordillera, valle, costa) |
 
 ## Notas
 

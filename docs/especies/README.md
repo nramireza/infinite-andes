@@ -1,9 +1,9 @@
 # Especies
 
-> Fichas generadas con `npm run specimens` · Actualizado: 2026-10-10
+> Fichas generadas con `npm run species` · Actualizado: 2026-10-10
 
-Una ficha por especie vegetal y animal (nombre científico, endemismo, zona y notas),
-basada en la plantilla [`../templates/especimen.md`](../templates/especimen.md).
+Una ficha por especie (flora y fauna), generada desde los registros `FLORA` y `SPECIES`
+(fuente única de identidad, zonas y metadata). Plantilla en [`../templates/especimen.md`](../templates/especimen.md).
 
 ## Flora
 

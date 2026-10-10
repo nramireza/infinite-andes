@@ -1,6 +1,6 @@
 # Copihue (`copihue`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Lapageria rosea* |
 | Endémica de Chile | Sí (Chile) |
 | Tipo en código | `copihue` (flora) |
-| Zona / capa | Costa, valle (sur) |
+| Zona / capa | Centro, Sur (costa, valle) |
 
 ## Notas
 

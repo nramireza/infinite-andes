@@ -27,6 +27,8 @@ navegador puede mezclar módulos nuevos con viejos, romper los `import` y dejar 
 - Sin linter configurado.
 - Verificación de sintaxis de los módulos: `npm run check` (o `node --check src/<archivo>.js`).
 - Paleta maestra: si tocas `src/palette.js`, regenera la tabla con `npm run palette`.
+- Especies: si tocas los registros `FLORA`/`SPECIES` (`src/flora.js`, `src/fauna.js`), regenera
+  fichas y tablas con `npm run species`.
 - Verificación visual: renderizar con Chrome headless y revisar el PNG:
 
 ```bash

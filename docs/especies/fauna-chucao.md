@@ -1,6 +1,6 @@
 # Chucao (`chucao`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | No (Chile/Argentina) |
 | Estado UICN | LC |
 | Tipo en código | `chucao` (fauna) |
-| Movimiento | salta (sigue el banco, evita el cauce) |
+| Movimiento | `hop` |
 | Actividad | día |
-| Rareza (juego) | comun |
+| Rareza (juego) | común |
 | Anclaje | pies |
+| Colocación | por chunk |
 | Sprite | 6×6 px · 2 frames |
 
 ## Notas

@@ -1,6 +1,6 @@
 # Vicuña (`vicuna`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | No |
 | Estado UICN | LC |
 | Tipo en código | `vicuna` (fauna) |
-| Movimiento | camina (sigue el banco, evita el cauce) |
+| Movimiento | `walk` |
 | Actividad | día |
-| Rareza (juego) | poco-comun |
+| Rareza (juego) | poco-común |
 | Anclaje | pies |
+| Colocación | por chunk |
 | Sprite | 6×7 px · 2 frames |
 
 ## Notas

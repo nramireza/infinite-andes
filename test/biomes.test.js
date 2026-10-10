@@ -6,6 +6,7 @@ import {
 } from "../src/biomes.js";
 import { applyBiome, getPalette } from "../src/palette.js";
 import { pickWeighted } from "../src/fauna.js";
+import { FLORA } from "../src/flora.js";
 import { mulberry32, seedToInt } from "../src/rng.js";
 import { LAYERS, seedLayers, bankHeight, setBiomeGeometry } from "../src/terrain.js";
 import { golden, digest } from "./helpers/golden.js";
@@ -100,12 +101,13 @@ test("resolveBloom respeta los modos auto/on/off", () => {
   assert.equal(resolveBloom("on", centro), 0); // sin norte no hay floración
 });
 
-test("el pool de flora de centro conserva los types de LAYERS", () => {
+test("el pool de flora de centro sale de las zonas del registro", () => {
+  const w = modeWeights("centro", 0, SEED);
   for (const layer of LAYERS) {
     if (!layer.flora) continue;
-    const w = modeWeights("centro", 0, SEED);
-    const pool = biomeFloraPool(layer.name, w, 0, layer.flora.types);
-    assert.deepEqual(pool.map((e) => e.type), layer.flora.types, `${layer.name} difiere del fallback`);
+    const pool = biomeFloraPool(layer.name, w, 0);
+    const expected = Object.keys(FLORA).filter((t) => FLORA[t].zones?.centro?.[layer.name]);
+    assert.deepEqual(pool.map((e) => e.type).sort(), expected.sort(), `${layer.name} difiere de las zonas`);
   }
 });
 
@@ -150,8 +152,10 @@ test("austral aporta flora y fauna de fiordo", () => {
   const w = modeWeights("austral", 0, SEED);
   const flora = biomeFloraPool("costa", w, 0, layerByName("costa").flora.types);
   for (const t of ["manio", "canelo", "coihue"]) assert.ok(flora.some((e) => e.type === t), `austral sin ${t}`);
-  const fauna = biomeFaunaPool("costa", w, 0, layerByName("costa").fauna.species);
-  for (const t of ["huillin", "chungungo"]) assert.ok(fauna.some((e) => e.type === t), `austral sin ${t}`);
+  const faunaCosta = biomeFaunaPool("costa", w, 0);
+  for (const t of ["huillin", "chucao", "rana"]) assert.ok(faunaCosta.some((e) => e.type === t), `austral costa sin ${t}`);
+  const faunaMar = biomeFaunaPool("mar", w, 0);
+  for (const t of ["chungungo", "pinguino"]) assert.ok(faunaMar.some((e) => e.type === t), `austral mar sin ${t}`);
 });
 
 test("biomeGeometry mezcla amplitud, nieve y fiordos; centro no cambia", () => {

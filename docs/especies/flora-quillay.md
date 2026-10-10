@@ -1,6 +1,6 @@
 # Quillay (`quillay`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Quillaja saponaria* |
 | Endémica de Chile | Sí (Chile) |
 | Tipo en código | `quillay` (flora) |
-| Zona / capa | Centro, sur (precordillera, valle, costa) |
+| Zona / capa | Centro, Sur (precordillera, valle, costa) |
 
 ## Notas
 

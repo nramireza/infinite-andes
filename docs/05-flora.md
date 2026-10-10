@@ -2,36 +2,39 @@
 
 > Estado: estable · Actualizado: 2026-10-10
 
-Implementado en `src/flora.js` (dibujo y colocación) usando las paletas de `src/palette.js`.
-La flora se dibuja por capa con `placeFlora(ctx, layer, ...)`; cada capa define en `LAYERS`
-su `flora: { chunkW, minSize, maxSize, minChance, maxPer, types }`.
+Implementado en `src/flora.js` (registro, dibujo y colocación) usando las paletas de `src/palette.js`.
+La flora se dibuja por capa con `placeFlora(ctx, layer, ...)`; cada capa define en `LAYERS` su
+`flora: { chunkW, minSize, maxSize, minChance, maxPer }` (lo espacial) y el registro `FLORA` define
+las especies y sus `zones` (los pools por bioma y capa).
 
 ## Especies representadas (actualmente)
 
+<!-- BEGIN:flora-tabla (generado con `npm run species`) -->
 | Nombre común | Nombre científico | Endémica | Tipo en código | Zona/capa | Notas |
 |--------------|-------------------|----------|----------------|-----------|-------|
-| Araucaria / Pehuén | *Araucaria araucana* | Sí (Chile/Argentina) | `araucaria` | Precordillera, Valle, Costa | Silueta de paraguas; árbol emblema |
-| Lenga / Ñire | *Nothofagus pumilio* / *N. antarctica* | No (Patagonia) | `lenga` | Costa, Valle | Copa redonda; variante cálida (otoño) |
-| Copihue | *Lapageria rosea* | Sí (Chile) | `copihue` | Costa, Valle (sur) | Enredadera con campanas rojas; flor nacional |
-| Arbusto genérico | — | — | `bush` | Varias | Bulto verde redondeado |
-| Cultivos / campos | — | — | `crop` | Valle | Hileras; refuerza el valle como zona agrícola |
-| Pasto / duna | — | — | `grass` | Playa, Valle, Costa | Matas pequeñas |
-| Rocas | — | — | `rock` | Andes, Playa, Costa | Pedreros sueltos |
-| Flor del desierto | — | — | `flower` | Valle, Costa, Playa (norte) | Parches de flores del **desierto florido**; las corolas se apagan de noche |
-| Copao / Cactus columnar | *Eulychnia* spp. | No | `cactus` | Norte (precordillera, valle, costa) | Columna con brazos y espinas |
-| Alerce / Lahual | *Fitzroya cupressoides* | Sí (Chile/Arg) | `alerce` | Sur (precordillera, costa) | Conífera alta y estrecha; en peligro |
-| Nalca / Pangue | *Gunnera tinctoria* | Sí (Chile/Arg) | `nalca` | Sur (valle, costa) | Hojas gigantes junto al agua |
-| Colihue / Quila | *Chusquea* spp. | No | `colihue` | Sur (valle, costa) | Cañaverales |
-| Palma chilena | *Jubaea chilensis* | Sí (Chile) | `palma` | Centro (valle, costa) | Tronco esbelto y frondas; en peligro |
-| Coihue | *Nothofagus dombeyi* | No (Patagonia) | `coihue` | Costa, Valle (sur) | Copa ancha y redondeada; tronco recto |
-| Roble | *Nothofagus obliqua* | Sí (Chile/Arg) | `roble` | Costa, Valle (sur) | Copa estrecha y erguida |
-| Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Precordillera, Valle, Costa (sur) | Arbusto espinoso con flores naranjas |
-| Chaura | *Gaultheria mucronata* | No (Patagonia) | `chaura` | Costa (sur) | Arbusto achaparrado con bayas blanco-rosadas |
-| Quillay | *Quillaja saponaria* | **Sí (Chile)** | `quillay` | Centro, Sur (precordillera, valle, costa) | Copa redondeada; flores blancas en primavera/verano |
-| Mañío | *Podocarpus* spp. | No (Patagonia) | `manio` | Sur, Patagonia, Austral (valle, costa) | Conífera austral oscura y estrecha |
-| Canelo | *Drimys winteri* | No (Chile/Argentina) | `canelo` | Sur, Austral | Siempreverde de copa densa; flor blanca |
-| Arrayán | *Luma apiculata* | No (Chile/Argentina) | `arrayan` | Sur, Austral | Tronco canela rojizo y copa menuda; flor blanca |
-| Notro / Ciruelillo | *Embothrium coccineum* | No (Chile/Argentina) | `notro` | Sur, Patagonia, Austral | Ramilletes de flores rojas |
+| Araucaria / Pehuén | *Araucaria araucana* | Sí (Chile/Argentina) | `araucaria` | Centro, Sur (precordillera, valle, costa) | Árbol emblema; silueta de paraguas; la copa se bambolea. |
+| Lenga / Ñire | *Nothofagus pumilio / N. antarctica* | No (Patagonia) | `lenga` | Centro, Sur, Patagonia, Austral (costa, precordillera, valle) | Caducifolio: pierde hojas en otoño, queda desnudo en invierno y brota en primavera. |
+| Copihue | *Lapageria rosea* | Sí (Chile) | `copihue` | Centro, Sur (costa, valle) | Enredadera y flor nacional; campanas rojas en primavera/verano. |
+| Copao / Cactus columnar | *Eulychnia spp.* | No | `cactus` | Altiplano, Norte (precordillera, valle, costa) | Columna con brazos y espinas. |
+| Alerce / Lahual | *Fitzroya cupressoides* | Sí (Chile/Argentina) | `alerce` | Sur, Austral (precordillera, costa) | Conífera alta y estrecha; en peligro. |
+| Nalca / Pangue | *Gunnera tinctoria* | Sí (Chile/Argentina) | `nalca` | Sur, Austral (valle, costa) | Hojas gigantes junto al agua. |
+| Colihue / Quila | *Chusquea spp.* | No | `colihue` | Sur, Patagonia, Austral (valle, costa) | Cañaverales (bambú nativo). |
+| Palma chilena | *Jubaea chilensis* | Sí (Chile) | `palma` | Centro (valle, costa) | Tronco esbelto y frondas; en peligro. |
+| Coihue | *Nothofagus dombeyi* | No (Patagonia) | `coihue` | Centro, Sur, Patagonia, Austral (valle, costa, precordillera) | Copa ancha y redondeada; tronco recto. |
+| Roble | *Nothofagus obliqua* | Sí (Chile/Argentina) | `roble` | Centro, Sur (valle, costa) | Caducifolio; copa estrecha y erguida; pierde hojas en otoño. |
+| Michay | *Berberis darwinii* | No (Patagonia) | `michay` | Centro, Sur, Patagonia (valle, costa, precordillera) | Arbusto espinoso; flores naranjas en primavera/verano. |
+| Chaura | *Gaultheria mucronata* | No (Patagonia) | `chaura` | Centro, Sur, Patagonia, Austral (costa, valle) | Arbusto achaparrado con bayas blanco-rosadas; perenne. |
+| Quillay | *Quillaja saponaria* | Sí (Chile) | `quillay` | Centro, Sur (precordillera, valle, costa) | Esclerófilo; flores blancas en primavera/verano. |
+| Mañío | *Podocarpus spp.* | No (Patagonia) | `manio` | Sur, Patagonia, Austral (valle, costa, precordillera) | Conífera austral oscura y estrecha; perenne. |
+| Canelo | *Drimys winteri* | No (Chile/Argentina) | `canelo` | Sur, Patagonia, Austral (valle, costa, precordillera) | Siempreverde de copa densa; flor blanca; árbol sagrado mapuche. |
+| Arrayán | *Luma apiculata* | No (Chile/Argentina) | `arrayan` | Sur, Patagonia, Austral (valle, costa) | Tronco canela rojizo y copa menuda; flor blanca. |
+| Notro / Ciruelillo | *Embothrium coccineum* | No (Chile/Argentina) | `notro` | Sur, Patagonia, Austral (valle, costa) | Ramilletes de flores rojas. |
+| Arbusto genérico | — | — | `bush` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa) | Bulto verde redondeado. |
+| Cultivos / campos | — | — | `crop` | Norte, Centro (valle) | Hileras de cultivo; refuerza el valle agrícola. |
+| Pasto / duna | — | — | `grass` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa, playa) | Matas pequeñas de pasto. |
+| Rocas | — | — | `rock` | Altiplano, Norte, Centro, Sur, Patagonia, Austral (precordillera, valle, costa, playa) | Pedreros sueltos. |
+| Flor del desierto | — | — | `flower` | — | Parche del desierto florido; entra solo con la floración. |
+<!-- END:flora-tabla -->
 
 > La vegetación no crece dentro del cauce: `placeFlora` omite las columnas con `riverInfluence > 0.25`
 > y usa `bankHeight` para sentarse en el banco.
@@ -93,7 +96,7 @@ Tamaños actuales en px (se reemplazarán por sprites definitivos más adelante)
 
 ## Fichas de especies
 
-Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `npm run specimens`
+Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `npm run species`
 (nombre científico, endemismo, zona y notas).
 
 ## Especies por añadir (propuestas)
@@ -102,8 +105,10 @@ Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `
 
 ## Cómo añadir una especie
 
-1. Copia [`templates/especimen.md`](templates/especimen.md).
-2. Añade el tipo de dibujo en `src/flora.js` (`drawPlant`) y, si aplica, el color a `palette.js`.
-3. Reparte la especie por capas en `LAYERS[*].flora.types` (bioma **centro**) y/o en
-   `BIOMES[*].flora` de `src/biomes.js` (norte/sur).
-4. Documenta aquí y en [`12-decisiones.md`](12-decisiones.md) si cambia el diseño.
+1. Añade la especie al registro `FLORA` en `src/flora.js` (`kind`, `common`, `sci`, `endemism`,
+   `notes` y `zones`, donde `zones[bioma][capa]` es su peso en el pool).
+2. Añade su caso a `DRAWERS` (misma clave que el tipo) y, si aplica, el color a `palette.js`.
+3. Ejecuta `npm run species` para regenerar esta tabla, la de [06 · Fauna](06-fauna.md) y su ficha
+   en [`especies/`](especies/README.md).
+4. Documenta en [`12-decisiones.md`](12-decisiones.md) si cambia el diseño. `npm test` valida que
+   `FLORA` y `DRAWERS` coincidan y que las zonas referencien biomas/capas válidos.

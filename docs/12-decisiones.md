@@ -686,12 +686,47 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
 - **Estado:** aceptada
 - **Decisión:** refinar los sprites de fauna que faltaban (zorros, guanaco, vicuña, chingue, monito,
   chinchilla, choroy, cachaña, etc.) con ojos, vientre y cola, y generar una **ficha por especie**
-  (flora y fauna) en `docs/especies/` con `npm run specimens`.
+  (flora y fauna) en `docs/especies/` con `npm run species`.
 - **Motivo:** cerrar el pendiente de [06 · Fauna](06-fauna.md) y [08 · Arte pixel](08-arte-pixel.md).
 - **Alternativas:** mantenter las matrices simples (descartado: poca legibilidad); fichas a mano
   (descartado: se desincronizan). El script lee `SPECIES` del código + una tabla de metadatos.
 - **Consecuencia:** los dorados de fauna no cambian (solo guardan posición/tipo); 38 fichas y un
   `scripts/specimens.mjs` reutilizable.
+
+## D-045 · Registro único de especies (`FLORA`/`SPECIES`)
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** unificar flora y fauna en **registros** que son la fuente única de identidad,
+  metadata, **zonas** (pools) y definición de dibujo:
+  - `FLORA` (`flora.js`): una entrada por tipo dibujable con `kind`, `common/sci/endemism/notes`,
+    `zones[bioma][capa]` y, para efectos, `bloomOnly`.
+  - `SPECIES` (`fauna.js`): añade `common/sci/endemism/iucn/chile/notes`, `zones`,
+    `placement` (chunk/río) y `bloom` a los campos de comportamiento y sprite.
+  - `biomeFloraPool`/`biomeFaunaPool` (`biomes.js`) derivan los pools de las zonas (tablas
+    precomputadas), **sin** listas paralelas en `LAYERS`/`BIOMES`; `LAYERS` solo conserva lo
+    espacial. `RIVER_SPECIES`/`BLOOM_FAUNA` se derivan de los flags.
+  - `scripts/species.mjs` (`npm run species`) genera las fichas de `docs/especies/` y **inyecta**
+    las tablas de [05](05-flora.md)/[06](06-fauna.md) entre marcadores; `test/species.test.js`
+    valida el registro.
+- **Motivo:** la metadata estaba duplicada (docs, script) y los pools repartidos con un caso
+  especial para `centro`; añadir una especie tocaba varios archivos.
+- **Alternativas:** un catálogo único `src/species.js` (descartado: acopla dominios); mantener las
+  listas en `LAYERS`/`BIOMES` (descartado: doble fuente de verdad).
+- **Consecuencia:** cambia el orden de los pools → dorados `flora.*`/`biome.*`/`fauna.*` nuevos
+  (intencional); añadir una especie es **un objeto** más `npm run species`.
+
+## D-046 · Sprites de flora procedurales (sin caché)
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada
+- **Decisión:** la flora sigue dibujándose de forma **procedural** por funciones (`DRAWERS`), sin
+  pasar a matrices con `bakeSprite`/`drawSprite` cacheadas. Se evaluó la Fase 5 del plan.
+- **Motivo:** `placeFlora` cuesta ~0.4 ms/frame (medido con `npm run bench`) y las formas (copas,
+  campos, pasto) se benefician del procedural; las matrices no aportan aquí.
+- **Alternativas:** matrices cacheadas (descartado: coste por cambio de paleta hora/clima y sin
+  ganancia visible); atlas offscreen (descartado por ahora).
+- **Consecuencia:** sin cambios en el render; la fauna mantiene sus matrices.
 
 ## Decisiones abiertas
 

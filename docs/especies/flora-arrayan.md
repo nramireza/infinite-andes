@@ -1,6 +1,6 @@
 # Arrayán (`arrayan`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Luma apiculata* |
 | Endémica de Chile | No (Chile/Argentina) |
 | Tipo en código | `arrayan` (flora) |
-| Zona / capa | Sur, Austral |
+| Zona / capa | Sur, Patagonia, Austral (valle, costa) |
 
 ## Notas
 

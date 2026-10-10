@@ -6,6 +6,27 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-10
+
+### Changed
+- **Registro único de especies** ([D-045](docs/12-decisiones.md)): `FLORA` (`src/flora.js`) y
+  `SPECIES` (`src/fauna.js`) reúnen identidad, metadata, **zonas** (pools) y definición de dibujo.
+  `biomes.js` deriva los pools de las `zones` con tablas precomputadas (sin listas paralelas en
+  `LAYERS`/`BIOMES`, que ahora solo guardan lo espacial) y `RIVER_SPECIES`/`BLOOM_FAUNA` salen de
+  flags (`placement`/`bloom`). Los dorados `flora.*`/`biome.*`/`fauna.*` se regeneran por el nuevo
+  orden de pools (intencional).
+- **Docs generadas** ([D-045](docs/12-decisiones.md)): `npm run species` (`scripts/species.mjs`)
+  regenera las fichas de `docs/especies/` y las tablas de 05/06 desde los registros.
+- **Sprites de flora procedurales** sin caché, evaluado ([D-046](docs/12-decisiones.md)).
+
+### Added
+- `test/species.test.js`: valida el registro (tipos, zonas válidas, pools y `FLORA` = `DRAWERS`).
+- `common` en los tipos genéricos de flora y campos `zones`/`placement`/`bloom` por especie.
+
+### Fixed
+- La fauna marina (chungungo, pingüino) vuelve a estar disponible en el mar de **todos** los
+  biomas, no solo centro/austral.
+
 ## [1.2.0] - 2026-10-10
 
 ### Added
@@ -380,7 +401,8 @@ Primera versión funcional (Fase 1: paisaje, cielo y clima).
 - Ríos tallados en el valle y la Costa con curso meándrico sinusoidal.
 - Panel de control (semilla, scroll, hora, clima), export PNG y parámetros de URL.
 
-[Unreleased]: https://github.com/nramireza/infinite-andes/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/nramireza/infinite-andes/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/nramireza/infinite-andes/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/nramireza/infinite-andes/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/nramireza/infinite-andes/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/nramireza/infinite-andes/compare/v1.0.0...v1.0.1

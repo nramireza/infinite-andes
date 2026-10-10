@@ -1,6 +1,6 @@
 # Zorro culpeo (`culpeo`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | No (Sudamérica) |
 | Estado UICN | LC |
 | Tipo en código | `culpeo` (fauna) |
-| Movimiento | camina (sigue el banco, evita el cauce) |
+| Movimiento | `walk` |
 | Actividad | día |
 | Rareza (juego) | abundante |
 | Anclaje | pies |
+| Colocación | por chunk |
 | Sprite | 8×5 px · 2 frames |
 
 ## Notas

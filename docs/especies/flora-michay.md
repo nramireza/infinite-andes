@@ -1,6 +1,6 @@
 # Michay (`michay`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Berberis darwinii* |
 | Endémica de Chile | No (Patagonia) |
 | Tipo en código | `michay` (flora) |
-| Zona / capa | Precordillera, valle, costa (sur) |
+| Zona / capa | Centro, Sur, Patagonia (valle, costa, precordillera) |
 
 ## Notas
 

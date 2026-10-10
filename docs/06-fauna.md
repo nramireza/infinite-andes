@@ -8,29 +8,31 @@ la hora.
 
 ## Implementado (Fase 2)
 
+<!-- BEGIN:fauna-implementado (generado con `npm run species`) -->
 | Tipo en código | Nombre común | Capa(s) | Movimiento | Actividad |
 |----------------|--------------|---------|------------|-----------|
 | `condor` | Cóndor | Andes | `fly` | día |
 | `huemul` | Huemul | Precordillera, Valle | `walk` | día |
-| `pudu` | Pudú | Valle, Costa | `walk` | crepúsculo |
-| `guina` | Güiña | Valle, Costa | `hop` | noche |
-| `puma` | Puma | Precordillera | `walk` | crepúsculo |
-| `culpeo` | Zorro culpeo | Valle, Costa | `walk` | día |
-| `chilla` | Zorro chilla | Costa, Playa | `walk` | crepúsculo |
-| `guanaco` | Guanaco | Precordillera | `walk` | día |
-| `vicuna` | Vicuña | Precordillera | `walk` | día |
-| `chingue` | Chingue | Valle | `walk` | noche |
+| `pudu` | Pudú | Valle, Costa, Precordillera | `walk` | crepúsculo |
+| `guina` | Güiña / Kodkod | Valle, Costa | `hop` | noche |
+| `puma` | Puma | Precordillera, Valle | `walk` | crepúsculo |
+| `culpeo` | Zorro culpeo | Precordillera, Valle, Costa | `walk` | día |
+| `chilla` | Zorro chilla | Costa, Playa, Valle | `walk` | crepúsculo |
+| `guanaco` | Guanaco | Precordillera, Valle | `walk` | día |
+| `vicuna` | Vicuña | Precordillera, Valle | `walk` | día |
+| `chingue` | Chingue | Valle, Costa | `walk` | noche |
 | `monito` | Monito del monte | Costa | `hop` | noche |
-| `chinchilla` | Chinchilla | Andes | `hop` | noche |
+| `chinchilla` | Chinchilla de cola larga | Andes, Precordillera | `hop` | noche |
 | `choroy` | Choroy | Costa | `flock` | día |
 | `cachana` | Cachaña | Costa | `flock` | día |
-| `flamenco` | Flamenco | Playa | `walk` | día |
+| `flamenco` | Flamenco chileno | Playa | `walk` | día |
 | `chungungo` | Chungungo | Mar | `swim` | día |
 | `pinguino` | Pingüino de Humboldt | Mar | `swim` | día |
-| `rana` | Rana de Darwin | Valle, Costa (borde del cauce) | `sit` | día |
+| `rana` | Rana de Darwin | Costa, Valle (borde del cauce) | `sit` | día |
 | `choique` | Choique / Ñandú petizo | Precordillera, Valle | `walk` | día |
 | `chucao` | Chucao | Costa | `hop` | día |
 | `huillin` | Huillín | Valle, Costa (borde del cauce) | `swim` | día |
+<!-- END:fauna-implementado -->
 
 ### Especificación de sprites
 
@@ -81,27 +83,29 @@ literal** (flamenco, pingüino) para tonos que la paleta no cubre. La guía gene
 
 | Especie | UICN global | Chile | Clase | Peso |
 |---------|-------------|-------|-------|------|
+<!-- BEGIN:fauna-densidad (generado con `npm run species`) -->
+| Chingue | LC | común | abundante | 6 |
 | Zorro chilla | LC | común | abundante | 6 |
 | Zorro culpeo | LC | común | abundante | 6 |
-| Chingue | LC | común | abundante | 6 |
-| Cóndor | NT | amplia | común | 3 |
-| Güiña | LC | común, esquiva | común | 3 |
-| Choroy | LC | endémica, estable | común | 3 |
 | Cachaña | LC | común | común | 3 |
-| Guanaco | LC | VU centro/norte | poco-común | 1.2 |
-| Pudú | NT | decreciente | poco-común | 1.2 |
-| Puma | LC | NT nacional | poco-común | 1.2 |
-| Vicuña | LC | localizada | poco-común | 1.2 |
-| Flamenco | NT | localizado | poco-común | 1.2 |
-| Monito del monte | NT | localizado | poco-común | 1.2 |
-| Pingüino de Humboldt | VU | colonias | rara | 0.5 |
-| Huemul | EN | ~1.000 ind. | muy-rara | 0.12 |
-| Chungungo | EN | costero | muy-rara | 0.12 |
-| Chinchilla de cola larga | EN | casi extinta | muy-rara | 0.12 |
-| Rana de Darwin | EN | endémica, en declive | muy-rara | 0.12 |
+| Choroy | LC | endémica, estable | común | 3 |
 | Chucao | LC | común, sotobosque | común | 3 |
-| Choique | NT | decreciente | poco-común | 1.2 |
+| Cóndor | NT | amplia | común | 3 |
+| Güiña / Kodkod | LC | común, esquiva | común | 3 |
+| Choique / Ñandú petizo | NT | decreciente | poco-común | 1.2 |
+| Flamenco chileno | NT | localizado | poco-común | 1.2 |
+| Guanaco | LC | VU centro/norte | poco-común | 1.2 |
+| Monito del monte | NT | localizado | poco-común | 1.2 |
+| Pudú | NT | decreciente | poco-común | 1.2 |
+| Puma | LC (NT nacional) | NT nacional | poco-común | 1.2 |
+| Vicuña | LC | localizada | poco-común | 1.2 |
 | Huillín | EN | ríos del sur | rara | 0.5 |
+| Pingüino de Humboldt | VU | colonias | rara | 0.5 |
+| Chinchilla de cola larga | EN | casi extinta | muy-rara | 0.12 |
+| Chungungo | EN | costero | muy-rara | 0.12 |
+| Huemul | EN | ~1.000 ind. | muy-rara | 0.12 |
+| Rana de Darwin | EN | endémica, en declive | muy-rara | 0.12 |
+<!-- END:fauna-densidad -->
 
 - **Chance por capa**: andes 0.25, precordillera 0.3, valle 0.5, costa 0.55, playa 0.3, mar 0.35.
 - Fuentes: listados de la UICN (versiones 2016–2025), clasificación nacional del MMA y
@@ -120,26 +124,31 @@ choique, puma y huemul. Durante el **desierto florido** (`bloomAt`,
 
 ## Especies objetivo (endémicas / nativas de Chile)
 
+<!-- BEGIN:fauna-objetivo (generado con `npm run species`) -->
 | Nombre común | Nombre científico | Endémica | Capa/zona | Actividad | Comportamiento |
 |--------------|-------------------|----------|-----------|-----------|----------------|
-| Cóndor | *Vultur gryphus* | No (Andes) | Cielo/Andes | Día | Planea lento, aleteo ocasional |
-| Pudú | *Pudu puda* | Sí (Chile/Arg) | Valle, Costa | Crepúsculo/noche | Camina entre arbustos |
-| Güiña / Kodkod | *Leopardus guigna* | Sí (Chile/Arg) | Valle, Costa | Noche | Se desplaza a saltos, esquivo |
-| Huemul | *Hippocamelus bisulcus* | Sí (Chile/Arg) | Precordillera, Valle | Día | Pastorea, se desplaza en pequeños grupos |
-| Puma | *Puma concolor* | No | Precordillera | Amanecer/atardecer | Raro, solitario |
-| Zorro culpeo | *Lycalopex culpaeus* | No (Sudamérica) | Valle, Costa | Día/noche | Trota; **colirrojo** |
-| Zorro chilla | *Lycalopex griseus* | No | Valle, Playa | Crepúsculo | Más pequeño |
-| Guanaco | *Lama guanicoe* | No | Precordillera/estepa | Día | Tropillas |
-| Vicuña | *Vicugna vicugna* | No | Altiplano/precordillera | Día | Grupos, muy ágil |
-| Chingue | *Conepatus chinga* | No | Valle | Noche | Lento, hocico al suelo |
-| Monito del monte | *Dromiciops gliroides* | Sí (Chile/Arg) | Costa (colihue) | Noche | Diminuto, fósil viviente |
-| Rana de Darwin | *Rhinoderma darwinii* | Sí (Chile/Arg) | Humedales, río | Día | Pequeña, estática |
-| Choroy | *Enicognathus leptorhynchus* | **Sí (Chile)** | Bosque Costa | Día | Bandada ruidosa |
-| Cachaña | *Enicognathus ferrugineus* | No (Patagonia) | Bosque | Día | Bandadas |
-| Flamenco chileno | *Phoenicopterus chilensis* | No | Mar/lagunas costeras | Día | Filtra en el agua |
-| Chungungo | *Lontra felina* | Sí (Chile/Perú) | Mar, roqueríos | Día | Nada, se asoma |
-| Chinchilla de cola larga | *Chinchilla lanigera* | **Sí (Chile)** | Andes rocosos | Noche | Ágil en rocas |
-| Pingüino de Humboldt | *Spheniscus humboldti* | No | Mar | Día | Nada, emerge |
+| Cóndor | *Vultur gryphus* | No (Andes) | Altiplano, Norte, Centro, Sur, Patagonia, Austral (andes) | día | Ave símbolo de los Andes; planea lento con aleteo ocasional. |
+| Huemul | *Hippocamelus bisulcus* | Sí (Chile/Argentina) | Centro, Sur, Patagonia, Austral (precordillera, valle) | día | Ciervo andino en peligro; pastorea y deja huellas. |
+| Pudú | *Pudu puda* | Sí (Chile/Argentina) | Centro, Sur, Patagonia, Austral (valle, costa, precordillera) | crepúsculo | Uno de los ciervos más pequeños; camina entre arbustos. |
+| Güiña / Kodkod | *Leopardus guigna* | Sí (Chile/Argentina) | Centro, Sur, Patagonia, Austral (valle, costa) | noche | Felino esquivo; se desplaza a saltos de noche. |
+| Puma | *Puma concolor* | No | Sur, Patagonia, Austral (precordillera, valle) | crepúsculo | Depredador tope; raro y solitario; deja huellas. |
+| Zorro culpeo | *Lycalopex culpaeus* | No (Sudamérica) | Altiplano, Norte, Centro, Sur, Patagonia (precordillera, valle, costa) | día | Zorro andino de cola rojiza; trota de día. |
+| Zorro chilla | *Lycalopex griseus* | No | Altiplano, Norte, Centro, Sur, Patagonia, Austral (costa, playa, valle) | crepúsculo | Zorro gris, más pequeño; activo al crepúsculo. |
+| Guanaco | *Lama guanicoe* | No | Altiplano, Norte, Centro, Patagonia, Austral (precordillera, valle) | día | Camélido silvestre; tropillas en la estepa; deja huellas. |
+| Vicuña | *Vicugna vicugna* | No | Altiplano, Norte, Centro (precordillera, valle) | día | Camélido del altiplano; grupos muy ágiles. |
+| Chingue | *Conepatus chinga* | No | Altiplano, Norte, Centro, Sur (valle, costa) | noche | Mofeta de hocico al suelo; lento, de noche. |
+| Monito del monte | *Dromiciops gliroides* | Sí (Chile/Argentina) | Centro, Sur (costa) | noche | Marsupial, fósil viviente; diminuto, en el colihue. |
+| Chinchilla de cola larga | *Chinchilla lanigera* | Sí (Chile) | Altiplano, Norte, Centro, Sur, Patagonia, Austral (andes, precordillera) | noche | Roedor ágil de roqueríos andinos; casi extinto. |
+| Choroy | *Enicognathus leptorhynchus* | Sí (Chile) | Centro, Sur (costa) | día | Loro endémico; bandada ruidosa del bosque de la Costa. |
+| Cachaña | *Enicognathus ferrugineus* | No (Patagonia) | Centro, Sur (costa) | día | Loro austral; vuela en bandadas. |
+| Flamenco chileno | *Phoenicopterus chilensis* | No | Altiplano, Norte, Centro, Sur, Patagonia, Austral (playa) | día | Filtra en lagunas y marismas costeras. |
+| Chungungo | *Lontra felina* | Sí (Chile/Perú) | Altiplano, Norte, Centro, Sur, Patagonia, Austral (mar) | día | Nutria marina; nada y se asoma entre roqueríos. |
+| Pingüino de Humboldt | *Spheniscus humboldti* | No | Altiplano, Norte, Centro, Sur, Patagonia, Austral (mar) | día | Pingüino del Pacífico sur; nada y emerge. |
+| Rana de Darwin | *Rhinoderma darwinii* | Sí (Chile/Argentina) | Centro, Sur, Patagonia, Austral (costa, valle) | día | Anfibio endémico estático en el borde del cauce. |
+| Choique / Ñandú petizo | *Rhea pennata* | No | Sur, Patagonia (precordillera, valle) | día | Ñandú de la estepa; camina y deja huellas. |
+| Chucao | *Scelorchilus rubecula* | No (Chile/Argentina) | Sur, Patagonia, Austral (costa) | día | Ave de sotobosque; pecho rojizo. |
+| Huillín | *Lontra provocax* | No (Chile/Argentina) | Centro, Sur, Patagonia, Austral (valle, costa) | día | Nutria de río del sur; nada en el borde del cauce. |
+<!-- END:fauna-objetivo -->
 
 > Los nombres científicos y la condición de endemismo son una aproximación: varias especies son
 > "nativas" más que endémicas de Chile. El estado de conservación (UICN/MMA) se detalla en la
@@ -147,11 +156,11 @@ choique, puma y huemul. Durante el **desierto florido** (`bloomAt`,
 
 ## Modelo de datos de una especie
 
-Cada entrada de `SPECIES` (`fauna.js`) declara: `movement` (`fly`/`walk`/`hop`/`swim`/`flock`/`sit`), `active`
-(franja horaria), `speed`/`range` (vaivén), `fps`, `anchor` (centro o pies), `palette`
-(carácter → clave de `getPalette`) y `frames` (matrices de píxeles). Para documentar una
-especie con detalle (UICN, nombre científico, referencia), usa
-[`templates/especimen.md`](templates/especimen.md).
+Cada entrada de `SPECIES` (`fauna.js`) es un **registro** con los campos de comportamiento
+(`movement`, `active`, `speed`/`range`, `fps`, `anchor`, `rarity`), el sprite (`palette` y
+`frames`), la metadata (`common`, `sci`, `endemism`, `iucn`, `chile`, `notes`), las **zonas**
+(`zones[bioma][capa]`, fuente única de los pools) y la colocación (`placement.river`, `bloom`).
+La flora sigue el mismo esquema en `FLORA` (`flora.js`). Ver [09 · Arquitectura](09-arquitectura.md).
 
 ## Pendiente
 
@@ -178,5 +187,5 @@ formación en V y la **manada** de guanacos trotando. Se disparan como el resto 
 
 ## Fichas de especies
 
-Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `npm run specimens`
+Cada especie tiene su ficha en [`especies/`](especies/README.md), generada con `npm run species`
 (nombre científico, endemismo, UICN, movimiento, actividad y rareza).

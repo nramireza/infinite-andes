@@ -1,6 +1,6 @@
 # Notro / Ciruelillo (`notro`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Embothrium coccineum* |
 | Endémica de Chile | No (Chile/Argentina) |
 | Tipo en código | `notro` (flora) |
-| Zona / capa | Sur, Patagonia, Austral |
+| Zona / capa | Sur, Patagonia, Austral (valle, costa) |
 
 ## Notas
 

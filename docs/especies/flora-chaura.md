@@ -1,6 +1,6 @@
 # Chaura (`chaura`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Gaultheria mucronata* |
 | Endémica de Chile | No (Patagonia) |
 | Tipo en código | `chaura` (flora) |
-| Zona / capa | Costa (sur) |
+| Zona / capa | Centro, Sur, Patagonia, Austral (costa, valle) |
 
 ## Notas
 

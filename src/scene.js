@@ -155,12 +155,12 @@ export class Scene {
 
   floraPoolAt(layer, wx) {
     const b = this.biomeAt(wx);
-    return biomeFloraPool(layer.name, b.weights, this.bloomValue(b), layer.flora?.types);
+    return biomeFloraPool(layer.name, b.weights, this.bloomValue(b));
   }
 
   faunaPoolAt(layer, wx) {
     const b = this.biomeAt(wx);
-    return biomeFaunaPool(layer.name, b.weights, this.bloomValue(b), layer.fauna?.species);
+    return biomeFaunaPool(layer.name, b.weights, this.bloomValue(b));
   }
 
   faunaChanceAt(wx) {

@@ -6,6 +6,8 @@
 import { fbm1 } from "./noise.js";
 import { hash1, hashInt } from "./rng.js";
 import { lerpColor } from "./palette.js";
+import { FLORA } from "./flora.js";
+import { SPECIES, BLOOM_SPECIES } from "./fauna.js";
 
 export const BIOME_IDS = ["altiplano", "norte", "centro", "sur", "patagonia", "austral"];
 
@@ -18,20 +20,6 @@ export const BIOMES = {
       rock: "#8f8378", rockD: "#6b6058", snow: "#ffffff", snowD: "#e4eaf0",
     },
     geometry: { ampMul: 1.12, snowShift: -0.1 },
-    // Puna: paja brava, matorral bajo y roca; sin árboles.
-    flora: {
-      precordillera: ["cactus", "bush", "rock", "grass"],
-      valle: ["grass", "grass", "bush", "rock", "cactus"],
-      costa: ["cactus", "bush", "rock", "grass"],
-      playa: ["rock", "grass"],
-    },
-    fauna: {
-      andes: ["condor", "chinchilla"],
-      precordillera: ["guanaco", "vicuna", "culpeo", "chinchilla"],
-      valle: ["vicuna", "guanaco", "culpeo", "chingue"],
-      costa: ["chilla", "culpeo", "chingue"],
-      playa: ["flamenco", "chilla"],
-    },
   },
   norte: {
     palette: {
@@ -40,26 +28,10 @@ export const BIOMES = {
       rock: "#8a7a6a", rockD: "#6a5a4e", snow: "#fff6e6", snowD: "#e0d2b8",
     },
     geometry: { ampMul: 0.92, snowShift: 0.3 },
-    // Sin araucaria ni árboles: matorral, copao y roca del desierto.
-    flora: {
-      precordillera: ["cactus", "bush", "rock"],
-      valle: ["cactus", "bush", "rock", "grass", "crop"],
-      costa: ["cactus", "bush", "rock"],
-      playa: ["rock", "grass"],
-    },
-    fauna: {
-      andes: ["condor", "chinchilla"],
-      precordillera: ["guanaco", "vicuna", "culpeo"],
-      valle: ["culpeo", "chingue", "chilla", "guanaco"],
-      costa: ["chilla", "culpeo", "chingue"],
-      playa: ["flamenco", "chilla"],
-    },
   },
   centro: {
     palette: null,
     geometry: { ampMul: 1, snowShift: 0 },
-    flora: null, // usa los pools de LAYERS
-    fauna: null,
   },
   sur: {
     palette: {
@@ -68,19 +40,6 @@ export const BIOMES = {
       rock: "#5f6a70", rockD: "#48525a", snow: "#ffffff", snowD: "#d8e6f0",
     },
     geometry: { ampMul: 1.06, snowShift: -0.3 },
-    flora: {
-      precordillera: ["araucaria", "alerce", "lenga", "coihue", "michay", "bush"],
-      valle: ["lenga", "nalca", "colihue", "coihue", "roble", "michay", "copihue", "araucaria", "bush", "quillay", "manio", "canelo", "arrayan", "notro"],
-      costa: ["lenga", "coihue", "roble", "alerce", "nalca", "colihue", "copihue", "michay", "chaura", "araucaria", "bush", "quillay", "manio", "canelo", "arrayan", "notro"],
-      playa: ["grass", "rock"],
-    },
-    fauna: {
-      andes: ["condor", "chinchilla"],
-      precordillera: ["huemul", "pudu", "puma", "choique"],
-      valle: ["pudu", "guina", "huemul", "chingue", "culpeo", "choique", "huillin", "rana"],
-      costa: ["monito", "choroy", "cachana", "pudu", "guina", "chucao", "huillin", "rana"],
-      playa: ["chilla", "flamenco"],
-    },
   },
   patagonia: {
     palette: {
@@ -89,20 +48,6 @@ export const BIOMES = {
       rock: "#6b7078", rockD: "#4e545c", snow: "#ffffff", snowD: "#dbe8f2",
     },
     geometry: { ampMul: 1.02, snowShift: -0.45 },
-    // Estepa fría: lenga y ñire bajos, coirón y matorral; mucha nieve.
-    flora: {
-      precordillera: ["lenga", "coihue", "michay", "bush", "rock"],
-      valle: ["lenga", "colihue", "michay", "chaura", "bush", "grass", "manio", "notro", "arrayan"],
-      costa: ["lenga", "coihue", "michay", "chaura", "colihue", "bush", "manio", "notro", "arrayan", "canelo"],
-      playa: ["grass", "rock"],
-    },
-    fauna: {
-      andes: ["condor", "chinchilla"],
-      precordillera: ["guanaco", "choique", "puma", "huemul"],
-      valle: ["guanaco", "choique", "culpeo", "puma", "huemul"],
-      costa: ["chucao", "pudu", "guina", "culpeo", "huillin", "rana"],
-      playa: ["chilla", "flamenco"],
-    },
   },
   austral: {
     palette: {
@@ -111,25 +56,11 @@ export const BIOMES = {
       rock: "#5a6a6e", rockD: "#414f54", snow: "#ffffff", snowD: "#dbe8f2",
     },
     geometry: { ampMul: 1.08, snowShift: -0.5, fjord: 1 },
-    // Fiordos: islas boscosas y húmedas cortadas por canales de agua.
-    flora: {
-      precordillera: ["alerce", "coihue", "manio", "canelo", "bush"],
-      valle: ["coihue", "manio", "canelo", "nalca", "colihue", "notro", "arrayan", "lenga", "bush"],
-      costa: ["coihue", "manio", "canelo", "nalca", "colihue", "notro", "arrayan", "alerce", "chaura", "bush"],
-      playa: ["grass", "rock"],
-    },
-    fauna: {
-      andes: ["condor", "chinchilla"],
-      precordillera: ["huemul", "puma", "guanaco"],
-      valle: ["huillin", "rana", "pudu", "guina"],
-      costa: ["huillin", "chungungo", "pinguino", "chucao", "rana", "pudu", "guina"],
-      playa: ["chilla", "flamenco"],
-    },
   },
 };
 
-// Especies de aves y zorros que se activan con la floración.
-export const BLOOM_FAUNA = ["condor", "culpeo", "chilla", "flamenco"];
+// Especies de aves y zorros que se activan con la floración (derivado del registro).
+export const BLOOM_FAUNA = BLOOM_SPECIES;
 
 const BIOME_FREQ = 0.00015; // longitud de onda amplia: regiones de miles de px
 const BLOOM_BLOCK = 60000;  // px de mundo por bloque de floración (~22x el original)
@@ -276,32 +207,48 @@ export function biomeAt(worldX, seed = 0, mode = "auto") {
   return out;
 }
 
-// Pool de flora ponderado por bioma. `fallback` son los `types` de LAYERS (centro).
-export function biomeFloraPool(layerName, weights, bloom, fallback) {
+// Tablas precomputadas por (bioma, capa) desde las `zones` del registro de
+// especies: la pertenencia a pools vive en un solo sitio.
+function buildPoolTable(registry) {
+  const table = {};
+  for (const id of BIOME_IDS) {
+    const byLayer = {};
+    for (const type in registry) {
+      const z = registry[type].zones?.[id];
+      if (!z) continue;
+      for (const layerName in z) (byLayer[layerName] ||= []).push({ type, w: z[layerName] });
+    }
+    table[id] = byLayer;
+  }
+  return table;
+}
+const FLORA_TABLE = buildPoolTable(FLORA);
+const FAUNA_TABLE = buildPoolTable(SPECIES);
+
+// Pool de flora ponderado por bioma (a partir de las zonas de cada especie).
+export function biomeFloraPool(layerName, weights, bloom = 0) {
   const out = [];
   for (const id of BIOME_IDS) {
     const w = weights[id] || 0;
     if (w <= 0) continue;
-    const pool = BIOMES[id].flora?.[layerName] ?? (id === "centro" ? fallback : null);
-    if (!pool) continue;
-    for (const type of pool) out.push({ type, w });
+    const list = FLORA_TABLE[id]?.[layerName];
+    if (!list) continue;
+    for (const e of list) out.push({ type: e.type, w: w * e.w });
   }
-  if (out.length === 0 && fallback) for (const type of fallback) out.push({ type, w: 1 });
   if (bloom > 0) out.push({ type: "flower", w: bloom * BLOOM_FLORA_WEIGHT });
   return out;
 }
 
-// Pool de fauna ponderado por bioma. `fallback` son las `species` de LAYERS (centro).
-export function biomeFaunaPool(layerName, weights, bloom, fallback) {
+// Pool de fauna ponderado por bioma (a partir de las zonas de cada especie).
+export function biomeFaunaPool(layerName, weights, bloom = 0) {
   const out = [];
   for (const id of BIOME_IDS) {
     const w = weights[id] || 0;
     if (w <= 0) continue;
-    const pool = BIOMES[id].fauna?.[layerName] ?? (id === "centro" ? fallback : null);
-    if (!pool) continue;
-    for (const type of pool) out.push({ type, w });
+    const list = FAUNA_TABLE[id]?.[layerName];
+    if (!list) continue;
+    for (const e of list) out.push({ type: e.type, w: w * e.w });
   }
-  if (out.length === 0 && fallback) for (const type of fallback) out.push({ type, w: 1 });
   if (bloom > 0) for (const type of BLOOM_FAUNA) out.push({ type, w: bloom * BLOOM_FAUNA_WEIGHT });
   return out;
 }

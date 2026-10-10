@@ -8,7 +8,7 @@ Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** estable (v1.2) · **Versión:** 1.2.0 · **Licencia:** MIT
+> **Estado:** estable (v1.3) · **Versión:** 1.3.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -148,7 +148,7 @@ infinite-andes/
 ├── scripts/serve.mjs     # servidor de desarrollo sin caché (npm start)
 ├── scripts/capture.sh    # capturas versionadas (npm run shots)
 ├── scripts/bench.mjs     # benchmark de render/update (npm run bench)
-├── scripts/specimens.mjs # fichas de especies (npm run specimens)
+├── scripts/species.mjs   # fichas y tablas de especies (npm run species)
 ├── screenshots/          # capturas por versión (ver screenshots/README.md)
 └── docs/                 # documentación del proyecto (ver docs/README.md; fichas en docs/especies/)
 ```

@@ -22,8 +22,8 @@
 | `sky.js` | Cielo: gradiente, Vía Láctea, estrellas, aurora, astros (`celestial`, `drawBody`), nubes |
 | `weather.js` | Partículas (nieve/lluvia/viento), niebla, transiciones de clima |
 | `terrain.js` | 6 capas (`LAYERS`), ruido de altura, nieve, volcanes, rocas, playa, mar, ríos (`riverEvents`, `drawChannel`) |
-| `flora.js` | Colocación determinista (`floraSpawns`) y dibujo (`placeFlora`) de plantas por capa |
-| `fauna.js` | Especies (sprites y actividad), colocación determinista (`faunaSpawns`) y dibujo (`placeFauna`) |
+| `flora.js` | Registro `FLORA` (especies, zonas, metadata) + colocación/`drawPlant` por capa |
+| `fauna.js` | Registro `SPECIES` (especies, zonas, metadata, sprites) + colocación y dibujo |
 | `moments.js` | Momentos raros (`momentEvents`, `momentSky`, `momentGround`): 18-sep, Leo Rey, Kung Leo |
 | `scene.js` | Orquestador: estado, cámara, día/noche, clima, orden de render, export |
 | `ui.js` | Controles del panel enlazados a la escena y URL |
@@ -85,19 +85,39 @@ dibujan después y ocultan a las traseras.
 | `flora` | `{ chunkW, minSize, maxSize, minChance, maxPer, types }` |
 | `fauna` | `{ chunkW, chance, species }` (especies de `fauna.js`) |
 
-## Cómo extender
+## Registro de especies (`FLORA` / `SPECIES`)
 
+Cada elemento de flora y fauna vive en un **registro** que es la **fuente única** de identidad,
+metadata, zonas (pools) y definición de dibujo:
+
+- `FLORA` (`flora.js`): una entrada por tipo dibujable.
+  `{ kind: "especie"|"generico"|"efecto", common?, sci?, endemism?, notes?, draw?, zones, bloomOnly? }`.
+- `SPECIES` (`fauna.js`): `{ movement, active, speed, range, fps, anchor, rarity, palette, frames,
+  common, sci, endemism, iucn, chile, notes, zones, placement?, bloom? }`.
+
+**Zonas (pools).** `zones[bioma][capa]` da el peso con que la especie aparece en ese bioma y capa.
+`biomeFloraPool`/`biomeFaunaPool` (`biomes.js`) construyen el pool efectivo a partir de las zonas
+(peso = `peso de bioma · peso de zona`), sin listas paralelas. `placement.river` coloca la especie
+en el borde del cauce y `bloom` la suma al desierto florido; `bloomOnly` (flor) la limita a la
+floración. `LAYERS` solo conserva lo espacial (`chunkW`, `chance`, `minSize`…).
+
+**Docs generadas.** `npm run species` (`scripts/species.mjs`) lee los registros y regenera las
+fichas de `docs/especies/` y las tablas de [05 · Flora](05-flora.md) y [06 · Fauna](06-fauna.md)
+entre marcadores `<!-- BEGIN:… -->` / `<!-- END:… -->`. No editar esas tablas a mano.
+
+**Cómo extender**
+
+- **Nueva especie vegetal**: añadir a `FLORA` (metadata + `zones`) y su caso en `DRAWERS`
+  (`flora.js`); `npm test` valida que `DRAWERS` y `FLORA` coincidan.
+- **Nueva fauna**: añadir a `SPECIES` (sprites, movimiento, `zones`); `npm run species` actualiza
+  fichas y tablas.
+- **Nuevo bioma**: preset en `BIOMES` (paleta y geometría), añadirlo a `BIOME_IDS` y a
+  `biomeSel`/`VIEW_BIOMES`; las zonas de cada especie ya lo referencian por nombre.
 - **Nueva capa**: agregar un objeto a `LAYERS` en el orden de atrás hacia adelante.
-- **Nueva especie vegetal**: `drawPlant` en `flora.js` + entrar en `LAYERS[*].flora.types` (centro)
-  y/o en `BIOMES[*].flora` (norte, altiplano, sur, Patagonia).
-- **Nuevo bioma**: preset en `BIOMES` (paleta, geometría y pools), añadirlo a `BIOME_IDS` y al
-  selector `biomeSel`/`VIEW_BIOMES` (caso de referencia: `patagonia`).
 - **Nuevo clima**: agregar estado en `weather.js` (`COUNTS`, `spawn`, `draw`, `windLevelFor`), tintes
   en `palette.js` (`WEATHER_TARGETS`), el peso en las cuatro estaciones (`seasons.js`), la clave en
   `VIEW_WEATHERS` (`views.js`), la etiqueta en `ui.js` y la opción en `index.html` (caso de
   referencia: `storm`).
-- **Nueva fauna**: añadir la especie a `SPECIES` en `fauna.js` (sprites, movimiento
-  `fly`/`walk`/`hop`/`swim`/`flock`, actividad) y listarla en `LAYERS[*].fauna.species`.
 - **Nuevo momento**: añadir el tipo en `moments.js` (`MOMENT_IDS` + dibujo) y, si aplica,
   una opción en el selector `momentSel`.
 

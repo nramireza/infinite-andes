@@ -1,6 +1,6 @@
 # Huillín (`huillin`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -9,10 +9,11 @@
 | Endémica de Chile | No (Chile/Argentina) |
 | Estado UICN | EN |
 | Tipo en código | `huillin` (fauna) |
-| Movimiento | nada (vaivén sobre el agua) |
+| Movimiento | `swim` |
 | Actividad | día |
 | Rareza (juego) | rara |
 | Anclaje | pies |
+| Colocación | borde del cauce |
 | Sprite | 9×4 px · 2 frames |
 
 ## Notas

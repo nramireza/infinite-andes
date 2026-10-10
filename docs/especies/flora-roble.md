@@ -1,6 +1,6 @@
 # Roble (`roble`)
 
-> Ficha generada con `npm run specimens` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-10
 
 | Campo | Valor |
 |-------|-------|
@@ -8,7 +8,7 @@
 | Nombre científico | *Nothofagus obliqua* |
 | Endémica de Chile | Sí (Chile/Argentina) |
 | Tipo en código | `roble` (flora) |
-| Zona / capa | Costa, valle (sur) |
+| Zona / capa | Centro, Sur (valle, costa) |
 
 ## Notas
 
