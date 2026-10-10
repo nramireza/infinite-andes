@@ -1,0 +1,226 @@
+{
+  "version": "1.3.0",
+  "tag": "v1.3.0-f292ff7",
+  "generatedAt": "2026-10-10T03:06:59.772Z",
+  "aspect": "32:9",
+  "chrome": "google-chrome-stable",
+  "git": "f292ff7",
+  "shots": [
+    {
+      "seed": "andes",
+      "hour": "6.7",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h6.7_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "18.2",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h18.2_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "23",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h23_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "6.7",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "pewen_h6.7_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "12",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "pewen_h12_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "18.2",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "pewen_h18.2_clear.png"
+    },
+    {
+      "seed": "pewen",
+      "hour": "23",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "pewen_h23_clear.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "snow",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_snow.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "rain",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_rain.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "fog",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_fog.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "wind",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_wind.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "storm",
+      "biome": null,
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_storm.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": "norte",
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_clear_norte.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": "sur",
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_clear_sur.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": "altiplano",
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_clear_altiplano.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": "patagonia",
+      "bloom": null,
+      "season": "invierno",
+      "file": "andes_h12_clear_patagonia_invierno.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": "austral",
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_clear_austral.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "23",
+      "weather": "clear",
+      "biome": "austral",
+      "bloom": null,
+      "season": null,
+      "file": "andes_h23_clear_austral.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": "norte",
+      "bloom": "on",
+      "season": null,
+      "file": "andes_h12_clear_norte_on.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": "auto",
+      "bloom": null,
+      "season": null,
+      "file": "andes_h12_clear_auto.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": "otono",
+      "file": "andes_h12_clear_otono.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": "invierno",
+      "file": "andes_h12_clear_invierno.png"
+    },
+    {
+      "seed": "andes",
+      "hour": "12",
+      "weather": "clear",
+      "biome": null,
+      "bloom": null,
+      "season": "primavera",
+      "file": "andes_h12_clear_primavera.png"
+    }
+  ]
+}
