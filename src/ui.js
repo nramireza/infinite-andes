@@ -47,6 +47,8 @@ export function setupUI(scene, hooks = {}) {
   const hud = $("hud");
   const panelToggle = $("panelToggle");
   const panel = $("panel");
+  const chkActivity = $("chkActivity");
+  const actState = $("actState");
 
   let draggingTime = false;
   let aspectLabel = DEFAULT_ASPECT;
@@ -256,6 +258,11 @@ export function setupUI(scene, hooks = {}) {
 
   panelToggle.addEventListener("click", () => panel.classList.toggle("open"));
 
+  chkActivity.addEventListener("change", () => {
+    hooks.setActivity?.(chkActivity.checked);
+    updateHUD();
+  });
+
   function toggleFullscreen() {
     if (document.fullscreenElement) document.exitFullscreen?.();
     else document.documentElement.requestFullscreen?.().catch?.(() => {});
@@ -309,7 +316,18 @@ export function setupUI(scene, hooks = {}) {
     const weather = WEATHER_LABEL[scene.weather.type] || scene.weather.type;
     const biome = BIOME_LABEL[scene.biomeMode] || scene.biomeMode;
     const season = SEASON_LABEL[scene.season] || scene.season;
-    hud.textContent = `seed ${scene.seed} · x ${Math.round(scene.camera.x)} · ${label} · ${weather} · ${season} · ${biome}`;
+    let act = hooks.activityState?.() || { enabled: false };
+    let actTxt = "";
+    if (act.enabled) {
+      actTxt = act.online === null ? " · act …" : act.online ? ` · act ${act.mul.toFixed(2)}` : " · act sin puente";
+    }
+    hud.textContent = `seed ${scene.seed} · x ${Math.round(scene.camera.x)} · ${label} · ${weather} · ${season} · ${biome}${actTxt}`;
+    if (actState) {
+      actState.textContent = !act.enabled ? "off"
+        : act.online === null ? "sondeando…"
+        : act.online ? `act ${act.mul.toFixed(2)}`
+        : "sin puente";
+    }
   }
 
   // Estado inicial desde la URL (mismo camino que cargar un favorito).
@@ -323,6 +341,8 @@ export function setupUI(scene, hooks = {}) {
   clockSel.value = scene.clock;
   speed.value = String(scene.scrollSpeed);
   populateViewSelect("");
+  chkActivity.checked = !!hooks.activityState?.().enabled;
+  updateHUD();
 
   // Modo kiosco: sin panel ni botón. Clic en el paisaje = pantalla completa.
   // `wall=1` (live wallpaper) entra directo en kiosco.

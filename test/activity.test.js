@@ -2,7 +2,10 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import { activityMultiplier, startActivityPolling, ACTIVITY_MIN, ACTIVITY_MAX } from "../src/activity.js";
+import {
+  activityMultiplier, startActivityPolling, createActivityController, activityConfigFrom,
+  ACTIVITY_MIN, ACTIVITY_MAX, ACTIVITY_URL_DEFAULT,
+} from "../src/activity.js";
 
 const wait = (ms = 0) => new Promise((r) => setTimeout(r, ms));
 
@@ -61,4 +64,69 @@ test("un puente OK aplica el multiplicador", async () => {
   await wait();
   assert.deepEqual(updates, [ACTIVITY_MAX]);
   stop();
+});
+
+test("activityConfigFrom: precedencia URL > preferencia > off", () => {
+  assert.deepEqual(activityConfigFrom({ param: "off", stored: "1" }), { enabled: false, url: ACTIVITY_URL_DEFAULT });
+  assert.deepEqual(activityConfigFrom({ param: "1", stored: "0" }), { enabled: true, url: ACTIVITY_URL_DEFAULT });
+  assert.deepEqual(activityConfigFrom({ param: "http://x/a", stored: "0" }), { enabled: true, url: "http://x/a" });
+  assert.deepEqual(activityConfigFrom({ param: null, stored: "1" }), { enabled: true, url: ACTIVITY_URL_DEFAULT });
+  assert.deepEqual(activityConfigFrom({ param: null, stored: null }), { enabled: false, url: ACTIVITY_URL_DEFAULT });
+});
+
+test("el controlador arranca apagado y no sondea", () => {
+  let calls = 0;
+  const c = createActivityController({
+    url: ACTIVITY_URL_DEFAULT,
+    fetchImpl: async () => { calls++; return { ok: true, json: async () => ({}) }; },
+  });
+  assert.deepEqual(c.getState(), { enabled: false, online: null, mul: 1 });
+  assert.equal(c.isEnabled(), false);
+  assert.equal(calls, 0);
+});
+
+test("enable consulta el puente y disable vuelve a 1", async () => {
+  const states = [];
+  const c = createActivityController({
+    url: ACTIVITY_URL_DEFAULT,
+    onUpdate: (st) => states.push(st),
+    fetchImpl: async () => ({ ok: true, json: async () => ({ cpu: 1, ram: 1, temp: 20, load: 0 }) }),
+    interval: 1000,
+  });
+  c.enable();
+  await wait();
+  assert.equal(c.isEnabled(), true);
+  assert.deepEqual(c.getState(), { enabled: true, online: true, mul: ACTIVITY_MAX });
+  c.disable();
+  assert.deepEqual(c.getState(), { enabled: false, online: null, mul: 1 });
+  assert.equal(c.isEnabled(), false);
+  assert.ok(states.length >= 3, "onUpdate debería recibir cada cambio");
+});
+
+test("enable con el puente caído deja mul en 1 y online false", async () => {
+  const c = createActivityController({
+    url: ACTIVITY_URL_DEFAULT,
+    fetchImpl: async () => { throw new Error("caído"); },
+    interval: 1000,
+  });
+  c.enable();
+  await wait();
+  assert.deepEqual(c.getState(), { enabled: true, online: false, mul: 1 });
+  c.disable();
+});
+
+test("disable detiene los sondeos periódicos", async () => {
+  let calls = 0;
+  const c = createActivityController({
+    url: ACTIVITY_URL_DEFAULT,
+    fetchImpl: async () => { calls++; return { ok: true, json: async () => ({ cpu: 0 }) }; },
+    interval: 10,
+  });
+  c.enable();
+  await wait(35);
+  const before = calls;
+  assert.ok(before >= 2, `esperaba varios sondeos, hubo ${before}`);
+  c.disable();
+  await wait(35);
+  assert.equal(calls, before, "no debe sondear tras apagar");
 });

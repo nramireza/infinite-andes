@@ -6,6 +6,16 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-10-11
+
+### Added
+- **Switch de actividad del equipo** ([D-055](docs/12-decisiones.md),
+  [17](docs/17-reactividad-sistema.md)): la reactividad por CPU/RAM/temperatura pasa a ser un
+  **opt-in explícito** en el panel (casilla + estado), **off por defecto** y sin ningún `fetch`
+  cuando está apagada. La preferencia se guarda en `localStorage` y `?activity=<url>` la enciende
+  (o `?activity=off` la apaga). El **HUD** muestra `act <m>` solo cuando está activa. Sigue siendo
+  **solo local** (en HTTPS el navegador bloquea `http://localhost`).
+
 ## [1.7.0] - 2026-10-11
 
 ### Added

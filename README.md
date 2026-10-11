@@ -51,7 +51,7 @@ npm run start:python
 | `perf`    | `?perf=1`     | Overlay con ms/frame y fps objetivo |
 | `wall`    | `?wall=1`     | Modo fondo: kiosco + **Wake Lock** (pantalla encendida) |
 | `sw`      | `?sw=1`       | Fuerza el registro del service worker en localhost (PWA) |
-| `activity`| `?activity=http://localhost:8787/activity` | Densidad de fauna según actividad del equipo (puente local, opt-in) |
+| `activity`| `?activity=1` o `?activity=<url>` | Enciende la densidad de fauna por actividad del equipo (switch del panel; `off` la apaga) |
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
 `?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
@@ -108,9 +108,11 @@ Panel superior izquierdo (se oculta con el botón `∞`):
 - **Región**: procedural (automático), Altiplano, Norte árido, Centro, Sur boscoso, Patagonia
   esteparia o Austral (fiordos).
 - **Floración**: desierto florido automático, forzado o desactivado (solo en el norte).
+- **Actividad del equipo**: casilla (off por defecto) que activa la densidad de fauna según CPU/RAM
+  del equipo vía puente local; muestra el estado del puente.
 - **Exportar PNG**: descarga la vista actual. **Tira**: descarga 8 pantallas seguidas.
   **Copiar enlace**: comparte la vista.
-- **HUD**: semilla, posición, hora y clima.
+- **HUD**: semilla, posición, hora y clima (y `act <m>` si la actividad está activa).
 
 Atajos de teclado: `Espacio` pausa/reanuda el auto-scroll · `←`/`→` desplazan · `H`/`P` muestran el
 panel · `F` pantalla completa (en kiosco también con clic). Para dejarlo como fondo, abrir con
@@ -127,10 +129,12 @@ pestaña). Ver [D-026](docs/12-decisiones.md).
   (`npm start` sigue sin caché); se puede forzar con `?sw=1`.
 - **Modo fondo** (`?ui=0&fit=cover` o `?wall=1`): kiosco a pantalla completa y, con `wall=1`,
   **Wake Lock** para que la pantalla no se apague (degrada si el navegador no lo soporta).
-- **Densidad por actividad** (opt-in): levanta el puente local sin dependencias
-  (`npm run activity`, `http://localhost:8787/activity`) y abre la demo con
-  `?activity=http://localhost:8787/activity`; la fauna se densifica con la carga real (CPU/RAM/
-  temperatura). Sin el flag, o si el puente cae, el paisaje es idéntico al actual.
+- **Densidad por actividad** (opt-in con **switch en el panel**, off por defecto): levanta el puente
+  local sin dependencias (`npm run activity`, `http://localhost:8787/activity`) y enciende la casilla
+  "Actividad del equipo" (o abre con `?activity=1`). El HUD muestra `act <m>` mientras está activa y
+  el estado del puente aparece bajo la casilla. La preferencia se recuerda; sin ella, o si el puente
+  cae, el paisaje es idéntico al actual. Es **solo local** (en HTTPS el navegador bloquea
+  `http://localhost`).
 - **Referencias fotográficas**: los sprites se guían por fotos PD/CC0 registradas en
   `docs/referencias/manifiesto.csv` (ver [18 · Referencias](docs/18-referencias.md)); las imágenes
   nunca entran al runtime y quedan fuera del repo (`refs/`).

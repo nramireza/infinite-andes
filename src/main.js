@@ -6,7 +6,7 @@ import { setupUI } from "./ui.js";
 import { BASE_H, DEFAULT_ASPECT, ratioFromString, widthForRatio } from "./viewport.js";
 import { clampDt, shouldDraw, effectiveFps, canRender } from "./loop.js";
 import { registerServiceWorker, setupWakeLock } from "./pwa.js";
-import { startActivityPolling } from "./activity.js";
+import { createActivityController, activityConfigFrom, ACTIVITY_STORAGE_KEY } from "./activity.js";
 
 const canvas = document.getElementById("scene");
 const params = new URLSearchParams(window.location.search);
@@ -45,9 +45,20 @@ const wall = params.get("wall") === "1" ||
   window.matchMedia?.("(display-mode: standalone)").matches;
 setupWakeLock(wall);
 
-// Densidad de fauna según actividad del equipo (opt-in, puente local).
-const activityUrl = params.get("activity");
-if (activityUrl) startActivityPolling(activityUrl, (mul) => scene.setActivityMul(mul));
+// Actividad del equipo (opt-in): switch en el panel, preferencia persistida,
+// off por defecto. `?activity=<url>` la enciende, `?activity=off` la apaga.
+let storedActivity = null;
+try { storedActivity = localStorage.getItem(ACTIVITY_STORAGE_KEY); } catch (_) {}
+const activityConfig = activityConfigFrom({ param: params.get("activity"), stored: storedActivity });
+const activity = createActivityController({
+  url: activityConfig.url,
+  onUpdate: (st) => scene.setActivityMul(st.enabled ? st.mul : 1),
+});
+function persistActivity(on) {
+  try { localStorage.setItem(ACTIVITY_STORAGE_KEY, on ? "1" : "0"); } catch (_) {}
+}
+if (activityConfig.enabled) activity.enable();
+persistActivity(activityConfig.enabled);
 
 // Latitud del sol (por defecto Chile central, ajustable con ?lat=).
 const latParam = parseFloat(params.get("lat"));
@@ -82,7 +93,15 @@ function setAspect(ratio) {
   scene.render();
 }
 
-const ui = setupUI(scene, { setAspect });
+const ui = setupUI(scene, {
+  setAspect,
+  setActivity: (on) => {
+    if (on) activity.enable();
+    else activity.disable();
+    persistActivity(on);
+  },
+  activityState: () => activity.getState(),
+});
 
 // Pausa al ocultar la pestaña o al perder el foco de la ventana. El primer
 // fotograma se pinta siempre (aunque no haya foco) para no quedar en negro.

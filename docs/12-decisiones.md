@@ -878,6 +878,27 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   adición de código posterior (registro + `scripts/species.mjs` + fichas + `test/species.test.js`).
   Flujo y manifiesto en [18 · Referencias](18-referencias.md).
 
+## D-055 · Switch opt-in para la actividad del equipo
+
+- **Fecha:** 2026-10-11
+- **Estado:** aceptada (v1.8.0)
+- **Contexto:** la reactividad por actividad ([D-052](#d-052--densidad-de-fauna-según-actividad-del-equipo-puente-local))
+  ya era opt-in por URL (`?activity=`), pero no había forma de **ver ni controlar** si estaba activa;
+  sin indicador, era imposible distinguir "apagada" de "puente caído".
+- **Decisión:** convertirla en un **switch explícito** en el panel (**off por defecto**) con estado
+  visible (`off` · `sondeando…` · `act <m>` · `sin puente`) y un indicador `act` en el HUD. Al
+  apagarlo **no se hace ningún `fetch`** y el multiplicador vuelve a 1. La preferencia se persiste en
+  `localStorage`; `?activity=<url>` la enciende y `?activity=off` la apaga (la URL manda).
+- **Alternativas:**
+  | Alternativa | Por qué se descarta |
+  |-------------|---------------------|
+  | Eliminar la función | Se pierde una idea útil para uso local; el switch la mantiene inocua por defecto. |
+  | Solo indicador en el HUD (sin switch) | No permite apagarla sin editar la URL ni recordar la preferencia. |
+  | Default on si hay puente | Arrancaría con red sin pedirlo; el determinismo manda: off por defecto. |
+- **Consecuencia:** `src/activity.js` gana `createActivityController` y `activityConfigFrom`; el
+  render y los dorados siguen idénticos mientras está apagada. Documentado en
+  [17 · Reactividad del sistema](17-reactividad-sistema.md).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

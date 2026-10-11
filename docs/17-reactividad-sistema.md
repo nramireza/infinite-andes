@@ -15,8 +15,8 @@ La base del paisaje sigue siendo **determinista por semilla**: la *identidad* de
 igual que la hora filtra la actividad de cada especie: nunca decide *qué* animal ni *dónde*.
 
 - Sin el puente activo → el paisaje es idéntico al actual y los **snapshots dorados** no cambian.
-- El multiplicador entra por el hook `chanceAt` que ya recibe `placeFauna` (`src/scene.js:262`,
-  `src/fauna.js:707`), el mismo camino que usa el desierto florido (`chance × (1 + 0.6·bloom)`).
+- El multiplicador entra por el hook `faunaChanceAt` de `src/scene.js` (`src/scene.js:174`), el mismo
+  camino que usa el desierto florido (`chance × (1 + 0.6·bloom)`), consumido en `src/fauna.js:707`.
 
 ## Puente local (implementado, v1.7.0)
 
@@ -33,7 +33,13 @@ Un proceso pequeño, **sin dependencias**, que expone un JSON en `localhost`:
 
 ## Consumo en el frontend
 
-- `?activity=<url>` (p. ej. `?activity=http://localhost:8787/activity`) activa el modo.
+- **Switch en el panel** (casilla "Actividad del equipo"): **off por defecto**. Al apagarlo **no se
+  hace ningún `fetch`** y el multiplicador vuelve a 1 ([D-055](12-decisiones.md)).
+- Estado visible: en el panel (`off` · `sondeando…` · `act 1.42` · `sin puente`) y en el **HUD**
+  (`act <m>` solo mientras está encendida).
+- URL del puente: por defecto `http://localhost:8787/activity` (sobreescribible con
+  `?activity=<url>`). La preferencia se guarda en `localStorage` (`infinite-andes:activity`);
+  `?activity=` la enciende y `?activity=off` la apaga (la URL manda sobre la preferencia).
 - El frontend hace *poll* cada N segundos; si el endpoint falla, **degrada a 1** (comportamiento
   normal) sin errores visibles.
 - Mapeo implementado en `src/activity.js`: un **multiplicador global** acotado a `[0.5, 1.8]` a
@@ -47,6 +53,15 @@ Un proceso pequeño, **sin dependencias**, que expone un JSON en `localhost`:
   | Temperatura alta | − (menos actividad; el sesgo crepuscular/nocturno sigue por hora) |
   | `load` alto | − (menos especies esquivas) |
 
+### Cómo verificarlo
+
+1. `npm run activity` (puente) y `curl -s http://localhost:8787/activity`.
+2. `npm start` y abrir `/?activity=1` (o marcar la casilla) con carga en el equipo.
+3. El HUD debe mostrar `act <m>` subiendo con el uso de CPU.
+
+> Nota: en la demo **HTTPS** (GitHub Pages) el navegador bloquea `http://localhost`
+> (*contenido mixto* / Private Network Access), así que el monitoreo es **solo local**.
+
 ## Alternativas descartadas
 
 | Alternativa | Por qué |
@@ -56,19 +71,21 @@ Un proceso pequeño, **sin dependencias**, que expone un JSON en `localhost`:
 
 ## Criterios de aceptación
 
-- [x] Sin `?activity=` el render y los dorados son idénticos a los actuales.
+- [x] Apagada (default) el render y los dorados son idénticos a los actuales y no hay red.
 - [x] Con el puente caído, el paisaje sigue funcionando (multiplicador 1).
 - [x] La actividad no altera identidad ni posición, solo la densidad.
+- [x] Hay un switch explícito y un indicador (`act`) de si está activa.
 
 ## Riesgos / dudas
 
 - Protocolo: **JSON simple** por HTTP (`GET /activity`), puerto por defecto **8787** (`PORT=`).
 - Mapeo señal→densidad: **multiplicador global** validado por tests (`test/activity.test.js`); el
   mapeo por gremio queda como ampliación.
-- Privacidad: el modo es **opt-in** (`?activity=`) y el puente solo lee `localhost` y expone CORS
-  solo a orígenes locales.
+- Privacidad: el modo es **opt-in** (switch / `?activity=`) y el puente solo lee `localhost` y
+  expone CORS solo a orígenes locales.
+- Plataforma: no funciona desde la demo HTTPS por bloqueo de contenido mixto; es **solo local**.
 
 ## Referencias
 
-- [D-052](12-decisiones.md) · [D-010](12-decisiones.md) · [D-011](12-decisiones.md) ·
-  [09 · Arquitectura](09-arquitectura.md)
+- [D-052](12-decisiones.md) · [D-055](12-decisiones.md) · [D-010](12-decisiones.md) ·
+  [D-011](12-decisiones.md) · [09 · Arquitectura](09-arquitectura.md)
