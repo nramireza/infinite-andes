@@ -60,6 +60,9 @@
 navegador: rasteriza `fillRect` a un buffer y codifica el PNG a mano (mismo `scripts/lib/png.mjs`
 que los íconos). Es la herramienta para revisar silueta, escala y contorno antes de tocar `flora.js`.
 
+`npm run gallery:fauna` (`scripts/fauna-gallery.mjs`) hace lo mismo con las matrices de `SPECIES`
+(ambos frames) reutilizando el rasterizador compartido `scripts/lib/raster.mjs`.
+
 ### Guía de estilo para sprites nuevos
 
 - **Silueta primero:** la forma debe leerse como la especie real (cuello, patas, cola, pico o
@@ -113,4 +116,6 @@ que los íconos). Es la herramienta para revisar silueta, escala y contorno ante
 - [x] **Redibujo de flora** (v1.9.0): pasada de silueta/escala/contorno sobre los `DRAWERS` (araucaria
   en paraguas, lenga verde, copao macizo, arbustos con más porte) con contorno oscuro de 1 px y
   galería de diagnóstico ([D-056](12-decisiones.md)).
-- [ ] **Redibujo de fauna** (pendiente): misma pasada sobre las 21 matrices de `SPECIES`.
+- [x] **Redibujo de fauna** (v1.10.0): pasada de silueta/proporción/contorno sobre las 21 matrices de
+  `SPECIES` (cóndor, camélidos, puma, zorros, aves y nutrias) con galería de diagnóstico
+  ([D-057](12-decisiones.md)).

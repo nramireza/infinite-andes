@@ -6,6 +6,22 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-10-11
+
+### Changed
+- **Redibujo de fauna** ([D-057](docs/12-decisiones.md), [08 · Arte pixel](docs/08-arte-pixel.md)):
+  pasada de **silueta, proporción y contorno** sobre las 21 matrices de `SPECIES` en `src/fauna.js`.
+  El cóndor planea con alas y manchas blancas definidas; guanaco y vicuña recuperan cuerpo y cuello
+  de camélido; el puma gana cuerpo largo y cola; los zorros, el huemul, el pudú, el chingue, el
+  monito, la chinchilla, los loros (choroy/cachaña), las nutrias (chungungo/huillín), el choique y el
+  chucao se redibujan con proporciones más fieles. Solo cambian `frames`/`palette` (con contorno `k`
+  donde hacía falta): el spawn y los **dorados `fauna.*` quedan intactos**.
+
+### Added
+- **Galería de diagnóstico de fauna** (`npm run gallery:fauna`, `scripts/fauna-gallery.mjs`): dibuja
+  ambos frames de cada `SPECIES` sobre fondo neutro, con PNG por especie y hoja de contacto. Comparte
+  el rasterizador (`scripts/lib/raster.mjs`) con la galería de flora.
+
 ## [1.9.0] - 2026-10-11
 
 ### Changed

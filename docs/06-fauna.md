@@ -1,10 +1,12 @@
 # 06 · Fauna
 
-> Estado: estable · Actualizado: 2026-10-10
+> Estado: estable · Actualizado: 2026-10-11
 
 **Set implementado** (Fase 2) en [`src/fauna.js`](../src/fauna.js): el grueso de la tabla objetivo,
 con sprites de **matrices de píxeles en código**, spawn determinista por *chunk* y actividad según
-la hora.
+la hora. Las **matrices** se revisaron en la pasada de arte v1.10.0 (silueta, proporción y contorno,
+[D-057](12-decisiones.md)); `npm run gallery:fauna` genera una hoja de contactos para revisarlas
+(ver [08 · Arte pixel](08-arte-pixel.md)).
 
 ## Implementado (Fase 2)
 

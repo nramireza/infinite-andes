@@ -1,6 +1,6 @@
 {
   "name": "infinite-andes",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "private": true,
   "type": "module",
   "description": "Paisaje procedural infinito de los Andes chilenos en pixel art.",
@@ -13,6 +13,7 @@
     "species": "node scripts/species.mjs",
     "icons": "node scripts/icons.mjs",
     "gallery": "node scripts/flora-gallery.mjs",
+    "gallery:fauna": "node scripts/fauna-gallery.mjs",
     "activity": "node scripts/activity-bridge.mjs",
     "bench": "node scripts/bench.mjs",
     "shots": "bash scripts/capture.sh"

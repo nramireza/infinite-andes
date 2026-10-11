@@ -922,6 +922,28 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   intactos**; se ajusta un color de campana en el smoke de estación (`test/render.test.js`). La
   fauna queda para una tanda posterior. Herramienta y flujo en [08 · Arte pixel](08-arte-pixel.md).
 
+## D-057 · Redibujo de fauna (silueta, proporción y contorno)
+
+- **Fecha:** 2026-10-11
+- **Estado:** aceptada (v1.10.0)
+- **Contexto:** tras [D-047](#d-047--silueta-y-proporción-de-la-fauna-escala-relativa-por-especie) las
+  matrices seguían leyéndose como manchas: los camélidos (guanaco/vicuña) eran postes casi sin
+  cuerpo, los zorros y el puma carecían de silueta de cánido/felino, y el cóndor no planeaba. Faltaba
+  una forma de revisar los 21 sprites aislados.
+- **Decisión:** una pasada de **arte de matrices** sobre `SPECIES` guiada por la anatomía real, con
+  los mismos criterios que la flora ([D-056](#d-056--redibujo-de-flora-silueta-escala-y-contorno)):
+  **silueta legible**, **proporción** por especie y **contorno** (`k` = `#2e2e38`) donde faltaba. Se
+  añade la **galería de fauna** (`npm run gallery:fauna`) reutilizando el rasterizador compartido.
+- **Alternativas:**
+  | Alternativa | Por qué se descarta |
+  |-------------|---------------------|
+  | Solo ajustar `size`/escala | No arregla la forma; el problema era la silueta. |
+  | Redibujar de una vez sin galería | Ingrato de revisar; la galería permite auditar los 21 a la vez. |
+  | Guiarse por fotos ya (D-053) | El manifiesto PD/CC0 aún no está poblado; se redibuja por morfología. |
+- **Consecuencia:** cambian solo `frames`/`palette`: el spawn y los **dorados `fauna.*` quedan
+  intactos**; `test/fauna.test.js` valida que cada carácter siga mapeado y las filas tengan igual
+  ancho. Herramienta y flujo en [08 · Arte pixel](08-arte-pixel.md).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

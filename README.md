@@ -182,6 +182,7 @@ infinite-andes/
 ├── scripts/species.mjs   # fichas y tablas de especies (npm run species)
 ├── scripts/icons.mjs     # íconos PWA 192/512, sin dependencias (npm run icons)
 ├── scripts/flora-gallery.mjs # galería de diagnóstico de flora (npm run gallery)
+├── scripts/fauna-gallery.mjs # galería de diagnóstico de fauna (npm run gallery:fauna)
 ├── scripts/activity-bridge.mjs # puente local de actividad (npm run activity)
 ├── screenshots/          # capturas por versión (ver screenshots/README.md)
 └── docs/                 # documentación del proyecto (ver docs/README.md; fichas en docs/especies/)
