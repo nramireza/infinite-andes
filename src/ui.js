@@ -325,7 +325,8 @@ export function setupUI(scene, hooks = {}) {
   populateViewSelect("");
 
   // Modo kiosco: sin panel ni botón. Clic en el paisaje = pantalla completa.
-  if (params.get("ui") === "0") {
+  // `wall=1` (live wallpaper) entra directo en kiosco.
+  if (params.get("ui") === "0" || params.get("wall") === "1") {
     document.body.classList.add("kiosk");
     panel.classList.remove("open");
     scene.canvas?.addEventListener("click", toggleFullscreen);

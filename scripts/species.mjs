@@ -1,15 +1,37 @@
 // Genera las fichas de especies (docs/especies/) y las tablas de 05/06 a partir
 // de los registros `FLORA` y `SPECIES` (fuente única). Uso: `npm run species`.
 
-import { mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
+import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { FLORA } from "../src/flora.js";
 import { SPECIES, RARITY_WEIGHT } from "../src/fauna.js";
+import { parseManifest, refsFor } from "../src/references.js";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const OUT = join(ROOT, "docs", "especies");
 const TODAY = new Date().toISOString().slice(0, 10);
+
+// Referencias fotográficas de edición (manifiesto versionado; ver docs/18).
+const MANIFEST = join(ROOT, "docs", "referencias", "manifiesto.csv");
+const REFS = existsSync(MANIFEST) ? parseManifest(readFileSync(MANIFEST, "utf8")) : [];
+
+function refsSection(def) {
+  const ids = Array.isArray(def.ref) ? def.ref : def.ref ? [def.ref] : [];
+  const rows = ids.flatMap((id) => refsFor(REFS, id));
+  if (!rows.length) return [];
+  const lines = [
+    "## Referencias fotográficas",
+    "",
+    "| Encuadre | Fuente | Autor | Licencia | Archivo |",
+    "|----------|--------|-------|----------|---------|",
+  ];
+  for (const r of rows) {
+    lines.push(`| ${r.encuadre || "—"} | ${r.fuente} | ${r.autor || "—"} | ${r.licencia} | \`${r.archivo}\` |`);
+  }
+  lines.push("");
+  return lines;
+}
 
 const BIOME_NAME = {
   altiplano: "Altiplano", norte: "Norte", centro: "Centro",
@@ -135,6 +157,7 @@ function floraFicha(type) {
     "",
     d.notes || "—",
     "",
+    ...refsSection(d),
     "## Referencias",
     "",
     "- [05 · Flora](../../05-flora.md)",
@@ -170,6 +193,7 @@ function faunaFicha(type) {
     "",
     d.notes || "—",
     "",
+    ...refsSection(d),
     "## Referencias",
     "",
     "- [06 · Fauna](../../06-fauna.md)",

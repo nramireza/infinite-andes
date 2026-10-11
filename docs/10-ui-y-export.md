@@ -72,6 +72,9 @@ y el parallax continúan sin costuras; descarga `infinite-andes_<seed>_strip<N>_
 | `fit` | `cover` (def., llena) o `contain` (encaja entero) | No |
 | `fps` | Límite de fotogramas (def. `30`; `0` = sin límite) | No |
 | `perf` | `1` muestra un overlay con ms/frame y fps | No |
+| `info` | `1` activa el modo información al clic (propuesto) | No |
+| `wall` | `1` fuerza el modo fondo/PWA (propuesto) | No |
+| `activity` | URL del puente local de sensores (propuesto, ver [17](17-reactividad-sistema.md)) | No |
 
 Al cargar, se leen `seed` (por defecto `andes`), `x`, `hour`, `weather`, `aspect`, `moment`,
 `season`, `biome` y `bloom`. La carga inicial y las **vistas favoritas** comparten
@@ -99,7 +102,20 @@ invierno oscuras ([D-027](12-decisiones.md)). El selector **Reloj** alterna con 
 **pantalla completa**. Atajos de teclado: `Espacio` auto-scroll, `←`/`→` desplazan, `H`/`P` muestran
 u ocultan el panel, `F` pantalla completa. El loop limita a **30 fps** por defecto (`?fps=`), se
 **pausa** al ocultar la pestaña y arranca quieto con `prefers-reduced-motion`. Ver
-[D-026](12-decisiones.md) y [D-028](12-decisiones.md).
+[D-026](12-decisiones.md) y [D-028](12-decisiones.md). Con `?wall=1` se entra directo en kiosco y se
+mantiene la pantalla encendida (**Wake Lock**); además la app es **instalable como PWA**
+(`manifest.webmanifest` + `sw.js`, uso offline) ([D-050](12-decisiones.md),
+[16 · Modos de visualización](16-modos-de-visualizacion.md)).
+
+## Modo información al clic (propuesto)
+
+`?info=1` (o un interruptor del panel) activa un modo en el que **hacer clic/tap sobre una especie
+muestra su ficha**. El *hit-test* reutiliza los spawns deterministas de flora y fauna
+(`floraSpawns`/`faunaSpawns`) en coordenadas internas (altura 270 px): al hacer clic se recalcula la
+lista del fotograma y se busca la especie cuyo *bounding box* contiene el punto, priorizando las capas
+delanteras. La ficha es un panel DOM con la metadata del registro (`common`, `sci`, `endemism`,
+`iucn`, `chile`, `notes`) y, si existe, su referencia ([18 · Referencias](18-referencias.md)). El modo
+es **opt-in**: sin él, el clic sigue entrando en pantalla completa en kiosco ([D-051](12-decisiones.md)).
 
 ## Rendimiento
 
@@ -118,6 +134,7 @@ muestra el error en pantalla en lugar de un negro silencioso. Para desarrollo, `
 
 - GIF/secuencia animada (la tira larga en PNG ya está, v1.2.0): **post-1.0** (ver
   [11 · Roadmap](11-roadmap.md)).
+- [ ] Modo información al clic de flora y fauna (`?info=1`) ([D-051](12-decisiones.md)).
 - [x] Exportar tira larga (rango de `x`) en PNG ([D-040](12-decisiones.md), v1.2.0).
 - [x] Modos de kiosco adicionales: HUD y cursor ocultos en kiosco ([D-026](12-decisiones.md), v0.11.1).
 - [x] Accesibilidad y atajos de teclado (flechas, espacio, pantalla completa) ([D-026](12-decisiones.md), v0.11.1).

@@ -55,6 +55,7 @@ export class Scene {
     this.bloomMode = "auto";
     this.season = "auto";
     this.seasonPhase = 0;
+    this.activityMul = 1; // densidad de fauna según actividad del equipo (1 = normal)
     this.seasonSpeed = 1 / SEASON_DURATION; // estaciones por segundo
     this.dayNum = 0; // días simulados en reloj rápido (fase lunar)
     this.tSec = 0;
@@ -103,6 +104,12 @@ export class Scene {
 
   setBloom(mode) {
     this.bloomMode = mode || "auto";
+  }
+
+  // Multiplicador de densidad de fauna por actividad del equipo (1 = normal).
+  setActivityMul(mul) {
+    const m = Number(mul);
+    this.activityMul = Number.isFinite(m) && m > 0 ? m : 1;
   }
 
   setSeason(mode) {
@@ -164,7 +171,7 @@ export class Scene {
   }
 
   faunaChanceAt(wx) {
-    return bloomChanceMul(this.bloomValue(this.biomeAt(wx)));
+    return bloomChanceMul(this.bloomValue(this.biomeAt(wx))) * this.activityMul;
   }
 
   update(dt) {

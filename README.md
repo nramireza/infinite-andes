@@ -8,7 +8,7 @@ Pensado para funcionar como **fondo de pantalla vivo** (solo imagen, sin audio).
 Inspirado en [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf) de Lingdong Huang,
 pero con la geografía, la paleta y las especies de Chile.
 
-> **Estado:** estable (v1.3) · **Versión:** 1.3.0 · **Licencia:** MIT
+> **Estado:** estable (v1.7) · **Versión:** 1.7.0 · **Licencia:** MIT
 
 **Demo en vivo:** https://nramireza.github.io/infinite-andes/
 
@@ -49,6 +49,9 @@ npm run start:python
 | `fit`     | `?fit=contain` | Ajuste a pantalla: `cover` (def., llena) o `contain` (encaja entero) |
 | `fps`     | `?fps=60`     | Límite de fotogramas (def. `30`; `0` = sin límite) |
 | `perf`    | `?perf=1`     | Overlay con ms/frame y fps objetivo |
+| `wall`    | `?wall=1`     | Modo fondo: kiosco + **Wake Lock** (pantalla encendida) |
+| `sw`      | `?sw=1`       | Fuerza el registro del service worker en localhost (PWA) |
+| `activity`| `?activity=http://localhost:8787/activity` | Densidad de fauna según actividad del equipo (puente local, opt-in) |
 
 Ejemplos: `?seed=pewen&hour=12` (río en el valle) · `?seed=andes&hour=6.7` (amanecer naranjo) ·
 `?aspect=32:9&moment=leorey` · `?biome=norte&bloom=on` (desierto florido) ·
@@ -116,13 +119,34 @@ pestaña). Ver [D-026](docs/12-decisiones.md).
 
 ---
 
+## Fondo de pantalla, PWA y actividad
+
+- **PWA instalable** (`manifest.webmanifest` + `sw.js`): la demo se puede instalar como app y
+  funciona **offline** tras la primera visita (caché *stale-while-revalidate*, navegación red
+  primero). El service worker **no** se registra en localhost para no romper el desarrollo
+  (`npm start` sigue sin caché); se puede forzar con `?sw=1`.
+- **Modo fondo** (`?ui=0&fit=cover` o `?wall=1`): kiosco a pantalla completa y, con `wall=1`,
+  **Wake Lock** para que la pantalla no se apague (degrada si el navegador no lo soporta).
+- **Densidad por actividad** (opt-in): levanta el puente local sin dependencias
+  (`npm run activity`, `http://localhost:8787/activity`) y abre la demo con
+  `?activity=http://localhost:8787/activity`; la fauna se densifica con la carga real (CPU/RAM/
+  temperatura). Sin el flag, o si el puente cae, el paisaje es idéntico al actual.
+- **Referencias fotográficas**: los sprites se guían por fotos PD/CC0 registradas en
+  `docs/referencias/manifiesto.csv` (ver [18 · Referencias](docs/18-referencias.md)); las imágenes
+  nunca entran al runtime y quedan fuera del repo (`refs/`).
+
+---
+
 ## Estructura del proyecto
 
 ```
 infinite-andes/
 ├── index.html            # shell + canvas + panel de control
 ├── style.css             # estilos del panel y del canvas pixelado
-├── package.json          # metadata y script de arranque
+├── manifest.webmanifest  # PWA instalable (nombre, tema, íconos, arranque en modo fondo)
+├── sw.js                 # service worker (uso offline)
+├── icons/                # íconos PWA 192/512 (generados con npm run icons)
+├── package.json          # metadata y scripts
 ├── src/
 │   ├── rng.js            # PRNG sembrado + hashing por chunk
 │   ├── noise.js          # ruido de valor 1D + fBm + ridged
@@ -141,6 +165,9 @@ infinite-andes/
 │   ├── biomes.js         # biomas (altiplano…patagonia) y desierto florido
 │   ├── seasons.js        # ciclo estacional (tinte, nieve, clima)
 │   ├── views.js          # serialización del estado (enlaces y favoritos)
+│   ├── references.js     # parser/validador del manifiesto de referencias fotográficas
+│   ├── activity.js       # densidad de fauna según actividad del equipo (puente local)
+│   ├── pwa.js            # registro del service worker y Wake Lock
 │   ├── scene.js          # composición, cámara/parallax, día/noche, export
 │   ├── ui.js             # controles enlazados a la escena
 │   └── main.js           # arranque y loop
@@ -149,6 +176,8 @@ infinite-andes/
 ├── scripts/capture.sh    # capturas versionadas (npm run shots)
 ├── scripts/bench.mjs     # benchmark de render/update (npm run bench)
 ├── scripts/species.mjs   # fichas y tablas de especies (npm run species)
+├── scripts/icons.mjs     # íconos PWA 192/512, sin dependencias (npm run icons)
+├── scripts/activity-bridge.mjs # puente local de actividad (npm run activity)
 ├── screenshots/          # capturas por versión (ver screenshots/README.md)
 └── docs/                 # documentación del proyecto (ver docs/README.md; fichas en docs/especies/)
 ```
@@ -171,8 +200,11 @@ infinite-andes/
 - [Roadmap](docs/11-roadmap.md)
 - [Decisiones](docs/12-decisiones.md)
 - [Glosario](docs/13-glosario.md)
-- [Paleta maestra](docs/14-paleta-maestra.md)
+- [14 · Paleta maestra](docs/14-paleta-maestra.md)
 - [Estaciones](docs/15-estaciones.md)
+- [Modos de visualización](docs/16-modos-de-visualizacion.md)
+- [Reactividad del sistema](docs/17-reactividad-sistema.md)
+- [Referencias](docs/18-referencias.md)
 - [Fichas de especies](docs/especies/README.md)
 
 → Índice y convenciones completas en [docs/README.md](docs/README.md).

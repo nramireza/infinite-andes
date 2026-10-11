@@ -22,6 +22,9 @@
 | 13 | [Glosario](13-glosario.md) | Términos técnicos y especies |
 | 14 | [Paleta maestra](14-paleta-maestra.md) | Tabla de colores por hora (generada con `npm run palette`) |
 | 15 | [Estaciones](15-estaciones.md) | Ciclo estacional, tinte, nieve y clima |
+| 16 | [Modos de visualización](16-modos-de-visualizacion.md) | Kiosco, live wallpaper PWA, Wake Lock |
+| 17 | [Reactividad del sistema](17-reactividad-sistema.md) | Densidad de fauna según actividad del equipo |
+| 18 | [Referencias](18-referencias.md) | Fotos reales PD/CC0 como guía de sprites |
 
 Plantillas en [`templates/`](templates/). Fichas de flora y fauna en [`especies/`](especies/) (generadas con `npm run species`).
 

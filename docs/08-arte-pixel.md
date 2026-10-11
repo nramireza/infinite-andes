@@ -69,6 +69,9 @@
   verifican que no haya caracteres sin mapear.
 - **Frames:** 2 bastan para caminar/aletear; el vaivén lateral es senoidal sobre `tSec`
   (determinista, sin `Math.random()`).
+- **Referencias reales:** para mayor fidelidad, guiarse por **fotos reales PD/CC0** de la especie
+  (silueta y proporción), sin cargarlas en runtime. Ver [18 · Referencias](18-referencias.md) y
+  [D-053](12-decisiones.md).
 
 ## Animación
 
@@ -97,3 +100,6 @@
 - [x] **Altura relativa de la flora** (v1.6.0): cada especie multiplica el rango de su capa por un
   `height` (araucaria/alerce ×1.9, pasto ×0.5) con su altura real (`heightM`) documentada
   ([D-049](12-decisiones.md)).
+- [x] **Sprites guiados por referencias fotográficas reales** (PD/CC0): silueta y proporción sobre
+  foto, sin imágenes en runtime ([D-053](12-decisiones.md), [18 · Referencias](18-referencias.md),
+  v1.7.0; manifiesto poblado por lotes).

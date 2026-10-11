@@ -795,6 +795,89 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   posición, tipo, determinismo y resto de dorados quedan intactos. `test/species.test.js` valida que
   cada especie tenga `height` en rango y `heightM`. Los `DRAWERS` no cambian ([D-048](#d-048--silueta-y-hábito-de-la-flora-procural-sin-cambiar-size)).
 
+## D-050 · Live wallpaper (PWA primero)
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada (v1.7.0)
+- **Contexto:** el proyecto ya tiene modo kiosco (`?ui=0`, pantalla completa, `fit=cover`, pausa al
+  ocultar la pestaña) ([D-026](#d-026--modo-fondo-de-pantalla-kiosco)), pero para dejarlo como fondo
+  vivo falta un paquete instalable que arranque solo y no dependa de la pestaña.
+- **Decisión:** acercar el fondo de pantalla **desde el navegador**: **PWA instalable**
+  (`manifest.webmanifest` + service worker para uso offline) con **Wake Lock** (pantalla encendida)
+  y pantalla completa, sin salir del modelo *JS puro sin dependencias*.
+- **Alternativas:**
+  | Alternativa | Por qué se descarta (por ahora) |
+  |-------------|----------------------------------|
+  | App nativa de wallpaper de SO (Wallpaper Engine, `swww`/`hyprpaper`, etc.) | Rompe el modelo browser-only y exige integración por sistema; queda como capa externa opcional. |
+  | Solo kiosco actual | No arranca solo ni sobrevive sin conexión. |
+- **Consecuencia:** primera vez que se introduce **caché de producción** (service worker); el
+  servidor de desarrollo `npm start` mantiene `Cache-Control: no-store`. Nuevo
+  [16 · Modos de visualización](16-modos-de-visualizacion.md).
+
+## D-051 · Modo información al clic (`?info=1`)
+
+- **Fecha:** 2026-10-10
+- **Estado:** propuesta
+- **Contexto:** la metadata de cada especie (nombre común, `sci`, endemismo, UICN, notas) ya vive en
+  los registros `FLORA`/`SPECIES`, pero no es accesible al explorar. Se quiere poder consultarla sin
+  romper la pieza contemplativa.
+- **Decisión:** un **modo opt-in** (`?info=1` o un interruptor del panel) en el que **hacer clic/tap
+  sobre una especie muestra su ficha**. El *hit-test* reutiliza los spawns deterministas ya existentes
+  (`floraSpawns`/`faunaSpawns`) en coordenadas internas (altura 270 px); la tarjeta es DOM y lee la
+  metadata del registro.
+- **Alternativas:**
+  | Alternativa | Por qué se descarta |
+  |-------------|---------------------|
+  | Siempre activo | Reemplaza el clic de pantalla completa y ensucia el modo contemplativo/kiosco. |
+  | Solo fauna | La flora comparte registro e infraestructura de spawns; dejarla fuera no ahorra trabajo. |
+  | Tooltip flotante permanente | Más intrusivo que una tarjeta bajo demanda. |
+- **Consecuencia:** no altera el render ni el determinismo (solo agrega *hit-test* + overlay);
+  documentado en [10 · UI y exportación](10-ui-y-export.md).
+
+## D-052 · Densidad de fauna según actividad del equipo (puente local)
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada (v1.7.0)
+- **Contexto:** se quiere que la densidad poblacional reaccione a la carga real del equipo
+  (CPU/RAM/temperatura), pero el navegador no puede leer esos sensores y el proyecto es determinista:
+  la identidad y la posición de cada animal dependen de la semilla.
+- **Decisión:** mantener el navegador puro y leer la actividad mediante un **puente local opcional**:
+  un proceso pequeño (p. ej. `node:os` + `/sys/class/thermal` en Linux) que expone un JSON en
+  *localhost* (`{ cpu, ram, temp, load }`). El frontend lo consume solo si se pasa `?activity=<url>`
+  y lo convierte en un **multiplicador de densidad** que entra por el hook `chanceAt` que ya recibe
+  `placeFauna` (`src/scene.js:262`, `src/fauna.js:707`).
+- **Alternativas:**
+  | Alternativa | Por qué se descarta (por ahora) |
+  |-------------|----------------------------------|
+  | Solo señales del navegador (frame-time, batería, memoria) | Aproximadas y no son la actividad real pedida. |
+  | APIs nativas de SO | Requieren runtime específico; el puente local es agnóstico y opcional. |
+- **Consecuencia:** la **identidad/posición siguen deterministas** (la actividad solo pondera, como
+  la hora); el puente es opt-in, así que **no afecta los snapshots dorados**. Contrato y mapeo en
+  [17 · Reactividad del sistema](17-reactividad-sistema.md).
+
+## D-053 · Referencias fotográficas para sprites
+
+- **Fecha:** 2026-10-10
+- **Estado:** aceptada (v1.7.0)
+- **Contexto:** los sprites se han refinado por silueta y proporción ([D-047](#d-047--silueta-y-proporción-de-la-fauna-escala-relativa-por-especie),
+  [D-048](#d-048--silueta-y-hábito-de-la-flora-procural-sin-cambiar-size)), pero sin una referencia
+  fotográfica real la fidelidad depende de la memoria del dibujante.
+- **Decisión:** usar **imágenes reales como material de guía en tiempo de edición** (nunca en
+  runtime; el sprite sigue siendo una matriz en código, [D-010](#d-010--fauna-determinista-con-actividad-horaria)).
+  Reglas: solo **dominio público / CC0**; un **manifiesto** versionado con `especie · sci · fuente ·
+  autor · licencia · encuadre`; las imágenes se descargan localmente y quedan **fuera del repo**
+  (`gitignore`). El manifiesto se enlaza desde un campo `ref` en `FLORA`/`SPECIES`, que
+  `npm run species` muestra en la ficha de cada especie.
+- **Alternativas:**
+  | Alternativa | Por qué se descarta |
+  |-------------|---------------------|
+  | Versionar las imágenes en el repo | Infla el repositorio y arrastra licencias al binario. |
+  | Copiar sin registrar fuente/licencia | Riesgo legal y péridida de trazabilidad. |
+  | PNG sprites en runtime | Ya descartado ([D-010](#d-010--fauna-determinista-con-actividad-horaria)). |
+- **Consecuencia:** ~38 especies reales × 2 referencias; trabajo por lotes. El campo `ref` es una
+  adición de código posterior (registro + `scripts/species.mjs` + fichas + `test/species.test.js`).
+  Flujo y manifiesto en [18 · Referencias](18-referencias.md).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

@@ -3,11 +3,18 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import { FLORA, DRAWERS } from "../src/flora.js";
 import { SPECIES, RIVER_SPECIES, BLOOM_SPECIES, RARITY_WEIGHT } from "../src/fauna.js";
 import { BIOME_IDS, biomeFloraPool, biomeFaunaPool, modeWeights } from "../src/biomes.js";
 import { LAYERS } from "../src/terrain.js";
 import { seedToInt } from "../src/rng.js";
+import { parseManifest, refsFor, validateRefs } from "../src/references.js";
+
+const ROOT = fileURLToPath(new URL("..", import.meta.url));
+const MANIFEST = parseManifest(readFileSync(join(ROOT, "docs", "referencias", "manifiesto.csv"), "utf8"));
 
 const SEED = seedToInt("andes");
 const LAYER_NAMES = new Set(LAYERS.map((l) => l.name));
@@ -103,3 +110,32 @@ test("la floración añade la flor y las especies marcadas", () => {
   const fauna = biomeFaunaPool("valle", w, 1);
   for (const type of BLOOM_SPECIES) assert.ok(fauna.some((e) => e.type === type), `sin ${type} en la floración`);
 });
+
+test("el manifiesto de referencias es válido", () => {
+  assert.deepEqual(validateRefs(MANIFEST), []);
+});
+
+test("el parser tolera comas y comillas en CSV", () => {
+  const csv = 'id,especie,sci,fuente,autor,licencia,encuadre,archivo\n' +
+    'x-01,condor,Vultur gryphus,"https://a,b",Autor,"CC0",perfil,x-01.jpg\n';
+  const rows = parseManifest(csv);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].fuente, "https://a,b");
+  assert.equal(rows[0].licencia, "CC0");
+});
+
+test("cada ref declarado existe en el manifiesto", () => {
+  const defs = [
+    ...Object.entries(FLORA).map(([k, d]) => [`flora:${k}`, d]),
+    ...Object.entries(SPECIES).map(([k, d]) => [`fauna:${k}`, d]),
+  ];
+  for (const [name, d] of defs) {
+    if (d.ref == null) continue;
+    const ids = Array.isArray(d.ref) ? d.ref : [d.ref];
+    assert.ok(ids.length > 0, `${name}: ref vacío`);
+    for (const id of ids) {
+      assert.equal(refsFor(MANIFEST, id).length, 1, `${name}: ref sin fila única en el manifiesto (${id})`);
+    }
+  }
+});
+

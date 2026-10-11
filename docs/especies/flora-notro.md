@@ -1,6 +1,6 @@
 # Notro / Ciruelillo (`notro`)
 
-> Ficha generada con `npm run species` · Actualizado: 2026-10-10
+> Ficha generada con `npm run species` · Actualizado: 2026-10-11
 
 | Campo | Valor |
 |-------|-------|

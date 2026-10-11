@@ -99,6 +99,20 @@
 - [x] **Test de validación** del registro ([`../test/species.test.js`](../test/species.test.js)).
 - [x] **Sprites de flora procedurales** (sin caché), evaluado ([D-046](12-decisiones.md)).
 
+## Fase 7 — Modos de uso y reactividad (en progreso)
+
+- [x] **Modo live wallpaper / PWA instalable**: manifest, service worker (offline), Wake Lock y
+      pantalla completa; reutiliza el kiosco ([D-050](12-decisiones.md),
+      [16 · Modos de visualización](16-modos-de-visualizacion.md), v1.7.0).
+- [ ] **Modo información al clic** sobre flora y fauna en coords internas (`?info=1`)
+      ([D-051](12-decisiones.md), [10 · UI y exportación](10-ui-y-export.md)).
+- [x] **Densidad de fauna según actividad del equipo** mediante puente local opcional
+      (`?activity=<url>`): CPU, RAM, temperatura y carga ([D-052](12-decisiones.md),
+      [17 · Reactividad del sistema](17-reactividad-sistema.md), v1.7.0).
+- [x] **Sprites guiados por referencias fotográficas reales** (flora y fauna): solo PD/CC0,
+      manifiesto en repo e imágenes fuera ([D-053](12-decisiones.md),
+      [18 · Referencias](18-referencias.md), v1.7.0; poblado por lotes).
+
 ## Post-1.0 (backlog)
 
 - **Tira animada**: GIF/secuencia además del PNG ([10 · UI y exportación](10-ui-y-export.md)).

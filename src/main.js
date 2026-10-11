@@ -5,6 +5,8 @@ import { seedToInt } from "./rng.js";
 import { setupUI } from "./ui.js";
 import { BASE_H, DEFAULT_ASPECT, ratioFromString, widthForRatio } from "./viewport.js";
 import { clampDt, shouldDraw, effectiveFps, canRender } from "./loop.js";
+import { registerServiceWorker, setupWakeLock } from "./pwa.js";
+import { startActivityPolling } from "./activity.js";
 
 const canvas = document.getElementById("scene");
 const params = new URLSearchParams(window.location.search);
@@ -36,6 +38,16 @@ window.addEventListener("resize", fit);
 
 const seed = seedToInt(params.get("seed") || "andes");
 const scene = new Scene(canvas, seed);
+
+// PWA: service worker (offline) y Wake Lock en modo fondo (kiosco/wallpaper).
+registerServiceWorker({ force: params.get("sw") === "1" });
+const wall = params.get("wall") === "1" ||
+  window.matchMedia?.("(display-mode: standalone)").matches;
+setupWakeLock(wall);
+
+// Densidad de fauna según actividad del equipo (opt-in, puente local).
+const activityUrl = params.get("activity");
+if (activityUrl) startActivityPolling(activityUrl, (mul) => scene.setActivityMul(mul));
 
 // Latitud del sol (por defecto Chile central, ajustable con ?lat=).
 const latParam = parseFloat(params.get("lat"));

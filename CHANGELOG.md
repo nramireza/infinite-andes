@@ -6,6 +6,24 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-11
+
+### Added
+- **PWA / live wallpaper** ([D-050](docs/12-decisiones.md), [16](docs/16-modos-de-visualizacion.md)):
+  `manifest.webmanifest` instalable, service worker (`sw.js`, caché *stale-while-revalidate* con
+  navegación red-primero) para uso **offline**, **Wake Lock** en modo fondo y el flag `?wall=1`
+  (kiosco directo). Íconos 192/512 generados sin dependencias (`npm run icons`,
+  `scripts/icons.mjs`). El registro del SW se omite en `localhost` (o se fuerza con `?sw=1`).
+- **Densidad de fauna según la actividad del equipo** ([D-052](docs/12-decisiones.md),
+  [17](docs/17-reactividad-sistema.md)): `?activity=<url>` sondea un puente local opcional
+  (`scripts/activity-bridge.mjs`, cpu/ram/temp/load) y aplica un multiplicador **global** de
+  densidad. Por defecto es 1, así el render y los dorados no cambian; si el puente cae, degrada a 1.
+- **Referencias fotográficas PD/CC0** ([D-053](docs/12-decisiones.md),
+  [18](docs/18-referencias.md)): manifiesto versionado (`docs/referencias/manifiesto.csv`), parser
+  y validador (`src/references.js`), campo `ref` en `FLORA`/`SPECIES` y sección en las fichas
+  (`npm run species`). Las imágenes quedan fuera del repo (`refs/` en `.gitignore`). Poblado por
+  lotes (validación gradual).
+
 ## [1.6.0] - 2026-10-10
 
 ### Changed
