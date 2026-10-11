@@ -53,6 +53,13 @@
 - Los **momentos** (`src/moments.js`: Leo Rey, Kung Leo) usan el mismo enfoque de matriz y una
   **fuente 3×5** propia (`drawText`) para el destello "MORTAL KUMBIA".
 
+### Galería de diagnóstico
+
+`npm run gallery` (`scripts/flora-gallery.mjs`) dibuja cada `DRAWERS` **aislado** sobre fondo neutro
+(día/noche/otoño) con PNG por especie y hojas de contacto en `gallery/` (ignorada por git). No usa
+navegador: rasteriza `fillRect` a un buffer y codifica el PNG a mano (mismo `scripts/lib/png.mjs`
+que los íconos). Es la herramienta para revisar silueta, escala y contorno antes de tocar `flora.js`.
+
 ### Guía de estilo para sprites nuevos
 
 - **Silueta primero:** la forma debe leerse como la especie real (cuello, patas, cola, pico o
@@ -103,3 +110,7 @@
 - [x] **Sprites guiados por referencias fotográficas reales** (PD/CC0): silueta y proporción sobre
   foto, sin imágenes en runtime ([D-053](12-decisiones.md), [18 · Referencias](18-referencias.md),
   v1.7.0; manifiesto poblado por lotes).
+- [x] **Redibujo de flora** (v1.9.0): pasada de silueta/escala/contorno sobre los `DRAWERS` (araucaria
+  en paraguas, lenga verde, copao macizo, arbustos con más porte) con contorno oscuro de 1 px y
+  galería de diagnóstico ([D-056](12-decisiones.md)).
+- [ ] **Redibujo de fauna** (pendiente): misma pasada sobre las 21 matrices de `SPECIES`.

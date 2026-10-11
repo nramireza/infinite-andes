@@ -6,6 +6,11 @@ import { shade, lerpColor } from "./palette.js";
 
 const FLOWER_COLORS = ["#e05a9a", "#f2c14e", "#f4f0e6", "#9a6ad0"];
 
+// Contorno común de la flora: un verde más oscuro para despegar la silueta.
+function outline(pal) {
+  return shade(pal.floraD, -0.3);
+}
+
 // Registro de flora: una entrada por tipo dibujable. Es la **fuente única** de
 // los pools: `zones[bioma][capa]` da el peso con que la especie aparece ahí.
 // `kind` distingue especies con ficha ("especie") de genéricos y efectos; los
@@ -157,57 +162,44 @@ function centroFloraPool(layerName) {
 
 const DEFAULT_FLORA_POOL = [{ type: "grass", w: 1 }];
 
+// Araucaria / pehuén: tronco recto y copa en paraguas (domo ancho y bajo, con
+// pisos de ramas y base casi plana). Silueta inconfundible.
 function drawAraucaria(ctx, x, baseY, size, pal, sway) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-
-  const trunkH = Math.max(3, Math.round(size * 0.6));
-  const trunkW = Math.max(1, Math.round(size * 0.08));
-  const trunkTop = baseY - trunkH;
+  const h = Math.max(8, Math.round(size * 1.0));
+  const trunkH = Math.max(3, Math.round(size * 0.4));
+  const trunkW = Math.max(1, Math.round(size * 0.09));
+  const crownH = h - trunkH;
+  const crownTop = baseY - h;
+  const halfMax = Math.max(3, Math.round(size * 0.46));
+  const cx = x + Math.round(sway * 0.6);
+  const dark = outline(pal);
 
   // tronco
   ctx.fillStyle = pal.trunk;
-  ctx.fillRect(x - (trunkW >> 1), trunkTop, trunkW, trunkH);
+  ctx.fillRect(x - (trunkW >> 1), baseY - trunkH, trunkW, trunkH);
 
-  // copa: paraguas de ramas punzantes (silueta de araucaria), por pisos
-  const crownH = Math.max(4, Math.round(size * 0.64));
-  const crownTop = baseY - size;
-  const halfMax = Math.max(2, Math.round(size * 0.44));
-  const rim = shade(pal.trunk, -0.1);
-
-  for (let i = 0; i < crownH; i++) {
-    const t = i / crownH; // 0 arriba, 1 abajo
-    // copa de paraguas: más ancha al centro, redondeada arriba y al pie
-    const profile = 0.3 + 0.7 * Math.sin(Math.min(1, t) * Math.PI * 0.95);
-    let half = Math.max(1, Math.round(halfMax * profile));
-    if (i % 3 === 0) half = Math.max(1, half - 1); // separación entre pisos
-    const yy = crownTop + i;
-    const off = Math.round(sway * (crownH - i) * 0.15);
-    const cx = x + off;
-
-    // borde iluminado arriba / a la izquierda
-    ctx.fillStyle = pal.floraL;
+  // copa: domo ancho, base ancha (paraguas)
+  const cy = crownTop + crownH / 2;
+  const ry = crownH / 2;
+  for (let dy = -ry; dy <= ry; dy++) {
+    const t = dy / ry;
+    let half = Math.round(halfMax * Math.sqrt(Math.max(0, 1 - t * t)));
+    if (t > 0.7) half = Math.round(halfMax * 0.94); // base del paraguas
+    if (half <= 0) continue;
+    const yy = Math.round(cy + dy);
+    ctx.fillStyle = dark;
     ctx.fillRect(cx - half, yy, half * 2 + 1, 1);
     ctx.fillStyle = pal.floraD;
-    ctx.fillRect(cx - half + 1, yy, Math.max(1, half * 2 - (t < 0.4 ? 0 : 1)), 1);
-
-    // "púas" laterales de las ramas, más largas hacia abajo
-    if (i % 2 === 0) {
-      ctx.fillStyle = pal.floraD;
-      const spike = t > 0.4 ? 2 : 1;
-      ctx.fillRect(cx - half - spike, yy, spike, 1);
-      ctx.fillRect(cx + half + 1, yy, spike, 1);
-    }
-    // sombra interna ocasional
-    if (i % 4 === 2) {
-      ctx.fillStyle = rim;
-      ctx.fillRect(cx - Math.max(1, half - 2), yy, Math.max(1, half - 1), 1);
+    ctx.fillRect(cx - half + 1, yy, half * 2 - 1, 1);
+    if (dy % 3 === 0) {
+      ctx.fillStyle = pal.floraL;
+      ctx.fillRect(cx - half + 1, yy, Math.max(1, Math.round(half * 1.3)), 1);
     }
   }
-
-  // remate superior
   ctx.fillStyle = pal.floraL;
-  ctx.fillRect(x - 1, crownTop - 1, 2, 1);
+  ctx.fillRect(cx - 1, crownTop - 1, 3, 1);
 }
 
 // Ramas desnudas (invierno): tallos diagonales desde la punta del tronco.
@@ -225,65 +217,75 @@ function drawBareBranches(ctx, x, top, h, pal) {
   }
 }
 
+// Lenga / ñire (Nothofagus): copa redondeada e irregular, tronco con ramas que
+// abren. Caducifolio: otoño pierde hojas, invierno queda desnudo, primavera brota.
 function drawLenga(ctx, x, baseY, size, pal, warm, season = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const h = Math.max(4, Math.round(size * 0.9));
-  const w = Math.max(3, Math.round(size * 0.85));
-  const trunkH = Math.max(2, Math.round(size * 0.25));
-  const trunkTop = baseY - trunkH;
-  ctx.fillStyle = pal.trunk;
-  ctx.fillRect(x - 1, trunkTop, 2, trunkH);
-
+  const h = Math.max(6, Math.round(size * 1.0));
+  const trunkH = Math.max(2, Math.round(size * 0.3));
   const top = baseY - h;
-  const cx = x;
-  const cy = top + (h - trunkH) / 2;
-  const rx = w / 2;
-  const ry = (h - trunkH) / 2;
-  const light = warm ? pal.sun : pal.floraL;
-  const dark = warm ? pal.sunGlow : pal.floraD;
+  const dark = outline(pal);
 
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 1, baseY - trunkH, 2, trunkH);
   if (season === 2) {
-    // Invierno: copa desnuda, solo ramas.
     drawBareBranches(ctx, x, top, h - trunkH, pal);
     return;
   }
 
+  const crownH = h - trunkH;
+  const ry = crownH / 2;
+  const rx = Math.max(2, Math.round(size * 0.44));
+  const cy = top + ry;
   for (let dy = -ry; dy <= ry; dy++) {
-    // Otoño: hojas que se caen (huecos deterministas en la copa).
-    if (season === 1 && hash1(Math.floor(x) * 7 + Math.round(dy) + 0x1e, 0xa7e) < 0.32) continue;
-    const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
+    const t = dy / ry;
+    let span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - t * t)));
+    if (hash1(Math.floor(x) * 7 + Math.round(dy), 0x1e9) < 0.3) span -= 1; // silueta irregular
+    if (season === 1 && hash1(Math.floor(x) * 7 + Math.round(dy) + 0x1e, 0xa7e) < 0.3) continue;
     if (span <= 0) continue;
+    const yy = Math.round(cy + dy);
     ctx.fillStyle = dark;
-    ctx.fillRect(cx - span, Math.round(cy + dy), span * 2 + 1, 1);
-    ctx.fillStyle = light;
-    ctx.fillRect(cx - span, Math.round(cy + dy), span * 2 + 1, 1);
-    ctx.fillStyle = dark;
-    ctx.fillRect(cx - span + Math.max(1, span >> 1), Math.round(cy + dy), Math.max(1, span), 1);
+    ctx.fillRect(x - span, yy, span * 2 + 1, 1);
+    ctx.fillStyle = pal.floraL;
+    ctx.fillRect(x - span + 1, yy, span * 2 - 1, 1);
+    if (t > 0) {
+      ctx.fillStyle = pal.floraD;
+      ctx.fillRect(x + 1, yy, span - 1, 1);
+    }
   }
 
+  // ramas que abren hacia la copa
+  ctx.fillStyle = pal.trunk;
+  ctx.fillRect(x - 2, baseY - trunkH - 2, 1, 2);
+  ctx.fillRect(x + 2, baseY - trunkH - 2, 1, 2);
+
   if (season === 3) {
-    // Primavera: brotes claros en la punta de la copa.
-    ctx.fillStyle = light;
-    ctx.fillRect(cx - 2, Math.round(cy - ry), 1, 1);
-    ctx.fillRect(cx + 1, Math.round(cy - ry) + 1, 1, 1);
+    ctx.fillStyle = pal.floraL;
+    ctx.fillRect(x - 2, Math.round(cy - ry), 1, 1);
+    ctx.fillRect(x + 1, Math.round(cy - ry) + 1, 1, 1);
   }
 }
 
+// Arbusto genérico: bulto verde de silueta irregular con contorno.
 function drawBush(ctx, x, baseY, size, pal) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const w = Math.max(3, Math.round(size * 0.72));
-  const h = Math.max(2, Math.round(size * 0.44));
+  const w = Math.max(4, Math.round(size * 0.8));
+  const h = Math.max(3, Math.round(size * 0.5));
+  const dark = outline(pal);
   for (let r = 0; r < h; r++) {
     const t = (r + 1) / (h + 1);
-    const half = Math.max(1, Math.round((w / 2) * Math.sin(t * Math.PI * 0.9) + w * 0.08));
+    let half = Math.max(1, Math.round((w / 2) * Math.sin(t * Math.PI * 0.9) + w * 0.08));
+    if (hash1(Math.floor(x) * 3 + r, 0x6b) < 0.35) half = Math.max(1, half - 1);
     const yy = baseY - h + r;
-    ctx.fillStyle = pal.floraD;
+    ctx.fillStyle = dark;
     ctx.fillRect(x - half, yy, half * 2, 1);
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - half + 1, yy, Math.max(1, half * 2 - 2), 1);
     if (r === 0 || r === h - 1) {
       ctx.fillStyle = pal.floraL;
-      ctx.fillRect(x - half, yy, half * 2, 1);
+      ctx.fillRect(x - half + 1, yy, Math.max(1, half * 2 - 2), 1);
     }
   }
 }
@@ -364,40 +366,55 @@ export function drawPlant(ctx, x, baseY, size, type, pal, sway, warm, season = 0
   fn(ctx, x, baseY, size, pal, { sway, warm, season, night });
 }
 
-// Copao / cactus columnar (norte árido): tronco con costillas, brazo en
-// candelabro y espinas. Más alto y macizo que antes.
+// Copao / cactus columnar (norte árido): columna maciza con costilla iluminada,
+// brazo(s) en candelabro, espinas y flor apical.
 function drawCactus(ctx, x, baseY, size, pal) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const h = Math.max(6, Math.round(size * 1.0));
+  const h = Math.max(7, Math.round(size * 1.1));
   const top = baseY - h;
-  const w = h > 11 ? 3 : 2;
+  const w = Math.max(3, Math.round(size * 0.34));
   const half = w >> 1;
+  const dark = outline(pal);
 
-  // tronco con costilla iluminada a la izquierda
-  ctx.fillStyle = pal.floraD;
+  // tronco macizo
+  ctx.fillStyle = dark;
   ctx.fillRect(x - half, top, w, h);
-  ctx.fillStyle = pal.floraL;
-  ctx.fillRect(x - half, top, 1, h);
-
-  // brazo en candelabro (sube en ángulo recto)
-  const dir = hash1(x, 0xcac) < 0.5 ? -1 : 1;
-  const armY = top + Math.round(h * 0.42);
-  const armH = Math.max(2, Math.round(h * 0.3));
   ctx.fillStyle = pal.floraD;
-  ctx.fillRect(x + dir * (half + 1), armY, 2, 1);
-  ctx.fillRect(x + dir * (half + 2), armY - armH, 1, armH + 1);
+  ctx.fillRect(x - half + 1, top, Math.max(1, w - 2), h);
   ctx.fillStyle = pal.floraL;
-  ctx.fillRect(x + dir * (half + 2), armY - armH, 1, 1);
+  ctx.fillRect(x - half + 1, top, 1, h); // costilla iluminada
 
-  // espinas laterales
-  ctx.fillStyle = pal.sandD;
-  for (let i = 2; i < h; i += 3) {
-    ctx.fillRect(x - half - 1, top + i, 1, 1);
-    ctx.fillRect(x + half + 1, top + i + 1, 1, 1);
+  // brazo en candelabro
+  const dir = hash1(x, 0xcac) < 0.5 ? -1 : 1;
+  const armY = top + Math.round(h * 0.45);
+  const armH = Math.max(2, Math.round(h * 0.34));
+  ctx.fillStyle = dark;
+  ctx.fillRect(x + dir * half, armY, 2, 1);
+  ctx.fillRect(x + dir * (half + 1), armY - armH, 2, armH + 1);
+  ctx.fillStyle = pal.floraD;
+  ctx.fillRect(x + dir * (half + 1), armY - armH, 1, armH);
+  ctx.fillStyle = pal.floraL;
+  ctx.fillRect(x + dir * (half + 1), armY - armH, 1, 1);
+
+  // segundo brazo corto ocasional
+  if (hash1(x, 0xca5) < 0.5) {
+    const d2 = -dir;
+    const aY = top + Math.round(h * 0.62);
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x + d2 * half, aY, 1, 1);
+    ctx.fillRect(x + d2 * (half + 1), aY - 2, 1, 2);
   }
 
-  // flor apical ocasional
+  // espinas (pocas, salientes, no columnas)
+  ctx.fillStyle = pal.sandD;
+  for (const frac of [0.28, 0.55, 0.8]) {
+    const y = top + Math.round(h * frac);
+    ctx.fillRect(x - half - 1, y, 1, 1);
+    ctx.fillRect(x + half + 1, y + 1, 1, 1);
+  }
+
+  // flor apical
   if (hash1(x, 0xcaf) < 0.5) {
     ctx.fillStyle = pal.floraL;
     ctx.fillRect(x, top - 1, 1, 1);
@@ -437,27 +454,30 @@ function drawAlerce(ctx, x, baseY, size, pal) {
   ctx.fillRect(x - 1, top - 1, 2, 1);
 }
 
-// Nalca / pangue (Gunnera): roseta de hojas gigantes de borde dentado sobre
-// pecíolos largos, con nervadura central marcada.
+// Nalca / pangue (Gunnera): roseta de hojas gigantes redondeadas y dentadas
+// sobre pecíolos largos, con nervadura central marcada y contorno.
 function drawNalca(ctx, x, baseY, size, pal) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const n = 3 + Math.floor(size * 0.12);
+  const dark = outline(pal);
+  const n = 3 + Math.floor(size * 0.1);
   for (let i = 0; i < n; i++) {
-    const h = hash1(i * 13 + x, 0xaa11);
-    const lx = x + Math.round((h - 0.5) * size * 0.9);
-    const stemH = Math.max(2, Math.round(size * (0.32 + h * 0.35)));
+    const hh = hash1(i * 13 + x, 0xaa11);
+    const lx = x + Math.round((hh - 0.5) * size * 1.1);
+    const stemH = Math.max(3, Math.round(size * (0.4 + hh * 0.4)));
     const top = baseY - stemH;
     ctx.fillStyle = pal.trunk;
     ctx.fillRect(lx, top, 1, stemH);
 
-    const r = Math.max(2, Math.round(size * 0.24));
+    const r = Math.max(2, Math.round(size * 0.3));
     for (let dy = -r; dy <= r; dy++) {
       const span = Math.floor(r * Math.sqrt(Math.max(0, 1 - (dy / r) ** 2)));
       if (span <= 0) continue;
       const dent = hash1(i * 31 + lx + dy, 0xaa12) < 0.5 ? 1 : 0; // borde irregular
-      ctx.fillStyle = pal.floraD;
+      ctx.fillStyle = dark;
       ctx.fillRect(lx - span - dent, top + dy, span * 2 + 1 + dent, 1);
+      ctx.fillStyle = pal.floraD;
+      ctx.fillRect(lx - span - dent + 1, top + dy, Math.max(1, span * 2 - 1 + dent), 1);
     }
     // nervadura central + borde superior iluminado
     ctx.fillStyle = pal.floraL;
@@ -466,26 +486,31 @@ function drawNalca(ctx, x, baseY, size, pal) {
   }
 }
 
-// Colihue / quila: cañaveral de tallos finos con hojas.
+// Colihue / quila: cañaveral denso de tallos finos con nudos y hojas laterales.
 function drawColihue(ctx, x, baseY, size, pal) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const n = 3 + Math.floor(size * 0.2);
+  const dark = outline(pal);
+  const n = 4 + Math.floor(size * 0.25);
   for (let i = 0; i < n; i++) {
-    const h = hash1(i * 17 + x, 0xc01);
-    const cxp = x + i - (n >> 1);
-    const ch = Math.max(4, Math.round(size * (0.7 + h * 0.5)));
+    const hh = hash1(i * 17 + x, 0xc01);
+    const cxp = x + Math.round((i - (n - 1) / 2) * 0.8);
+    const ch = Math.max(5, Math.round(size * (0.75 + hh * 0.5)));
+    const top = baseY - ch;
     ctx.fillStyle = pal.trunk;
-    ctx.fillRect(cxp, baseY - ch, 1, ch);
+    ctx.fillRect(cxp, top, 1, ch);
     // nudos de la caña
-    ctx.fillStyle = pal.floraD;
-    for (let k = 2; k < ch; k += 3) ctx.fillRect(cxp, baseY - ch + k, 1, 1);
+    ctx.fillStyle = dark;
+    for (let k = 2; k < ch; k += 3) ctx.fillRect(cxp, baseY - k, 1, 1);
+    // hojas laterales
     ctx.fillStyle = i % 2 ? pal.floraL : pal.floraD;
-    for (let j = 0; j < 4; j++) {
-      const ly = baseY - ch + 1 + j * 2;
+    const leaves = 3 + Math.floor(hh * 3);
+    for (let j = 0; j < leaves; j++) {
+      const ly = top + 1 + j * Math.max(2, Math.round(ch / leaves));
       const dir = (j + i) % 2 ? 1 : -1;
       ctx.fillRect(cxp + dir, ly, 1, 1);
       ctx.fillRect(cxp + dir * 2, ly + 1, 1, 1);
+      if (j % 2) ctx.fillRect(cxp + dir, ly + 2, 1, 1);
     }
   }
 }
@@ -541,12 +566,16 @@ function drawCoihue(ctx, x, baseY, size, pal) {
   const ry = crownH / 2;
   const rx = Math.max(2, Math.round(size * 0.48));
   const cy = top + ry;
+  const dark = outline(pal);
   for (let dy = -ry; dy <= ry; dy++) {
     const t = dy / ry;
     let span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - t * t)));
     if (hash1(Math.floor(x) * 7 + Math.round(dy), 0xc01) < 0.35) span -= 1; // borde irregular
     if (span <= 0) continue;
     const yy = Math.round(cy + dy);
+    ctx.fillStyle = dark;
+    ctx.fillRect(x - span, yy, 1, 1);
+    ctx.fillRect(x + span, yy, 1, 1);
     ctx.fillStyle = pal.floraL;
     ctx.fillRect(x - span, yy, span * 2 + 1, 1);
     ctx.fillStyle = pal.floraD;
@@ -576,12 +605,16 @@ function drawRoble(ctx, x, baseY, size, pal, season = 0) {
   ctx.fillRect(x + 2, baseY - trunkH - 2, 1, 2);
 
   const halfMax = Math.max(2, Math.round(size * 0.32));
+  const dark = outline(pal);
   for (let i = 0; i < crownH; i++) {
     if (season === 1 && hash1(Math.floor(x) * 11 + i + 0x2f, 0xb3e) < 0.3) continue;
     const t = i / crownH;
     let half = Math.max(1, Math.round(halfMax * Math.sin((0.25 + 0.75 * t) * Math.PI)));
     if (hash1(Math.floor(x) * 13 + i, 0xb0b) < 0.3) half = Math.max(1, half - 1); // copa irregular
     const yy = top + i;
+    ctx.fillStyle = dark;
+    ctx.fillRect(x - half, yy, 1, 1);
+    ctx.fillRect(x + half, yy, 1, 1);
     ctx.fillStyle = pal.floraL;
     ctx.fillRect(x - half, yy, half * 2 + 1, 1);
     ctx.fillStyle = pal.floraD;
@@ -594,17 +627,18 @@ function drawRoble(ctx, x, baseY, size, pal, season = 0) {
   }
 }
 
-// Copihue: enredadera con tallo ondulado y campanas rojas colgantes.
+// Copihue: enredadera con tallo ondulado y campanas rojas colgantes de 3×3.
 // Las campanas florecen en verano y primavera; en otoño/invierno solo queda la enredadera.
 function drawCopihue(ctx, x, baseY, size, pal, season = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const h = Math.max(5, Math.round(size * 0.95));
+  const h = Math.max(6, Math.round(size * 1.05));
   const top = baseY - h;
+  const dark = outline(pal);
   for (let i = 0; i < h; i++) {
     const yy = baseY - i;
     const off = Math.round(Math.sin(i * 0.6) * 1.5);
-    ctx.fillStyle = pal.floraD;
+    ctx.fillStyle = dark;
     ctx.fillRect(x + off, yy, 1, 1);
     if (i % 3 === 0) {
       ctx.fillStyle = pal.floraL;
@@ -612,16 +646,19 @@ function drawCopihue(ctx, x, baseY, size, pal, season = 0) {
     }
   }
   if (season !== 0 && season !== 3) return;
-  const n = 2 + Math.floor(size * 0.12);
+  const n = 2 + Math.floor(size * 0.16);
   for (let i = 0; i < n; i++) {
     const yy = top + Math.round(((i + 1) / (n + 1)) * h);
     const off = Math.round(Math.sin((baseY - yy) * 0.6) * 1.5);
-    ctx.fillStyle = pal.floraL;
-    ctx.fillRect(x + off, yy, 1, 1);
+    const bx = x + off;
     ctx.fillStyle = "#d94f6a";
-    ctx.fillRect(x + off, yy + 1, 1, 2);
-    ctx.fillRect(x + off - 1, yy + 2, 1, 1);
-    ctx.fillRect(x + off + 1, yy + 2, 1, 1);
+    ctx.fillRect(bx, yy + 1, 3, 3);
+    ctx.fillStyle = "#e05070";
+    ctx.fillRect(bx + 1, yy, 1, 1);
+    ctx.fillRect(bx, yy + 2, 1, 1);
+    ctx.fillRect(bx + 2, yy + 2, 1, 1);
+    ctx.fillStyle = "#f2a0b4";
+    ctx.fillRect(bx + 1, yy + 4, 1, 1);
   }
 }
 
@@ -629,31 +666,36 @@ function drawCopihue(ctx, x, baseY, size, pal, season = 0) {
 function drawMichay(ctx, x, baseY, size, pal, season = 0) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const w = Math.max(3, Math.round(size * 0.7));
-  const h = Math.max(3, Math.round(size * 0.5));
+  const w = Math.max(4, Math.round(size * 0.8));
+  const h = Math.max(3, Math.round(size * 0.6));
+  const dark = outline(pal);
   for (let r = 0; r < h; r++) {
     const t = (r + 1) / (h + 1);
     const half = Math.max(1, Math.round((w / 2) * Math.sin(t * Math.PI * 0.9) + w * 0.08));
     const yy = baseY - h + r;
-    ctx.fillStyle = pal.floraD;
+    ctx.fillStyle = dark;
     ctx.fillRect(x - half, yy, half * 2, 1);
-    if (r === 0) {
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - half + 1, yy, Math.max(1, half * 2 - 2), 1);
+    if (r === 0 || r === h - 1) {
       ctx.fillStyle = pal.floraL;
-      ctx.fillRect(x - half, yy, half * 2, 1);
+      ctx.fillRect(x - half + 1, yy, Math.max(1, half * 2 - 2), 1);
     }
   }
-  ctx.fillStyle = pal.floraD;
+  // espinas
+  ctx.fillStyle = dark;
   ctx.fillRect(x - (w >> 1) - 1, baseY - h + 1, 1, 1);
+  ctx.fillRect(x + (w >> 1), baseY - h + 2, 1, 1);
   if (season !== 0 && season !== 3) return;
-  const n = 1 + Math.floor(size * 0.12);
+  const n = 2 + Math.floor(size * 0.16);
   for (let i = 0; i < n; i++) {
     const hh = hash1(i * 23 + x, 0xb011);
-    const fx = x + Math.round((hh - 0.5) * w * 0.9);
+    const fx = x + Math.round((hh - 0.5) * w);
     const fy = baseY - h - 1 - (i % 2);
     ctx.fillStyle = "#e8912a";
     ctx.fillRect(fx, fy, 1, 1);
-    ctx.fillStyle = pal.floraL;
-    ctx.fillRect(fx, fy + 1, 1, 1);
+    ctx.fillStyle = "#f6c04a";
+    ctx.fillRect(fx + 1, fy, 1, 1);
   }
 }
 
@@ -662,23 +704,26 @@ function drawMichay(ctx, x, baseY, size, pal, season = 0) {
 function drawChaura(ctx, x, baseY, size, pal) {
   x = Math.round(x);
   baseY = Math.round(baseY);
-  const w = Math.max(3, Math.round(size * 0.6));
-  const h = Math.max(2, Math.round(size * 0.42));
+  const w = Math.max(4, Math.round(size * 0.72));
+  const h = Math.max(2, Math.round(size * 0.44));
+  const dark = outline(pal);
   for (let r = 0; r < h; r++) {
     const t = (r + 1) / (h + 1);
     const half = Math.max(1, Math.round((w / 2) * Math.sin(t * Math.PI * 0.9) + w * 0.08));
     const yy = baseY - h + r;
-    ctx.fillStyle = pal.floraD;
+    ctx.fillStyle = dark;
     ctx.fillRect(x - half, yy, half * 2, 1);
+    ctx.fillStyle = pal.floraD;
+    ctx.fillRect(x - half + 1, yy, Math.max(1, half * 2 - 2), 1);
     if (r === 0) {
       ctx.fillStyle = pal.floraL;
-      ctx.fillRect(x - half, yy, half * 2, 1);
+      ctx.fillRect(x - half + 1, yy, Math.max(1, half * 2 - 2), 1);
     }
   }
-  const n = 1 + Math.floor(size * 0.14);
+  const n = 2 + Math.floor(size * 0.16);
   for (let i = 0; i < n; i++) {
     const hh = hash1(i * 29 + x, 0x0c4);
-    const fx = x + Math.round((hh - 0.5) * w * 0.9);
+    const fx = x + Math.round((hh - 0.5) * w);
     const fy = baseY - h - 1 - (i % 2);
     ctx.fillStyle = "#f2d8e8";
     ctx.fillRect(fx, fy, 1, 1);
@@ -702,12 +747,14 @@ function drawQuillay(ctx, x, baseY, size, pal, season = 0) {
   const ry = crownH / 2;
   const rx = Math.max(2, Math.round(size * 0.4));
   const cy = top + ry;
+  const dark = outline(pal);
   for (let dy = -ry; dy <= ry; dy++) {
     const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
     if (span <= 0) continue;
     const yy = Math.round(cy + dy);
-    ctx.fillStyle = pal.floraD;
-    ctx.fillRect(x - span, yy, span * 2 + 1, 1);
+    ctx.fillStyle = dark;
+    ctx.fillRect(x - span, yy, 1, 1);
+    ctx.fillRect(x + span, yy, 1, 1);
     ctx.fillStyle = pal.floraL;
     ctx.fillRect(x - span, yy, span * 2 + 1, 1);
     if (hash1(Math.floor(x) * 5 + yy, 0x9111) < 0.4) {
@@ -768,10 +815,14 @@ function drawCanelo(ctx, x, baseY, size, pal, season = 0) {
   const ry = crownH / 2;
   const rx = Math.max(2, Math.round(size * 0.36));
   const cy = top + ry;
+  const dark = outline(pal);
   for (let dy = -ry; dy <= ry; dy++) {
     const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
     if (span <= 0) continue;
     const yy = Math.round(cy + dy);
+    ctx.fillStyle = dark;
+    ctx.fillRect(x - span, yy, 1, 1);
+    ctx.fillRect(x + span, yy, 1, 1);
     ctx.fillStyle = pal.floraD;
     ctx.fillRect(x - span, yy, span * 2 + 1, 1);
     // brillo de hoja lustrosa
@@ -802,10 +853,14 @@ function drawArrayan(ctx, x, baseY, size, pal, season = 0) {
   const ry = crownH / 2;
   const rx = Math.max(2, Math.round(size * 0.32));
   const cy = top + ry;
+  const dark = outline(pal);
   for (let dy = -ry; dy <= ry; dy++) {
     const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
     if (span <= 0) continue;
     const yy = Math.round(cy + dy);
+    ctx.fillStyle = dark;
+    ctx.fillRect(x - span, yy, 1, 1);
+    ctx.fillRect(x + span, yy, 1, 1);
     ctx.fillStyle = pal.floraD;
     ctx.fillRect(x - span, yy, span * 2 + 1, 1);
     ctx.fillStyle = pal.floraL;
@@ -833,11 +888,16 @@ function drawNotro(ctx, x, baseY, size, pal, season = 0) {
   const rx = Math.max(2, Math.round(size * 0.34));
   const ry = crownH / 2;
   const cy = top + ry;
+  const dark = outline(pal);
   for (let dy = -ry; dy <= ry; dy++) {
     const span = Math.floor(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2)));
     if (span <= 0) continue;
+    const yy = Math.round(cy + dy);
+    ctx.fillStyle = dark;
+    ctx.fillRect(x - span, yy, 1, 1);
+    ctx.fillRect(x + span, yy, 1, 1);
     ctx.fillStyle = pal.floraD;
-    ctx.fillRect(x - span, Math.round(cy + dy), span * 2 + 1, 1);
+    ctx.fillRect(x - span, yy, span * 2 + 1, 1);
   }
   if (season !== 0 && season !== 3) return;
   const n = 2 + Math.floor(size * 0.14);

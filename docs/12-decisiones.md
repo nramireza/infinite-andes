@@ -899,6 +899,29 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   render y los dorados siguen idénticos mientras está apagada. Documentado en
   [17 · Reactividad del sistema](17-reactividad-sistema.md).
 
+## D-056 · Redibujo de flora (silueta, escala y contorno)
+
+- **Fecha:** 2026-10-11
+- **Estado:** aceptada (v1.9.0)
+- **Contexto:** tras [D-048](#d-048--silueta-y-hábito-de-la-flora-procural-sin-cambiar-size) y
+  [D-049](#d-049--altura-relativa-de-la-flora-por-especie) la flora seguía leyéndose como bultos
+  verdes poco diferenciados: la araucaria no era un paraguas, la lenga salía como mancha pálida (usaba
+  `pal.sun`), el copao era un poste fino, y arbustos como copihue/michay/chaura eran diminutos. Sin
+  una forma de revisar los sprites aislados, la calidad no se podía evaluar.
+- **Decisión:** una pasada de **arte procedural** sobre los `DRAWERS` de `src/flora.js` guiada por la
+  morfología real de cada especie, con tres criterios: **silueta legible a 1×**, **contorno oscuro de
+  1 px** común (`outline(pal)`) y **color/volumen** con `floraL`/`floraD` (sin `pal.sun` para follaje).
+  Se añade una **galería de diagnóstico** (`npm run gallery`) que dibuja cada tipo aislado en PNG.
+- **Alternativas:**
+  | Alternativa | Por qué se descarta |
+  |-------------|---------------------|
+  | Ajustar solo `height`/`size` | No arregla la silueta; el problema era la forma, no la escala. |
+  | Rehacer los sprites como matrices de píxeles | La flora es procedural por decisión ([D-046](#d-046--sprites-de-flora-procedurales-sin-caché)); se conserva. |
+  | Guiarse por fotos ya (D-053) | El manifiesto PD/CC0 aún no está poblado; se redibuja por morfología y las referencias se añaden por lotes. |
+- **Consecuencia:** cambian solo los `DRAWERS`: el `size`/spawn y los **dorados `flora.*` quedan
+  intactos**; se ajusta un color de campana en el smoke de estación (`test/render.test.js`). La
+  fauna queda para una tanda posterior. Herramienta y flujo en [08 · Arte pixel](08-arte-pixel.md).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

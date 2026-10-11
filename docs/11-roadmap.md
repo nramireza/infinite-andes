@@ -118,6 +118,10 @@
 - **Tira animada**: GIF/secuencia además del PNG ([10 · UI y exportación](10-ui-y-export.md)).
 - **Más momentos raros** y más biomas (paisajes insulares, etc.).
 - **Fauna/flora**: nuevas especies y refinar más sprites ([06 · Fauna](06-fauna.md), [05 · Flora](05-flora.md)).
+- [x] **Redibujo de flora** (v1.9.0): silueta, escala y contorno oscuro de 1 px, con galería de
+      diagnóstico (`npm run gallery`) ([D-056](12-decisiones.md), [08 · Arte pixel](08-arte-pixel.md)).
+- [ ] **Redibujo de fauna** (pendiente): misma pasada sobre las 21 matrices de `SPECIES`
+      ([D-047](12-decisiones.md), [08 · Arte pixel](08-arte-pixel.md)).
 
 ## Backlog / ideas
 

@@ -6,6 +6,22 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-10-11
+
+### Changed
+- **Redibujo de flora** ([D-056](docs/12-decisiones.md), [08 · Arte pixel](docs/08-arte-pixel.md)):
+  pasada de **silueta, escala y contorno** sobre los `DRAWERS` de `src/flora.js`. La araucaria pasa a
+  un paraguas ancho y bajo; la lenga recupera una copa verde e irregular (sin el tinte de sol); el
+  copao se vuelve una columna maciza con brazos y espinas salientes; la nalca, el colihue, el
+  copihue, el michay y la chaura ganan tamaño y detalle; y las copas (coihue, roble, quillay, canelo,
+  arrayán, notro) llevan **contorno oscuro** de 1 px. Solo cambia el dibujo: `size`/spawn y los
+  **dorados `flora.*` quedan intactos** (el smoke de estación se ajusta al color de la campana).
+
+### Added
+- **Galería de diagnóstico de flora** (`npm run gallery`, `scripts/flora-gallery.mjs`): dibuja cada
+  `DRAWERS` aislado sobre fondo neutro (día/noche/otoño) con PNG por especie y hojas de contacto,
+  sin dependencias ni navegador. Salida en `gallery/` (ignorada por git).
+
 ## [1.8.0] - 2026-10-11
 
 ### Added

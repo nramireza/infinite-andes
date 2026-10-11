@@ -1,11 +1,15 @@
 # 05 · Flora
 
-> Estado: estable · Actualizado: 2026-10-10
+> Estado: estable · Actualizado: 2026-10-11
 
 Implementado en `src/flora.js` (registro, dibujo y colocación) usando las paletas de `src/palette.js`.
 La flora se dibuja por capa con `placeFlora(ctx, layer, ...)`; cada capa define en `LAYERS` su
 `flora: { chunkW, minSize, maxSize, minChance, maxPer }` (lo espacial) y el registro `FLORA` define
 las especies y sus `zones` (los pools por bioma y capa).
+
+El **dibujo** de cada tipo vive en los `DRAWERS` y se revisó en la pasada de arte v1.9.0 (silueta,
+escala y contorno oscuro de 1 px, [D-056](12-decisiones.md)); `npm run gallery` genera una hoja de
+contactos para revisarlos aislados (ver [08 · Arte pixel](08-arte-pixel.md)).
 
 ## Especies representadas (actualmente)
 
