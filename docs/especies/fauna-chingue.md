@@ -14,11 +14,17 @@
 | Rareza (juego) | abundante |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 9×4 px · 2 frames |
+| Sprite | 10×6 px · 2 frames |
 
 ## Notas
 
 Mofeta de hocico al suelo; lento, de noche.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Mephitis_chinga_-_1700-1880_-_Print_-_Iconographia_Zoologica_-_Special_Collections_University_of_Amsterdam_-_UBA01_IZ22500127.tif | s/a | PD | `chingue-01.tif` |
 
 ## Referencias
 

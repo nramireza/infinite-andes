@@ -14,11 +14,17 @@
 | Rareza (juego) | poco-común |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 7×7 px · 2 frames |
+| Sprite | 8×7 px · 2 frames |
 
 ## Notas
 
 Uno de los ciervos más pequeños; camina entre arbustos.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Bristol.zoo.southern.pudu.arp.jpg | Adrian Pingstone | PD | `pudu-01.jpg` |
 
 ## Referencias
 

@@ -16,6 +16,12 @@
 
 Enredadera y flor nacional; campanas rojas en primavera/verano.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| detalle | https://commons.wikimedia.org/wiki/File:Lapageria_rosea_-_Copihues_blancos.jpg | Juliairene | PD | `copihue-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

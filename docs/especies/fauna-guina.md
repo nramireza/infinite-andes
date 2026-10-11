@@ -14,11 +14,17 @@
 | Rareza (juego) | común |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 8×4 px · 2 frames |
+| Sprite | 9×5 px · 2 frames |
 
 ## Notas
 
 Felino esquivo; se desplaza a saltos de noche.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Leopardus_guigna_585397889.jpg | Ricardo Barrientos | CC0 | `guina-01.jpg` |
 
 ## Referencias
 

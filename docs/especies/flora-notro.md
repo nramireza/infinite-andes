@@ -16,6 +16,12 @@
 
 Ramilletes de flores rojas.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| detalle | https://commons.wikimedia.org/wiki/File:Embothrium_in_flower.jpg | MarkusR1990 | CC0 | `notro-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

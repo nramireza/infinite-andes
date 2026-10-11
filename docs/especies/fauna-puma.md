@@ -14,11 +14,17 @@
 | Rareza (juego) | poco-común |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 12×5 px · 2 frames |
+| Sprite | 14×6 px · 2 frames |
 
 ## Notas
 
 Depredador tope; raro y solitario; deja huellas.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Puma_concolor_P-12.jpg | Santa Monica Mountains National Recreation Area | PD | `puma-01.jpg` |
 
 ## Referencias
 

@@ -16,6 +16,12 @@
 
 Cañaverales (bambú nativo).
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| CC0 | https://commons.wikimedia.org/wiki/File:Chusquea_culeou_-_Savill_Garden_-_Windsor_Great_Park | _England_-_DSC06100.jpg | Daderot | `perfil` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

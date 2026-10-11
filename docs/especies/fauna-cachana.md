@@ -14,11 +14,17 @@
 | Rareza (juego) | común |
 | Anclaje | centro |
 | Colocación | por chunk |
-| Sprite | 10×5 px · 2 frames |
+| Sprite | 12×6 px · 2 frames |
 
 ## Notas
 
 Loro austral; vuela en bandadas.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Cacha%C3%B1as-Enicognathus_ferrugineus.jpg | Ignsal | PD | `cachana-01.jpg` |
 
 ## Referencias
 

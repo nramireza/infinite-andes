@@ -29,7 +29,7 @@ export const RARITY_WEIGHT = {
 export const SPECIES = {
   condor: {
     movement: "fly", active: "day", speed: 0.35, range: 26, fps: 3, anchor: "center", rarity: "comun",
-    common: "Cóndor", sci: "Vultur gryphus", endemism: "No (Andes)", iucn: "NT", chile: "amplia", bloom: true,
+    common: "Cóndor", sci: "Vultur gryphus", ref: ["condor-01"], endemism: "No (Andes)", iucn: "NT", chile: "amplia", bloom: true,
     notes: "Ave símbolo de los Andes; planea lento con aleteo ocasional.",
     zones: { altiplano: { andes: 1 }, norte: { andes: 1 }, centro: { andes: 1 }, sur: { andes: 1 }, patagonia: { andes: 1 }, austral: { andes: 1 } },
     palette: { b: "trunk", w: "snow", k: "#2e2e38" },
@@ -56,7 +56,7 @@ export const SPECIES = {
   },
   huemul: {
     movement: "walk", active: "day", speed: 0.9, range: 9, fps: 2, anchor: "ground", rarity: "muy-rara", tracks: true,
-    common: "Huemul", sci: "Hippocamelus bisulcus", endemism: "Sí (Chile/Argentina)", iucn: "EN", chile: "~1.000 ind.",
+    common: "Huemul", sci: "Hippocamelus bisulcus", ref: ["huemul-01"], endemism: "Sí (Chile/Argentina)", iucn: "EN", chile: "~1.000 ind.",
     notes: "Ciervo andino en peligro; pastorea y deja huellas.",
     zones: { centro: { precordillera: 1, valle: 1 }, sur: { precordillera: 1, valle: 1 }, patagonia: { precordillera: 1, valle: 1 }, austral: { precordillera: 1 } },
     palette: { d: "trunk", l: "sandD", k: "#2e2e38" },
@@ -87,7 +87,7 @@ export const SPECIES = {
   },
   pudu: {
     movement: "walk", active: "dusk", speed: 0.8, range: 6, fps: 2, anchor: "ground", rarity: "poco-comun",
-    common: "Pudú", sci: "Pudu puda", endemism: "Sí (Chile/Argentina)", iucn: "NT", chile: "decreciente",
+    common: "Pudú", sci: "Pudu puda", ref: ["pudu-01"], endemism: "Sí (Chile/Argentina)", iucn: "NT", chile: "decreciente",
     notes: "Uno de los ciervos más pequeños; camina entre arbustos.",
     zones: { centro: { valle: 1, costa: 1 }, sur: { precordillera: 1, valle: 1, costa: 1 }, patagonia: { costa: 1 }, austral: { valle: 1, costa: 1 } },
     palette: { d: "trunk", l: "sandD", k: "#2e2e38" },
@@ -114,7 +114,7 @@ export const SPECIES = {
   },
   guina: {
     movement: "hop", active: "night", speed: 1.1, range: 7, fps: 3, anchor: "ground", rarity: "comun",
-    common: "Güiña / Kodkod", sci: "Leopardus guigna", endemism: "Sí (Chile/Argentina)", iucn: "LC", chile: "común, esquiva",
+    common: "Güiña / Kodkod", sci: "Leopardus guigna", ref: ["guina-01"], endemism: "Sí (Chile/Argentina)", iucn: "LC", chile: "común, esquiva",
     notes: "Felino esquivo; se desplaza a saltos de noche.",
     zones: { centro: { valle: 1, costa: 1 }, sur: { valle: 1, costa: 1 }, patagonia: { costa: 1 }, austral: { valle: 1, costa: 1 } },
     palette: { d: "trunk", s: "sandD", l: "sand" },
@@ -137,7 +137,7 @@ export const SPECIES = {
   },
   puma: {
     movement: "walk", active: "dusk", speed: 0.7, range: 10, fps: 2, anchor: "ground", rarity: "poco-comun", tracks: true,
-    common: "Puma", sci: "Puma concolor", endemism: "No", iucn: "LC (NT nacional)", chile: "NT nacional",
+    common: "Puma", sci: "Puma concolor", ref: ["puma-01"], endemism: "No", iucn: "LC (NT nacional)", chile: "NT nacional",
     notes: "Depredador tope; raro y solitario; deja huellas.",
     zones: { sur: { precordillera: 1 }, patagonia: { precordillera: 1, valle: 1 }, austral: { precordillera: 1 } },
     palette: { d: "sandD", l: "sand", k: "trunk" },
@@ -187,7 +187,7 @@ export const SPECIES = {
   },
   chilla: {
     movement: "walk", active: "dusk", speed: 1.1, range: 7, fps: 3, anchor: "ground", rarity: "abundante", tracks: true,
-    common: "Zorro chilla", sci: "Lycalopex griseus", endemism: "No", iucn: "LC", chile: "común", bloom: true,
+    common: "Zorro chilla", sci: "Lycalopex griseus", ref: ["chilla-01"], endemism: "No", iucn: "LC", chile: "común", bloom: true,
     notes: "Zorro gris, más pequeño; activo al crepúsculo.",
     zones: { altiplano: { costa: 1, playa: 1 }, norte: { valle: 1, costa: 1, playa: 1 }, centro: { costa: 1, playa: 1 }, sur: { playa: 1 }, patagonia: { playa: 1 }, austral: { playa: 1 } },
     palette: { d: "sandD", l: "sand", k: "#2e2e38" },
@@ -212,7 +212,7 @@ export const SPECIES = {
   },
   guanaco: {
     movement: "walk", active: "day", speed: 0.6, range: 12, fps: 2, anchor: "ground", rarity: "poco-comun", tracks: true,
-    common: "Guanaco", sci: "Lama guanicoe", endemism: "No", iucn: "LC", chile: "VU centro/norte",
+    common: "Guanaco", sci: "Lama guanicoe", ref: ["guanaco-01"], endemism: "No", iucn: "LC", chile: "VU centro/norte",
     notes: "Camélido silvestre; tropillas en la estepa; deja huellas.",
     zones: { altiplano: { precordillera: 1, valle: 1 }, norte: { precordillera: 1, valle: 1 }, centro: { precordillera: 1 }, patagonia: { precordillera: 1, valle: 1 }, austral: { precordillera: 1 } },
     palette: { d: "sandD", l: "sand", k: "#2e2e38" },
@@ -253,7 +253,7 @@ export const SPECIES = {
   },
   vicuna: {
     movement: "walk", active: "day", speed: 0.7, range: 10, fps: 2, anchor: "ground", rarity: "poco-comun",
-    common: "Vicuña", sci: "Vicugna vicugna", endemism: "No", iucn: "LC", chile: "localizada",
+    common: "Vicuña", sci: "Vicugna vicugna", ref: ["vicuna-01"], endemism: "No", iucn: "LC", chile: "localizada",
     notes: "Camélido del altiplano; grupos muy ágiles.",
     zones: { altiplano: { precordillera: 1, valle: 1 }, norte: { precordillera: 1 }, centro: { precordillera: 1 } },
     palette: { d: "sand", l: "sandD", k: "#2e2e38" },
@@ -290,7 +290,7 @@ export const SPECIES = {
   },
   chingue: {
     movement: "walk", active: "night", speed: 0.5, range: 6, fps: 2, anchor: "ground", rarity: "abundante",
-    common: "Chingue", sci: "Conepatus chinga", endemism: "No", iucn: "LC", chile: "común",
+    common: "Chingue", sci: "Conepatus chinga", ref: ["chingue-01"], endemism: "No", iucn: "LC", chile: "común",
     notes: "Mofeta de hocico al suelo; lento, de noche.",
     zones: { altiplano: { valle: 1, costa: 1 }, norte: { valle: 1, costa: 1 }, centro: { valle: 1 }, sur: { valle: 1 } },
     palette: { d: "trunk", w: "snow", k: "#2e2e38" },
@@ -315,7 +315,7 @@ export const SPECIES = {
   },
   monito: {
     movement: "hop", active: "night", speed: 0.8, range: 5, fps: 3, anchor: "ground", rarity: "poco-comun",
-    common: "Monito del monte", sci: "Dromiciops gliroides", endemism: "Sí (Chile/Argentina)", iucn: "NT", chile: "localizado",
+    common: "Monito del monte", sci: "Dromiciops gliroides", ref: ["monito-01"], endemism: "Sí (Chile/Argentina)", iucn: "NT", chile: "localizado",
     notes: "Marsupial, fósil viviente; diminuto, en el colihue.",
     zones: { centro: { costa: 1 }, sur: { costa: 1 } },
     palette: { d: "trunk", l: "sandD", k: "#2e2e38" },
@@ -340,7 +340,7 @@ export const SPECIES = {
   },
   chinchilla: {
     movement: "hop", active: "night", speed: 1.2, range: 5, fps: 3, anchor: "ground", rarity: "muy-rara",
-    common: "Chinchilla de cola larga", sci: "Chinchilla lanigera", endemism: "Sí (Chile)", iucn: "EN", chile: "casi extinta",
+    common: "Chinchilla de cola larga", sci: "Chinchilla lanigera", ref: ["chinchilla-01"], endemism: "Sí (Chile)", iucn: "EN", chile: "casi extinta",
     notes: "Roedor ágil de roqueríos andinos; casi extinto.",
     zones: { altiplano: { andes: 1, precordillera: 1 }, norte: { andes: 1 }, centro: { andes: 1 }, sur: { andes: 1 }, patagonia: { andes: 1 }, austral: { andes: 1 } },
     palette: { d: "rock", l: "snowD", k: "#2e2e38" },
@@ -365,7 +365,7 @@ export const SPECIES = {
   },
   choroy: {
     movement: "flock", active: "day", speed: 0.55, range: 30, fps: 4, anchor: "center", rarity: "comun",
-    common: "Choroy", sci: "Enicognathus leptorhynchus", endemism: "Sí (Chile)", iucn: "LC", chile: "endémica, estable",
+    common: "Choroy", sci: "Enicognathus leptorhynchus", ref: ["choroy-01"], endemism: "Sí (Chile)", iucn: "LC", chile: "endémica, estable",
     notes: "Loro endémico; bandada ruidosa del bosque de la Costa.",
     zones: { centro: { costa: 1 }, sur: { costa: 1 } },
     palette: { g: "floraL", d: "trunk", r: "#c62828", k: "#2e2e38" },
@@ -390,7 +390,7 @@ export const SPECIES = {
   },
   cachana: {
     movement: "flock", active: "day", speed: 0.5, range: 30, fps: 4, anchor: "center", rarity: "comun",
-    common: "Cachaña", sci: "Enicognathus ferrugineus", endemism: "No (Patagonia)", iucn: "LC", chile: "común",
+    common: "Cachaña", sci: "Enicognathus ferrugineus", ref: ["cachana-01"], endemism: "No (Patagonia)", iucn: "LC", chile: "común",
     notes: "Loro austral; vuela en bandadas.",
     zones: { centro: { costa: 1 }, sur: { costa: 1 } },
     palette: { g: "sandD", d: "trunk", r: "#b5533a", k: "#2e2e38" },
@@ -415,7 +415,7 @@ export const SPECIES = {
   },
   flamenco: {
     movement: "walk", active: "day", speed: 0.3, range: 4, fps: 1, anchor: "ground", rarity: "poco-comun",
-    common: "Flamenco chileno", sci: "Phoenicopterus chilensis", endemism: "No", iucn: "NT", chile: "localizado", bloom: true,
+    common: "Flamenco chileno", sci: "Phoenicopterus chilensis", ref: ["flamenco-01"], endemism: "No", iucn: "NT", chile: "localizado", bloom: true,
     notes: "Filtra en lagunas y marismas costeras.",
     zones: { altiplano: { playa: 1 }, norte: { playa: 1 }, centro: { playa: 1 }, sur: { playa: 1 }, patagonia: { playa: 1 }, austral: { playa: 1 } },
     palette: { p: "#f2a0b8", w: "snow", k: "trunk" },
@@ -458,7 +458,7 @@ export const SPECIES = {
   },
   chungungo: {
     movement: "swim", active: "day", speed: 0.6, range: 7, fps: 2, anchor: "ground", rarity: "muy-rara",
-    common: "Chungungo", sci: "Lontra felina", endemism: "Sí (Chile/Perú)", iucn: "EN", chile: "costero",
+    common: "Chungungo", sci: "Lontra felina", ref: ["chungungo-01"], endemism: "Sí (Chile/Perú)", iucn: "EN", chile: "costero",
     notes: "Nutria marina; nada y se asoma entre roqueríos.",
     zones: { altiplano: { mar: 1 }, norte: { mar: 1 }, centro: { mar: 1 }, sur: { mar: 1 }, patagonia: { mar: 1 }, austral: { mar: 1 } },
     palette: { d: "trunk", l: "sand" },
@@ -481,7 +481,7 @@ export const SPECIES = {
   },
   pinguino: {
     movement: "swim", active: "day", speed: 0.5, range: 6, fps: 2, anchor: "ground", rarity: "rara",
-    common: "Pingüino de Humboldt", sci: "Spheniscus humboldti", endemism: "No", iucn: "VU", chile: "colonias",
+    common: "Pingüino de Humboldt", sci: "Spheniscus humboldti", ref: ["pinguino-01"], endemism: "No", iucn: "VU", chile: "colonias",
     notes: "Pingüino del Pacífico sur; nada y emerge.",
     zones: { altiplano: { mar: 1 }, norte: { mar: 1 }, centro: { mar: 1 }, sur: { mar: 1 }, patagonia: { mar: 1 }, austral: { mar: 1 } },
     palette: { k: "#1b1b22", w: "snow", o: "#f5a623" },
@@ -514,7 +514,7 @@ export const SPECIES = {
   },
   rana: {
     movement: "sit", active: "day", speed: 0, range: 0, fps: 1, anchor: "ground", rarity: "muy-rara",
-    common: "Rana de Darwin", sci: "Rhinoderma darwinii", endemism: "Sí (Chile/Argentina)", iucn: "EN", chile: "endémica, en declive",
+    common: "Rana de Darwin", sci: "Rhinoderma darwinii", ref: ["rana-01"], endemism: "Sí (Chile/Argentina)", iucn: "EN", chile: "endémica, en declive",
     notes: "Anfibio endémico estático en el borde del cauce.",
     placement: { chunk: false, river: { chance: 0.3, offset: 2.4, seed: 0x5a1a } },
     zones: { centro: { costa: 1 }, sur: { valle: 1, costa: 1 }, patagonia: { costa: 1 }, austral: { valle: 1, costa: 1 } },
@@ -536,7 +536,7 @@ export const SPECIES = {
   },
   choique: {
     movement: "walk", active: "day", speed: 0.7, range: 9, fps: 2, anchor: "ground", rarity: "poco-comun", tracks: true,
-    common: "Choique / Ñandú petizo", sci: "Rhea pennata", endemism: "No", iucn: "NT", chile: "decreciente",
+    common: "Choique / Ñandú petizo", sci: "Rhea pennata", ref: ["choique-01"], endemism: "No", iucn: "NT", chile: "decreciente",
     notes: "Ñandú de la estepa; camina y deja huellas.",
     zones: { sur: { precordillera: 1, valle: 1 }, patagonia: { precordillera: 1, valle: 1 } },
     palette: { d: "trunk", l: "sand", k: "#2e2e38" },
@@ -579,7 +579,7 @@ export const SPECIES = {
   },
   chucao: {
     movement: "hop", active: "day", speed: 0.9, range: 5, fps: 3, anchor: "ground", rarity: "comun",
-    common: "Chucao", sci: "Scelorchilus rubecula", endemism: "No (Chile/Argentina)", iucn: "LC", chile: "común, sotobosque",
+    common: "Chucao", sci: "Scelorchilus rubecula", ref: ["chucao-01"], endemism: "No (Chile/Argentina)", iucn: "LC", chile: "común, sotobosque",
     notes: "Ave de sotobosque; pecho rojizo.",
     zones: { sur: { costa: 1 }, patagonia: { costa: 1 }, austral: { costa: 1 } },
     palette: { d: "trunk", r: "#c0502a", l: "sandD" },

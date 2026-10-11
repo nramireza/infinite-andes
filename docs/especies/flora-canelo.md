@@ -16,6 +16,12 @@
 
 Siempreverde de copa densa; flor blanca; árbol sagrado mapuche.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Drimys_winteri_-_McConnell_Arboretum_%26_Botanical_Gardens_-_DSC02988.JPG | Daderot | CC0 | `canelo-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

@@ -14,11 +14,17 @@
 | Rareza (juego) | poco-común |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 8×14 px · 2 frames |
+| Sprite | 10×14 px · 2 frames |
 
 ## Notas
 
 Camélido silvestre; tropillas en la estepa; deja huellas.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| CC0 | https://commons.wikimedia.org/wiki/File:Lama_guanicoe_-_Museo_Civico_di_Storia_Naturale_Giacomo_Doria_-_Genoa | _Italy_-_DSC02889.JPG | Daderot | `perfil` |
 
 ## Referencias
 

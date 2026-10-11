@@ -16,6 +16,12 @@
 
 Arbusto espinoso; flores naranjas en primavera/verano.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Berberis_darwinii_-_McConnell_Arboretum_%26_Botanical_Gardens_-_DSC02961.JPG | Daderot | CC0 | `michay-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

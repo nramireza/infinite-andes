@@ -16,6 +16,12 @@
 
 Columna con brazos y espinas.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| CC0 | https://commons.wikimedia.org/wiki/File:Eulychnia_castanea_-_Ventura_Botanical_Gardens_-_Ventura | _CA.jpg | Daderot | `perfil` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

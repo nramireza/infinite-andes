@@ -16,6 +16,12 @@
 
 Tronco canela rojizo y copa menuda; flor blanca.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Luma_apiculata_in_Nymans_2026-07-31.jpg | Andy Li | CC0 | `arrayan-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

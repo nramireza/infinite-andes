@@ -20,6 +20,12 @@
 
 Anfibio endémico estático en el borde del cauce.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Rhinoderma_darwinii00.jpg | George Bond Howes | PD | `rana-01.jpg` |
+
 ## Referencias
 
 - [06 · Fauna](../../06-fauna.md)

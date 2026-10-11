@@ -14,11 +14,17 @@
 | Rareza (juego) | muy-rara |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 7×6 px · 2 frames |
+| Sprite | 9×6 px · 2 frames |
 
 ## Notas
 
 Roedor ágil de roqueríos andinos; casi extinto.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Chinchilla_lanigera1.jpg | Trurl66 | PD | `chinchilla-01.jpg` |
 
 ## Referencias
 

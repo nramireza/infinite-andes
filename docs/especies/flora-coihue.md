@@ -16,6 +16,12 @@
 
 Copa ancha y redondeada; tronco recto.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Nothofagus_dombeyi.jpg | s/a | PD | `coihue-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

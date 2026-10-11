@@ -20,6 +20,12 @@
 
 Pingüino del Pacífico sur; nada y emerge.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Pinguinos-Humboldt_Isla_Choros_Chile.JPG | Nyrkx | PD | `pinguino-01.jpg` |
+
 ## Referencias
 
 - [06 · Fauna](../../06-fauna.md)

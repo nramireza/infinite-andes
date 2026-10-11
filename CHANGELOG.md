@@ -6,6 +6,18 @@ y versionado [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-10-11
+
+### Added
+- **Manifiesto de referencias PD/CC0 poblado** ([D-053](docs/12-decisiones.md), [D-058](docs/12-decisiones.md),
+  [18 · Referencias](docs/18-referencias.md)): `docs/referencias/manifiesto.csv` con **36 filas**
+  (17/17 especies de flora y 19/21 de fauna) verificadas contra la API de Wikimedia Commons y
+  PhyloPic; el campo `ref` de `FLORA`/`SPECIES` las enlaza y `npm run species` las muestra en cada
+  ficha. Solo dominio público o CC0. Quedan pendientes culpeo y huillín (sin fuente libre clara).
+- **Buscador de referencias** (`npm run refs:find`, `scripts/find-refs.mjs`): consulta Commons por
+  especie (o por consulta/categoría) y lista los archivos PD/CC0 con autor y licencia, para curar el
+  manifiesto por lotes.
+
 ## [1.10.0] - 2026-10-11
 
 ### Changed

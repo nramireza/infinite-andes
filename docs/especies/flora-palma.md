@@ -16,6 +16,12 @@
 
 Tronco esbelto y frondas; en peligro.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Jubaea_chilensis.jpg | Awinch1001 | CC0 | `palma-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

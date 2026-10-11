@@ -1,1 +1,37 @@
 id,especie,sci,fuente,autor,licencia,encuadre,archivo
+araucaria-01,araucaria,Araucaria araucana,https://commons.wikimedia.org/wiki/File:Araucaria_araucana_cones_at_Hulda_Klager_Lilac_Gardens.jpg,Dcoetzee,CC0,detalle,araucaria-01.jpg
+lenga-01,lenga,Nothofagus pumilio,https://commons.wikimedia.org/wiki/File:Nothofagus_pumilio.jpg,s/a,PD,perfil,lenga-01.jpg
+copihue-01,copihue,Lapageria rosea,https://commons.wikimedia.org/wiki/File:Lapageria_rosea_-_Copihues_blancos.jpg,Juliairene,PD,detalle,copihue-01.jpg
+cactus-01,cactus,Eulychnia castanea,"https://commons.wikimedia.org/wiki/File:Eulychnia_castanea_-_Ventura_Botanical_Gardens_-_Ventura,_CA.jpg",Daderot,CC0,perfil,cactus-01.jpg
+alerce-01,alerce,Fitzroya cupressoides,https://commons.wikimedia.org/wiki/File:Fitzroya_cupressoides_forest_in_Alerce_Costero_National_Park.jpg,Mycotheca,CC0,perfil,alerce-01.jpg
+nalca-01,nalca,Gunnera tinctoria,https://commons.wikimedia.org/wiki/File:Gunnera_tinctoria_Liberec_2.jpg,Karelj,PD,perfil,nalca-01.jpg
+colihue-01,colihue,Chusquea culeou,"https://commons.wikimedia.org/wiki/File:Chusquea_culeou_-_Savill_Garden_-_Windsor_Great_Park,_England_-_DSC06100.jpg",Daderot,CC0,perfil,colihue-01.jpg
+palma-01,palma,Jubaea chilensis,https://commons.wikimedia.org/wiki/File:Jubaea_chilensis.jpg,Awinch1001,CC0,perfil,palma-01.jpg
+coihue-01,coihue,Nothofagus dombeyi,https://commons.wikimedia.org/wiki/File:Nothofagus_dombeyi.jpg,s/a,PD,perfil,coihue-01.jpg
+roble-01,roble,Nothofagus obliqua,https://commons.wikimedia.org/wiki/File:Nothofagus_obliqua.jpg,s/a,PD,perfil,roble-01.jpg
+michay-01,michay,Berberis darwinii,https://commons.wikimedia.org/wiki/File:Berberis_darwinii_-_McConnell_Arboretum_%26_Botanical_Gardens_-_DSC02961.JPG,Daderot,CC0,perfil,michay-01.jpg
+chaura-01,chaura,Gaultheria mucronata,https://commons.wikimedia.org/wiki/File:Gaultheria_mucronata_%27Bell%27s_Seedling%27_-_Chelsea_Physic_Garden_-_DSC02825.jpg,Daderot,CC0,detalle,chaura-01.jpg
+quillay-01,quillay,Quillaja saponaria,https://commons.wikimedia.org/wiki/File:Quillaja_saponaria_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-119.jpg,Franz Eugen Köhler,PD,detalle,quillay-01.jpg
+manio-01,manio,Podocarpus salignus,"https://commons.wikimedia.org/wiki/File:Podocarpus_salignus_-_Caerhayes_Castle_gardens_-_Cornwall,_England_-_DSC03146.jpg",Daderot,CC0,perfil,manio-01.jpg
+canelo-01,canelo,Drimys winteri,https://commons.wikimedia.org/wiki/File:Drimys_winteri_-_McConnell_Arboretum_%26_Botanical_Gardens_-_DSC02988.JPG,Daderot,CC0,perfil,canelo-01.jpg
+arrayan-01,arrayan,Luma apiculata,https://commons.wikimedia.org/wiki/File:Luma_apiculata_in_Nymans_2026-07-31.jpg,Andy Li,CC0,perfil,arrayan-01.jpg
+notro-01,notro,Embothrium coccineum,https://commons.wikimedia.org/wiki/File:Embothrium_in_flower.jpg,MarkusR1990,CC0,detalle,notro-01.jpg
+condor-01,condor,Vultur gryphus,https://commons.wikimedia.org/wiki/File:Andean_condor_at_the_Bergen_County_Zoo.jpg,FossilDS,CC0,perfil,condor-01.jpg
+huemul-01,huemul,Hippocamelus bisulcus,https://commons.wikimedia.org/wiki/File:Hippocamelus_bisulcus_Werner.JPG,Jacques Christophe Werner; Christophe Annedouche,PD,perfil,huemul-01.jpg
+pudu-01,pudu,Pudu puda,https://commons.wikimedia.org/wiki/File:Bristol.zoo.southern.pudu.arp.jpg,Adrian Pingstone,PD,perfil,pudu-01.jpg
+guina-01,guina,Leopardus guigna,https://commons.wikimedia.org/wiki/File:Leopardus_guigna_585397889.jpg,Ricardo Barrientos,CC0,perfil,guina-01.jpg
+puma-01,puma,Puma concolor,https://commons.wikimedia.org/wiki/File:Puma_concolor_P-12.jpg,Santa Monica Mountains National Recreation Area,PD,perfil,puma-01.jpg
+chilla-01,chilla,Lycalopex griseus,https://commons.wikimedia.org/wiki/File:Lycalopex_griseus.png,Hermann Burmeister,PD,perfil,chilla-01.png
+guanaco-01,guanaco,Lama guanicoe,"https://commons.wikimedia.org/wiki/File:Lama_guanicoe_-_Museo_Civico_di_Storia_Naturale_Giacomo_Doria_-_Genoa,_Italy_-_DSC02889.JPG",Daderot,CC0,perfil,guanaco-01.jpg
+vicuna-01,vicuna,Vicugna vicugna,https://commons.wikimedia.org/wiki/File:Penny_Magazine_1836_270_The_Vicugna.jpg,Unknown,PD,perfil,vicuna-01.jpg
+chingue-01,chingue,Conepatus chinga,https://commons.wikimedia.org/wiki/File:Mephitis_chinga_-_1700-1880_-_Print_-_Iconographia_Zoologica_-_Special_Collections_University_of_Amsterdam_-_UBA01_IZ22500127.tif,s/a,PD,perfil,chingue-01.tif
+monito-01,monito,Dromiciops gliroides,https://commons.wikimedia.org/wiki/File:Monito_del_monte_en_estado_de_sopor_invernal._(36391982075).jpg,nombre_en_pantalla,CC0,perfil,monito-01.jpg
+chinchilla-01,chinchilla,Chinchilla lanigera,https://commons.wikimedia.org/wiki/File:Chinchilla_lanigera1.jpg,Trurl66,PD,perfil,chinchilla-01.jpg
+choroy-01,choroy,Enicognathus leptorhynchus,https://commons.wikimedia.org/wiki/File:Enicognathus_leptorhynchus_261853480.jpg,Joaquin Neumann H.,CC0,perfil,choroy-01.jpg
+cachana-01,cachana,Enicognathus ferrugineus,https://commons.wikimedia.org/wiki/File:Cacha%C3%B1as-Enicognathus_ferrugineus.jpg,Ignsal,PD,perfil,cachana-01.jpg
+flamenco-01,flamenco,Phoenicopterus chilensis,https://www.phylopic.org/images/13c0e1b9-e3b2-461d-ba61-1ff8b9daee39/phoenicopterus-chilensis,Shreyas Arashanapalli,CC0,silueta,flamenco-01.png
+chungungo-01,chungungo,Lontra felina,https://commons.wikimedia.org/wiki/File:Lontra_felina_Werner.JPG,Jacques Christophe Werner; Christophe Annedouche,PD,perfil,chungungo-01.jpg
+pinguino-01,pinguino,Spheniscus humboldti,https://commons.wikimedia.org/wiki/File:Pinguinos-Humboldt_Isla_Choros_Chile.JPG,Nyrkx,PD,perfil,pinguino-01.jpg
+rana-01,rana,Rhinoderma darwinii,https://commons.wikimedia.org/wiki/File:Rhinoderma_darwinii00.jpg,George Bond Howes,PD,perfil,rana-01.jpg
+choique-01,choique,Rhea pennata,https://www.phylopic.org/images/40f348ce-a217-4f4b-8c6d-550d5ebabe70/rhea-pennata,Kai Caspar,CC0,silueta,choique-01.png
+chucao-01,chucao,Scelorchilus rubecula,https://commons.wikimedia.org/wiki/File:Scelorchilus_rubecula_rubecula_1847.jpg,Alcide Dessalines d'Orbigny,PD,perfil,chucao-01.jpg

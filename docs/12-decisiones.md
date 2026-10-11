@@ -944,6 +944,26 @@ Registro de decisiones de diseño y técnica. Para añadir una, copia
   intactos**; `test/fauna.test.js` valida que cada carácter siga mapeado y las filas tengan igual
   ancho. Herramienta y flujo en [08 · Arte pixel](08-arte-pixel.md).
 
+## D-058 · Referencias fotográficas: lote inicial y buscador
+
+- **Fecha:** 2026-10-11
+- **Estado:** aceptada (v1.11.0)
+- **Contexto:** [D-053](#d-053--referencias-fotográficas-para-sprites) dejó el manifiesto vacío; faltaba
+  poblar referencias **PD/CC0 verificables** para guiar los sprites, sin fabricar fuentes.
+- **Decisión:** curar un **lote inicial** consultando la **API de Wikimedia Commons**
+  (`action=query` + `extmetadata`) y **PhyloPic** (siluetas CC0), filtrando estrictamente a
+  dominio público o CC0. Se añade la herramienta `scripts/find-refs.mjs` (`npm run refs:find`) para
+  repetir el proceso por lotes. Cada referencia se enlaza por el campo `ref` y aparece en la ficha.
+- **Alternativas:**
+  | Alternativa | Por qué se descarta |
+  |-------------|---------------------|
+  | Fotos CC-BY/CC-BY-SA | La regla de [D-053](#d-053--referencias-fotográficas-para-sprites) exige uso libre sin atribución. |
+  | Ilustraciones históricas como único recurso | Se admiten (son PD) pero se prefieren fotos cuando existen. |
+  | Buscar a mano en cada ficha | Lento y no reproducible; el buscador filtra licencia automáticamente. |
+- **Consecuencia:** 36 referencias (17 flora + 19 fauna); faltan **culpeo** y **huillín** (sin fuente
+  PD/CC0 clara en el lote). El manifiesto se sigue poblando por lotes; las imágenes quedan fuera del
+  repo (`refs/`). Herramienta y flujo en [18 · Referencias](18-referencias.md).
+
 ## Decisiones abiertas
 
 - ¿Se exportará una tira larga además del PNG de la vista? (opcional, ver [D-025](#d-025--sin-audio-el-objetivo-es-un-fondo-de-pantalla-vivo))

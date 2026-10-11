@@ -16,6 +16,12 @@
 
 Caducifolio; copa estrecha y erguida; pierde hojas en otoño.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Nothofagus_obliqua.jpg | s/a | PD | `roble-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

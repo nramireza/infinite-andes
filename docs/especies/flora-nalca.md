@@ -16,6 +16,12 @@
 
 Hojas gigantes junto al agua.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Gunnera_tinctoria_Liberec_2.jpg | Karelj | PD | `nalca-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

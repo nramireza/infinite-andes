@@ -16,6 +16,12 @@
 
 Caducifolio: pierde hojas en otoño, queda desnudo en invierno y brota en primavera.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Nothofagus_pumilio.jpg | s/a | PD | `lenga-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

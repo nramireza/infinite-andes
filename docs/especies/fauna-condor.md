@@ -14,11 +14,17 @@
 | Rareza (juego) | común |
 | Anclaje | centro |
 | Colocación | por chunk |
-| Sprite | 20×6 px · 2 frames |
+| Sprite | 16×7 px · 2 frames |
 
 ## Notas
 
 Ave símbolo de los Andes; planea lento con aleteo ocasional.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Andean_condor_at_the_Bergen_County_Zoo.jpg | FossilDS | CC0 | `condor-01.jpg` |
 
 ## Referencias
 

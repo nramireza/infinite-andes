@@ -110,8 +110,8 @@
       (`?activity=<url>`): CPU, RAM, temperatura y carga ([D-052](12-decisiones.md),
       [17 · Reactividad del sistema](17-reactividad-sistema.md), v1.7.0).
 - [x] **Sprites guiados por referencias fotográficas reales** (flora y fauna): solo PD/CC0,
-      manifiesto en repo e imágenes fuera ([D-053](12-decisiones.md),
-      [18 · Referencias](18-referencias.md), v1.7.0; poblado por lotes).
+      manifiesto en repo e imágenes fuera ([D-053](12-decisiones.md), [D-058](12-decisiones.md),
+      [18 · Referencias](18-referencias.md), v1.11.0; 36 referencias, faltan culpeo y huillín).
 
 ## Post-1.0 (backlog)
 

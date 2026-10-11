@@ -14,11 +14,17 @@
 | Rareza (juego) | común |
 | Anclaje | centro |
 | Colocación | por chunk |
-| Sprite | 10×5 px · 2 frames |
+| Sprite | 12×6 px · 2 frames |
 
 ## Notas
 
 Loro endémico; bandada ruidosa del bosque de la Costa.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Enicognathus_leptorhynchus_261853480.jpg | Joaquin Neumann H. | CC0 | `choroy-01.jpg` |
 
 ## Referencias
 

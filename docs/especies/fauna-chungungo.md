@@ -14,11 +14,17 @@
 | Rareza (juego) | muy-rara |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 12×4 px · 2 frames |
+| Sprite | 12×5 px · 2 frames |
 
 ## Notas
 
 Nutria marina; nada y se asoma entre roqueríos.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Lontra_felina_Werner.JPG | Jacques Christophe Werner; Christophe Annedouche | PD | `chungungo-01.jpg` |
 
 ## Referencias
 

@@ -20,6 +20,12 @@
 
 Filtra en lagunas y marismas costeras.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| silueta | https://www.phylopic.org/images/13c0e1b9-e3b2-461d-ba61-1ff8b9daee39/phoenicopterus-chilensis | Shreyas Arashanapalli | CC0 | `flamenco-01.png` |
+
 ## Referencias
 
 - [06 · Fauna](../../06-fauna.md)

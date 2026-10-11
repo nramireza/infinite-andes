@@ -16,6 +16,12 @@
 
 Árbol emblema; silueta de paraguas; la copa se bambolea.
 
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| detalle | https://commons.wikimedia.org/wiki/File:Araucaria_araucana_cones_at_Hulda_Klager_Lilac_Gardens.jpg | Dcoetzee | CC0 | `araucaria-01.jpg` |
+
 ## Referencias
 
 - [05 · Flora](../../05-flora.md)

@@ -136,8 +136,9 @@ pestaña). Ver [D-026](docs/12-decisiones.md).
   cae, el paisaje es idéntico al actual. Es **solo local** (en HTTPS el navegador bloquea
   `http://localhost`).
 - **Referencias fotográficas**: los sprites se guían por fotos PD/CC0 registradas en
-  `docs/referencias/manifiesto.csv` (ver [18 · Referencias](docs/18-referencias.md)); las imágenes
-  nunca entran al runtime y quedan fuera del repo (`refs/`).
+  `docs/referencias/manifiesto.csv` (36 especies del lote inicial; ver
+  [18 · Referencias](docs/18-referencias.md)); las imágenes nunca entran al runtime y quedan fuera
+  del repo (`refs/`). El buscador `npm run refs:find` lista candidatas PD/CC0 de Commons.
 
 ---
 
@@ -183,6 +184,7 @@ infinite-andes/
 ├── scripts/icons.mjs     # íconos PWA 192/512, sin dependencias (npm run icons)
 ├── scripts/flora-gallery.mjs # galería de diagnóstico de flora (npm run gallery)
 ├── scripts/fauna-gallery.mjs # galería de diagnóstico de fauna (npm run gallery:fauna)
+├── scripts/find-refs.mjs # buscador de referencias PD/CC0 en Commons (npm run refs:find)
 ├── scripts/activity-bridge.mjs # puente local de actividad (npm run activity)
 ├── screenshots/          # capturas por versión (ver screenshots/README.md)
 └── docs/                 # documentación del proyecto (ver docs/README.md; fichas en docs/especies/)

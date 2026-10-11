@@ -14,11 +14,17 @@
 | Rareza (juego) | abundante |
 | Anclaje | pies |
 | Colocación | por chunk |
-| Sprite | 8×5 px · 2 frames |
+| Sprite | 9×6 px · 2 frames |
 
 ## Notas
 
 Zorro gris, más pequeño; activo al crepúsculo.
+
+## Referencias fotográficas
+
+| Encuadre | Fuente | Autor | Licencia | Archivo |
+|----------|--------|-------|----------|---------|
+| perfil | https://commons.wikimedia.org/wiki/File:Lycalopex_griseus.png | Hermann Burmeister | PD | `chilla-01.png` |
 
 ## Referencias
 

@@ -37,6 +37,18 @@ Las imágenes se descargan localmente (p. ej. en `refs/`, en `.gitignore`) con e
 `npm run species` lo muestra en la ficha de `docs/especies/`. El manifiesto se puebla **por lotes**;
 `test/species.test.js` valida solo los `ref` ya declarados.
 
+### Estado (lote inicial, v1.11.0)
+
+**36 referencias**: 17/17 especies de flora y 19/21 de fauna, todas **PD o CC0** verificadas contra
+la API de Wikimedia Commons y **PhyloPic** (siluetas CC0). Pendientes: **culpeo** y **huillín**
+(sin fuente libre clara en el lote).
+
+### Buscador
+
+`npm run refs:find` (`scripts/find-refs.mjs`) recorre las especies y lista los archivos PD/CC0 de
+Commons con autor y licencia. Modos: `q="consulta"` (búsqueda libre) y `cat="Categoría"` (miembros de
+una categoría). La curación final (elegir encuadre y descargar) es manual.
+
 ## Flujo de trabajo por especie
 
 1. Elegir 2 fuentes **PD/CC0** representativas (idealmente perfil y detalle de cabeza/silueta).
@@ -56,7 +68,8 @@ Las imágenes se descargan localmente (p. ej. en `refs/`, en `.gitignore`) con e
 
 ## Criterios de aceptación
 
-- [ ] Cada especie real tiene ≥ 1 referencia PD/CC0 registrada en el manifiesto (poblado por lotes).
+- [ ] Cada especie real tiene ≥ 1 referencia PD/CC0 registrada en el manifiesto (36/38 en el lote
+  inicial; faltan culpeo y huillín).
 - [x] Existe la carpeta de imágenes locales y está en `.gitignore` (`refs/`).
 - [x] El campo `ref` del registro aparece en la ficha generada (`npm run species`).
 - [x] Ninguna imagen se carga en runtime (solo matrices en código).
